@@ -7,5 +7,5 @@ export default function AnimatePresenceProvider({
 }: {
   children: React.ReactNode;
 }) {
-  return <AnimatePresence mode="wait">{children}</AnimatePresence>;
+  return <AnimatePresence mode="sync">{children}</AnimatePresence>;
 }

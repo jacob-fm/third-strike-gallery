@@ -1,5 +1,3 @@
-'use client';
-
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -15,16 +13,14 @@ export default function CharacterCard({ character, onHover }: { character: Chara
         onMouseEnter={() => onHover?.(character)}
         onMouseLeave={() => onHover?.(null)}
       >
-        <div className="relative w-full aspect-square">
-          <Image
-            src={character.portraitImage}
-            alt={character.name}
-            fill
-            className="object-cover transition-all duration-200 group-hover:brightness-110"
-            style={{ imageRendering: 'pixelated' }}
-            sizes="(max-width: 768px) 25vw, (max-width: 1024px) 20vw, 16vw"
-          />
-        </div>
+        <Image
+          src={character.portraitImage}
+          alt={character.name}
+          width={200}
+          height={200}
+          className="w-full h-auto transition-all duration-200 group-hover:brightness-110"
+          style={{ imageRendering: 'pixelated' }}
+        />
       </motion.div>
     </Link>
   );
