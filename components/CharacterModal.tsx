@@ -40,6 +40,7 @@ export default function CharacterModal({ character, onClose }: CharacterModalPro
                   src={character.artworkImage}
                   alt={`${character.name} artwork`}
                   fill
+                  unoptimized
                   className="object-cover object-top"
                   style={{ imageRendering: 'pixelated' }}
                   sizes="280px"

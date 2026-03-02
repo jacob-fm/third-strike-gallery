@@ -45,6 +45,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ slug
                 src={character.artworkImage}
                 alt={`${character.name} artwork`}
                 fill
+                unoptimized
                 className="object-cover object-top"
                 style={{ imageRendering: 'pixelated' }}
                 sizes="280px"
