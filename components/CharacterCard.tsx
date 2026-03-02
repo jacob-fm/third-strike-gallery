@@ -3,9 +3,24 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Character } from '@/types/character';
 
-export default function CharacterCard({ character, onHover }: { character: Character; onHover?: (c: Character | null) => void }) {
+interface CharacterCardProps {
+  character: Character
+  onHover?: (c: Character | null) => void
+  onSelect?: (c: Character) => void
+}
+
+export default function CharacterCard({ character, onHover, onSelect }: CharacterCardProps) {
   return (
-    <Link href={`/characters/${character.slug}`} className="block group">
+    <Link
+      href={`/characters/${character.slug}`}
+      className="block group"
+      onClick={(e) => {
+        if (onSelect) {
+          e.preventDefault()
+          onSelect(character)
+        }
+      }}
+    >
       <motion.div
         whileHover={{ scale: 1.05 }}
         transition={{ duration: 0.15 }}

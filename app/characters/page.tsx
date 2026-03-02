@@ -1,11 +1,14 @@
 'use client'
 import { characters } from '@/data/characters';
 import CharacterCard from '@/components/CharacterCard';
+import CharacterModal from '@/components/CharacterModal';
 import { useState } from 'react'
 import { Character } from '@/types/character'
+import { AnimatePresence } from 'framer-motion'
 
 export default function CharactersPage() {
   const [selectedChar, setSelectedChar] = useState<Character | null>(null)
+  const [hoveredChar, setHoveredChar] = useState<Character | null>(null)
 
   return (
     <main className="min-h-screen px-6 py-10" style={{ background: 'var(--bg)' }}>
@@ -25,10 +28,24 @@ export default function CharactersPage() {
       </header>
       <div className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-3 max-w-5xl mx-auto">
         {characters.map((character) => (
-          <CharacterCard key={character.slug} character={character} onHover={setSelectedChar} />
+          <CharacterCard
+            key={character.slug}
+            character={character}
+            onHover={setHoveredChar}
+            onSelect={setSelectedChar}
+          />
         ))}
       </div>
-      <span>{selectedChar?.name}</span>
+      <span>{hoveredChar?.name}</span>
+      <AnimatePresence>
+        {selectedChar && (
+          <CharacterModal
+            key={selectedChar.slug}
+            character={selectedChar}
+            onClose={() => setSelectedChar(null)}
+          />
+        )}
+      </AnimatePresence>
     </main>
   );
 }

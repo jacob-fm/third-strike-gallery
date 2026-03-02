@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 import { characters, getCharacterBySlug } from '@/data/characters';
 import MoveTable from '@/components/MoveTable';
-import { BackButton } from '@/components/BackButton';
 
 export async function generateStaticParams() {
   return characters.map((c) => ({ slug: c.slug }));
@@ -26,7 +26,13 @@ export default async function CharacterPage({ params }: { params: Promise<{ slug
   return (
     <main className="min-h-screen px-6 py-10" style={{ background: 'var(--bg)' }}>
       <div className="max-w-5xl mx-auto">
-        <BackButton />
+        <Link
+          href="/characters"
+          className="inline-block mb-6 text-sm tracking-widest uppercase"
+          style={{ color: 'var(--accent)' }}
+        >
+          ← Back to Roster
+        </Link>
 
         <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-10">
           {/* Left column: artwork + identity */}
