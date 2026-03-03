@@ -11,17 +11,15 @@ export default function CharactersPage() {
   const [hoveredChar, setHoveredChar] = useState<Character | null>(null)
 
   return (
-    <main className="min-h-screen px-6 py-10" style={{ background: 'var(--bg)' }}>
+    <main className="min-h-screen px-6 py-10 bg-bg">
       <header className="mb-8 text-center">
         <h1
-          className="text-3xl font-bold tracking-widest uppercase"
-          style={{ color: 'var(--text-primary)' }}
+          className="text-3xl font-bold tracking-widest uppercase text-text-primary"
         >
           Street Fighter III
         </h1>
         <p
-          className="mt-1 text-sm tracking-[0.3em] uppercase"
-          style={{ color: 'var(--accent)' }}
+          className="mt-1 text-sm tracking-[0.3em] uppercase text-accent"
         >
           Third Strike — Character Select
         </p>

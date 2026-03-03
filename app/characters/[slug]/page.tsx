@@ -24,12 +24,11 @@ export default async function CharacterPage({ params }: { params: Promise<{ slug
   if (!character) notFound();
 
   return (
-    <main className="min-h-screen px-6 py-10" style={{ background: 'var(--bg)' }}>
+    <main className="min-h-screen px-6 py-10 bg-bg">
       <div className="max-w-5xl mx-auto">
         <Link
           href="/characters"
-          className="inline-block mb-6 text-sm tracking-widest uppercase"
-          style={{ color: 'var(--accent)' }}
+          className="inline-block mb-6 text-sm tracking-widest uppercase text-accent"
         >
           ← Back to Roster
         </Link>
@@ -39,34 +38,31 @@ export default async function CharacterPage({ params }: { params: Promise<{ slug
           <div className="flex flex-col gap-4">
             <div
               className="relative w-full h-110 rounded overflow-hidden"
-            // style={{ aspectRatio: '1/1', borderColor: 'var(--border)' }}
             >
               <Image
                 src={character.artworkImage}
                 alt={`${character.name} artwork`}
                 fill
                 unoptimized
-                className="object-cover object-top"
-                style={{ imageRendering: 'pixelated' }}
+                className="object-cover object-top [image-rendering:pixelated]"
                 sizes="280px"
                 priority
               />
             </div>
             <div>
               <h1
-                className="text-3xl font-bold tracking-wide uppercase"
-                style={{ color: 'var(--text-primary)' }}
+                className="text-3xl font-bold tracking-wide uppercase text-text-primary"
               >
                 {character.name}
               </h1>
               <dl className="mt-2 space-y-1 text-sm">
                 <div className="flex gap-2">
-                  <dt style={{ color: 'var(--text-secondary)' }}>Origin</dt>
-                  <dd style={{ color: 'var(--text-primary)' }}>{character.nationality}</dd>
+                  <dt className="text-text-secondary">Origin</dt>
+                  <dd className="text-text-primary">{character.nationality}</dd>
                 </div>
                 <div className="flex gap-2">
-                  <dt style={{ color: 'var(--text-secondary)' }}>Style</dt>
-                  <dd style={{ color: 'var(--text-primary)' }}>{character.fightingStyle}</dd>
+                  <dt className="text-text-secondary">Style</dt>
+                  <dd className="text-text-primary">{character.fightingStyle}</dd>
                 </div>
               </dl>
             </div>
@@ -76,20 +72,18 @@ export default async function CharacterPage({ params }: { params: Promise<{ slug
           <div className="flex flex-col gap-8">
             <section>
               <h2
-                className="text-xs font-bold tracking-widest uppercase mb-3"
-                style={{ color: 'var(--accent)' }}
+                className="text-xs font-bold tracking-widest uppercase mb-3 text-accent"
               >
                 Bio
               </h2>
-              <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+              <p className="text-sm leading-relaxed text-text-secondary">
                 {character.bio}
               </p>
             </section>
 
             <section>
               <h2
-                className="text-xs font-bold tracking-widest uppercase mb-3"
-                style={{ color: 'var(--accent)' }}
+                className="text-xs font-bold tracking-widest uppercase mb-3 text-accent"
               >
                 Move List
               </h2>

@@ -34,8 +34,7 @@ export default function CharacterCard({ character, onHover, onSelect }: Characte
           width={200}
           height={200}
           unoptimized
-          className="w-full h-auto transition-all duration-200 group-hover:brightness-110"
-          style={{ imageRendering: 'pixelated' }}
+          className="w-full h-auto transition-all duration-200 group-hover:brightness-110 [image-rendering:pixelated]"
         />
       </motion.div>
     </Link>

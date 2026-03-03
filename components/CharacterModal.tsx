@@ -13,8 +13,7 @@ interface CharacterModalProps {
 export default function CharacterModal({ character, onClose }: CharacterModalProps) {
   return (
     <motion.div
-      className="fixed inset-0 overflow-y-auto z-10"
-      style={{ background: 'var(--bg)' }}
+      className="fixed inset-0 overflow-y-auto z-10 bg-bg"
       initial={{ x: '100%' }}
       animate={{ x: 0 }}
       exit={{ x: '100%' }}
@@ -25,8 +24,7 @@ export default function CharacterModal({ character, onClose }: CharacterModalPro
           <div className="mb-6 flex items-center gap-4">
             <button
               onClick={onClose}
-              className="text-sm tracking-widest uppercase cursor-pointer"
-              style={{ color: 'var(--accent)' }}
+              className="text-sm tracking-widest uppercase cursor-pointer text-accent"
             >
               ← Back to Roster
             </button>
@@ -41,27 +39,25 @@ export default function CharacterModal({ character, onClose }: CharacterModalPro
                   alt={`${character.name} artwork`}
                   fill
                   unoptimized
-                  className="object-cover object-top"
-                  style={{ imageRendering: 'pixelated' }}
+                  className="object-cover object-top [image-rendering:pixelated]"
                   sizes="280px"
                   priority
                 />
               </div>
               <div>
                 <h1
-                  className="text-3xl font-bold tracking-wide uppercase"
-                  style={{ color: 'var(--text-primary)' }}
+                  className="text-3xl font-bold tracking-wide uppercase text-text-primary"
                 >
                   {character.name}
                 </h1>
                 <dl className="mt-2 space-y-1 text-sm">
                   <div className="flex gap-2">
-                    <dt style={{ color: 'var(--text-secondary)' }}>Origin</dt>
-                    <dd style={{ color: 'var(--text-primary)' }}>{character.nationality}</dd>
+                    <dt className="text-text-secondary">Origin</dt>
+                    <dd className="text-text-primary">{character.nationality}</dd>
                   </div>
                   <div className="flex gap-2">
-                    <dt style={{ color: 'var(--text-secondary)' }}>Style</dt>
-                    <dd style={{ color: 'var(--text-primary)' }}>{character.fightingStyle}</dd>
+                    <dt className="text-text-secondary">Style</dt>
+                    <dd className="text-text-primary">{character.fightingStyle}</dd>
                   </div>
                 </dl>
               </div>
@@ -71,20 +67,18 @@ export default function CharacterModal({ character, onClose }: CharacterModalPro
             <div className="flex flex-col gap-8">
               <section>
                 <h2
-                  className="text-xs font-bold tracking-widest uppercase mb-3"
-                  style={{ color: 'var(--accent)' }}
+                  className="text-xs font-bold tracking-widest uppercase mb-3 text-accent"
                 >
                   Bio
                 </h2>
-                <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+                <p className="text-sm leading-relaxed text-text-secondary">
                   {character.bio}
                 </p>
               </section>
 
               <section>
                 <h2
-                  className="text-xs font-bold tracking-widest uppercase mb-3"
-                  style={{ color: 'var(--accent)' }}
+                  className="text-xs font-bold tracking-widest uppercase mb-3 text-accent"
                 >
                   Move List
                 </h2>
