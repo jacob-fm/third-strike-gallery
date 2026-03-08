@@ -24,7 +24,7 @@ export default function CharacterCard({ character, onHover, onSelect }: Characte
       <motion.div
         whileHover={{ scale: 1.05 }}
         transition={{ duration: 0.15 }}
-        className="relative flex flex-col items-center rounded overflow-hidden cursor-pointer group-hover:border-[var(--accent)] transition-colors duration-200"
+        className="relative flex flex-col items-center rounded overflow-hidden cursor-pointer group-hover:border-[var(--accent)] transition-colors duration-100"
         onMouseEnter={() => onHover?.(character)}
         onMouseLeave={() => onHover?.(null)}
       >
@@ -34,8 +34,7 @@ export default function CharacterCard({ character, onHover, onSelect }: Characte
           width={200}
           height={200}
           unoptimized
-          className="w-full h-auto transition-all duration-200 group-hover:brightness-110"
-          style={{ imageRendering: 'pixelated' }}
+          className="w-full h-auto [image-rendering:pixelated]"
         />
       </motion.div>
     </Link>

@@ -9,8 +9,7 @@ const CATEGORY_LABELS: Record<MoveCategory, string> = {
 function SuperArtLabel({ n }: { n: 1 | 2 | 3 }) {
   return (
     <span
-      className="ml-2 text-xs px-1.5 py-0.5 rounded font-bold tracking-widest uppercase"
-      style={{ background: 'var(--accent)', color: '#fff' }}
+      className="ml-2 text-xs px-1.5 py-0.5 rounded font-bold tracking-widest uppercase bg-accent text-white"
     >
       SA{n}
     </span>
@@ -22,14 +21,13 @@ function MovesSection({ title, moves, showSA }: { title: string; moves: Move[]; 
   return (
     <div className="mb-6">
       <h3
-        className="text-xs font-bold tracking-widest uppercase mb-2 pb-1"
-        style={{ color: 'var(--accent)', borderBottom: '1px solid var(--border)' }}
+        className="text-xs font-bold tracking-widest uppercase mb-2 pb-1 text-accent border-b border-border"
       >
         {title}
       </h3>
       <table className="w-full text-sm border-collapse">
         <thead>
-          <tr style={{ color: 'var(--text-secondary)' }}>
+          <tr className="text-text-secondary">
             <th className="text-left font-normal pb-1 pr-4 w-2/5">Move</th>
             <th className="text-left font-normal pb-1 pr-4 w-2/5">Input</th>
             <th className="text-left font-normal pb-1">Notes</th>
@@ -39,20 +37,18 @@ function MovesSection({ title, moves, showSA }: { title: string; moves: Move[]; 
           {moves.map((move, i) => (
             <tr
               key={i}
-              className="border-t"
-              style={{ borderColor: 'var(--border)' }}
+              className="border-t border-border"
             >
-              <td className="py-1.5 pr-4" style={{ color: 'var(--text-primary)' }}>
+              <td className="py-1.5 pr-4 text-text-primary">
                 {move.name}
                 {showSA && move.superArt && <SuperArtLabel n={move.superArt} />}
               </td>
               <td
-                className="py-1.5 pr-4 font-mono text-xs"
-                style={{ color: 'var(--accent-hover)' }}
+                className="py-1.5 pr-4 font-mono text-xs text-accent-hover"
               >
                 {move.input}
               </td>
-              <td className="py-1.5 text-xs" style={{ color: 'var(--text-secondary)' }}>
+              <td className="py-1.5 text-xs text-text-secondary">
                 {move.description ?? ''}
               </td>
             </tr>
