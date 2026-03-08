@@ -28,14 +28,22 @@ export default function CharacterCard({ character, onHover, onSelect }: Characte
         onMouseEnter={() => onHover?.(character)}
         onMouseLeave={() => onHover?.(null)}
       >
-        <Image
-          src={character.portraitImage}
-          alt={character.name}
-          width={200}
-          height={200}
-          unoptimized
-          className="w-full h-auto [image-rendering:pixelated]"
-        />
+        <motion.div layoutId={`char-portrait-${character.slug}`}>
+          <Image
+            src={character.portraitImage}
+            alt={character.name}
+            width={200}
+            height={200}
+            unoptimized
+            className="w-full h-auto [image-rendering:pixelated]"
+          />
+        </motion.div>
+        <motion.span
+          layoutId={`char-name-${character.slug}`}
+          className="mt-1 text-xs tracking-widest uppercase text-text-secondary truncate w-full text-center px-1"
+        >
+          {character.name}
+        </motion.span>
       </motion.div>
     </Link>
   );
