@@ -28,9 +28,9 @@ export default function CharacterCard({ character, onHover, onSelect }: Characte
         onMouseEnter={() => onHover?.(character)}
         onMouseLeave={() => onHover?.(null)}
       >
-        <motion.div layoutId={`char-portrait-${character.slug}`}>
+        <motion.div layoutId={`char-icon-${character.slug}`}>
           <Image
-            src={character.portraitImage}
+            src={character.iconImage}
             alt={character.name}
             width={200}
             height={200}

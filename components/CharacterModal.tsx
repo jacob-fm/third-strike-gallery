@@ -54,14 +54,14 @@ export default function CharacterModal({ character, onClose }: CharacterModalPro
                 />
               </motion.div>
 
-              {/* Identity: portrait thumbnail + name animate from grid card */}
+              {/* Identity: icon thumbnail + name animate from grid card */}
               <div className="flex items-center gap-3">
                 <motion.div
-                  layoutId={`char-portrait-${character.slug}`}
+                  layoutId={`char-icon-${character.slug}`}
                   className="w-16 h-16 rounded overflow-hidden shrink-0 [image-rendering:pixelated]"
                 >
                   <Image
-                    src={character.portraitImage}
+                    src={character.iconImage}
                     alt={character.name}
                     width={64}
                     height={64}
