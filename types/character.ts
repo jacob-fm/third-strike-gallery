@@ -14,7 +14,7 @@ export interface Character {
   nationality: string;
   fightingStyle: string;
   bio: string;
-  portraitImage: string;
+  iconImage: string;
   artworkImage: string;
   moves: Move[];
 }
