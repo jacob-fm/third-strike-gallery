@@ -29,7 +29,7 @@ export default function CharacterCard({ character, onHover, onSelect }: Characte
         onMouseLeave={() => onHover?.(null)}
       >
         <Image
-          src={character.portraitImage}
+          src={character.iconImage}
           alt={character.name}
           width={200}
           height={200}
