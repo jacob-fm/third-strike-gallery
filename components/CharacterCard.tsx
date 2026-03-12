@@ -24,7 +24,7 @@ export default function CharacterCard({ character, onHover, onSelect }: Characte
       <motion.div
         whileHover={{ scale: 1.08 }}
         transition={{ duration: 0.12 }}
-        className="w-[130px] cursor-pointer"
+        className="w-[150px] cursor-pointer"
         onMouseEnter={() => onHover?.(character)}
         onMouseLeave={() => onHover?.(null)}
       >

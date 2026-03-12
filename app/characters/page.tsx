@@ -71,7 +71,11 @@ export default function CharactersPage() {
               if (!character) return null
               return (
                 // Outer columns elevated by margin-top, middle column sits higher
-                <div key={slug} style={{ transform: colIdx !== 1 ? 'translateY(22px)' : undefined }}>
+                <div key={slug} style={{
+                  transform: colIdx === 0 ? 'translateY(22px) translateX(10px)'
+                    : colIdx === 2 ? 'translateY(22px) translateX(-12px)'
+                      : undefined
+                }}>
                   <CharacterCard
                     character={character}
                     onHover={setHoveredChar}
