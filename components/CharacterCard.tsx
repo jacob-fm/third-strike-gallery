@@ -11,7 +11,8 @@ interface CharacterCardProps {
 export default function CharacterCard({ character, onHover, onSelect }: CharacterCardProps) {
   return (
     <motion.div
-      whileHover={{ scale: 1.08 }}
+      animate={{ filter: 'drop-shadow(0 0 0px transparent) drop-shadow(0 0 0px transparent)' }}
+      whileHover={{ filter: 'drop-shadow(0 0 8px cyan) drop-shadow(0 0 20px cyan)' }}
       transition={{ duration: 0.12 }}
       className="w-[150px] cursor-pointer"
       onMouseEnter={() => onHover?.(character)}
