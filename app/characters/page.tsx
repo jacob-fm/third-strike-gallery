@@ -25,24 +25,28 @@ export default function CharactersPage() {
   const [modalChar, setModalChar] = useState<Character | null>(null)
   const [hoveredChar, setHoveredChar] = useState<Character | null>(null)
 
+  // Portrait stays mounted during modal transition so layoutId animation works
+  const portraitChar = hoveredChar ?? modalChar
+
   return (
     <main className="w-screen h-screen overflow-hidden bg-bg relative">
 
       {/* Large oval portrait — left side */}
       <div className="absolute top-1/2 -translate-y-1/2 left-[4%] w-[50%] h-[80vh] flex items-center justify-center">
         <AnimatePresence>
-          {hoveredChar ? (
+          {portraitChar ? (
             <motion.div
-              key={hoveredChar.slug}
+              key={portraitChar.slug}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
               className="w-full h-full absolute inset-0"
+              layoutId={`char-idle-${portraitChar.name}`}
             >
               <Image
-                src={hoveredChar.artworkImage}
-                alt={hoveredChar.name}
+                src={portraitChar.artworkImage}
+                alt={portraitChar.name}
                 fill
                 unoptimized
                 className="object-contain object-center [image-rendering:pixelated]"
@@ -91,16 +95,16 @@ export default function CharactersPage() {
       {/* Character name — bottom left */}
       <div className="absolute bottom-8 left-8 h-16">
         <AnimatePresence>
-          {hoveredChar && (
+          {portraitChar && (
             <motion.p
-              key={hoveredChar.slug}
+              key={portraitChar.slug}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -4 }}
               transition={{ duration: 0.15 }}
               className="absolute bottom-0 left-0 text-5xl font-bold tracking-widest uppercase text-text-primary whitespace-nowrap"
             >
-              {hoveredChar.name}
+              {portraitChar.name}
             </motion.p>
           )}
         </AnimatePresence>

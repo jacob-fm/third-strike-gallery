@@ -12,7 +12,7 @@ export default function CharacterCard({ character, onHover, onSelect }: Characte
   return (
     <motion.div
       animate={{ filter: 'drop-shadow(0 0 0px transparent) drop-shadow(0 0 0px transparent)' }}
-      whileHover={{ filter: 'drop-shadow(0 0 8px cyan) drop-shadow(0 0 20px cyan)' }}
+      whileHover={{ filter: 'drop-shadow(0 0 8px blue) drop-shadow(0 0 20px blue)' }}
       transition={{ duration: 0.12 }}
       className="w-[150px] cursor-pointer"
       onMouseEnter={() => onHover?.(character)}

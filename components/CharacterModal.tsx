@@ -38,10 +38,8 @@ export default function CharacterModal({ character, onClose }: CharacterModalPro
             {/* Left column: artwork + identity */}
             <div className="flex flex-col gap-4">
               <motion.div
+                layoutId={`char-idle-${character.name}`}
                 className="relative w-full h-110 rounded overflow-hidden"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.1 }}
               >
                 <Image
                   src={character.artworkImage}
