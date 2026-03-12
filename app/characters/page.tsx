@@ -29,7 +29,7 @@ export default function CharactersPage() {
     <main className="w-screen h-screen overflow-hidden bg-bg relative">
 
       {/* Large oval portrait — left side */}
-      <div className="absolute top-1/2 -translate-y-1/2 left-[4%] w-[50%] h-[80vh] rounded-[50%] border border-border bg-surface overflow-hidden flex items-center justify-center">
+      <div className="absolute top-1/2 -translate-y-1/2 left-[4%] w-[50%] h-[80vh] flex items-center justify-center">
         <AnimatePresence>
           {hoveredChar ? (
             <motion.div
