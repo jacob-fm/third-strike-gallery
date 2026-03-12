@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Character } from '@/types/character';
 
@@ -11,34 +10,24 @@ interface CharacterCardProps {
 
 export default function CharacterCard({ character, onHover, onSelect }: CharacterCardProps) {
   return (
-    <Link
-      href={`/characters/${character.slug}`}
-      className="block"
-      onClick={(e) => {
-        if (onSelect) {
-          e.preventDefault()
-          onSelect(character)
-        }
-      }}
+    <motion.div
+      whileHover={{ scale: 1.08 }}
+      transition={{ duration: 0.12 }}
+      className="w-[150px] cursor-pointer"
+      onMouseEnter={() => onHover?.(character)}
+      onMouseLeave={() => onHover?.(null)}
+      onClick={() => onSelect?.(character)}
     >
-      <motion.div
-        whileHover={{ scale: 1.08 }}
-        transition={{ duration: 0.12 }}
-        className="w-[150px] cursor-pointer"
-        onMouseEnter={() => onHover?.(character)}
-        onMouseLeave={() => onHover?.(null)}
-      >
-        <motion.div layoutId={`char-icon-${character.slug}`}>
-          <Image
-            src={character.iconImage}
-            alt={character.name}
-            width={160}
-            height={95}
-            unoptimized
-            className="w-full h-auto [image-rendering:pixelated]"
-          />
-        </motion.div>
+      <motion.div layoutId={`char-icon-${character.slug}`}>
+        <Image
+          src={character.iconImage}
+          alt={character.name}
+          width={160}
+          height={95}
+          unoptimized
+          className="w-full h-auto [image-rendering:pixelated]"
+        />
       </motion.div>
-    </Link>
+    </motion.div>
   )
 }

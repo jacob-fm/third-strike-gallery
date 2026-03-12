@@ -22,30 +22,27 @@ const GRID_ROWS = [
 const ROW_OFFSETS = [120, 100, 80, 60, 40, 20, 0]
 
 export default function CharactersPage() {
-  const [selectedChar, setSelectedChar] = useState<Character | null>(null)
+  const [modalChar, setModalChar] = useState<Character | null>(null)
   const [hoveredChar, setHoveredChar] = useState<Character | null>(null)
-
-  // Portrait shows hovered character first, falls back to selected
-  const activeChar = hoveredChar ?? selectedChar
 
   return (
     <main className="w-screen h-screen overflow-hidden bg-bg relative">
 
       {/* Large oval portrait — left side */}
       <div className="absolute top-1/2 -translate-y-1/2 left-[4%] w-[50%] h-[80vh] rounded-[50%] border border-border bg-surface overflow-hidden flex items-center justify-center">
-        <AnimatePresence mode="wait">
-          {activeChar ? (
+        <AnimatePresence>
+          {hoveredChar ? (
             <motion.div
-              key={activeChar.slug}
+              key={hoveredChar.slug}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
-              className="w-full h-full relative"
+              className="w-full h-full absolute inset-0"
             >
               <Image
-                src={activeChar.artworkImage}
-                alt={activeChar.name}
+                src={hoveredChar.artworkImage}
+                alt={hoveredChar.name}
                 fill
                 unoptimized
                 className="object-contain object-center [image-rendering:pixelated]"
@@ -56,7 +53,10 @@ export default function CharactersPage() {
       </div>
 
       {/* Character icon grid — right side, overlaps portrait edge */}
-      <div className="absolute top-[4vh] right-10 flex flex-col gap-[0px] w-[650px]">
+      <div
+        className="absolute top-[4vh] right-10 flex flex-col gap-[0px] w-[650px]"
+        onMouseLeave={() => setHoveredChar(null)}
+      >
         {GRID_ROWS.map((row, rowIdx) => (
           <div
             key={rowIdx}
@@ -79,7 +79,7 @@ export default function CharactersPage() {
                   <CharacterCard
                     character={character}
                     onHover={setHoveredChar}
-                    onSelect={setSelectedChar}
+                    onSelect={setModalChar}
                   />
                 </div>
               )
@@ -89,18 +89,18 @@ export default function CharactersPage() {
       </div>
 
       {/* Character name — bottom left */}
-      <div className="absolute bottom-8 left-8 h-16 flex items-end">
-        <AnimatePresence mode="wait">
-          {activeChar && (
+      <div className="absolute bottom-8 left-8 h-16">
+        <AnimatePresence>
+          {hoveredChar && (
             <motion.p
-              key={activeChar.slug}
+              key={hoveredChar.slug}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -4 }}
               transition={{ duration: 0.15 }}
-              className="text-5xl font-bold tracking-widest uppercase text-text-primary"
+              className="absolute bottom-0 left-0 text-5xl font-bold tracking-widest uppercase text-text-primary whitespace-nowrap"
             >
-              {activeChar.name}
+              {hoveredChar.name}
             </motion.p>
           )}
         </AnimatePresence>
@@ -108,11 +108,11 @@ export default function CharactersPage() {
 
       {/* Character detail modal */}
       <AnimatePresence>
-        {selectedChar && (
+        {modalChar && (
           <CharacterModal
-            key={selectedChar.slug}
-            character={selectedChar}
-            onClose={() => setSelectedChar(null)}
+            key={modalChar.slug}
+            character={modalChar}
+            onClose={() => setModalChar(null)}
           />
         )}
       </AnimatePresence>
