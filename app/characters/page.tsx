@@ -56,11 +56,11 @@ export default function CharactersPage() {
       </div>
 
       {/* Character icon grid — right side, overlaps portrait edge */}
-      <div className="absolute top-[4vh] right-10 flex flex-col gap-[14px] w-[636px]">
+      <div className="absolute top-[4vh] right-10 flex flex-col gap-[0px] w-[650px]">
         {GRID_ROWS.map((row, rowIdx) => (
           <div
             key={rowIdx}
-            className="flex gap-[18px] items-start"
+            className="flex items-start"
             style={rowIdx < GRID_ROWS.length - 1
               ? { marginLeft: `${ROW_OFFSETS[rowIdx]}px` }
               : { justifyContent: 'center' }
@@ -71,7 +71,7 @@ export default function CharactersPage() {
               if (!character) return null
               return (
                 // Outer columns elevated by margin-top, middle column sits higher
-                <div key={slug} style={{ marginTop: colIdx !== 1 ? 22 : 0 }}>
+                <div key={slug} style={{ transform: colIdx !== 1 ? 'translateY(22px)' : undefined }}>
                   <CharacterCard
                     character={character}
                     onHover={setHoveredChar}

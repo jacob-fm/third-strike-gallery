@@ -24,7 +24,7 @@ export default function CharacterCard({ character, onHover, onSelect }: Characte
       <motion.div
         whileHover={{ scale: 1.08 }}
         transition={{ duration: 0.12 }}
-        className="w-[160px] cursor-pointer"
+        className="w-[130px] cursor-pointer"
         onMouseEnter={() => onHover?.(character)}
         onMouseLeave={() => onHover?.(null)}
       >
@@ -32,7 +32,6 @@ export default function CharacterCard({ character, onHover, onSelect }: Characte
           <Image
             src={character.iconImage}
             alt={character.name}
-<<<<<<< HEAD
             width={160}
             height={95}
             unoptimized
