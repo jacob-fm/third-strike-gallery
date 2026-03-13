@@ -72,10 +72,12 @@ export default function CharacterModal({ character, onClose }: CharacterModalPro
               animate={{ opacity: 1 }}
               transition={{ delay: 0.15 }}
             >
-              {paneButtons.map((b) => (
-                <button onClick={() => setActivePane(b.associatedPane)}
-                >{b.text}</button>
-              ))}
+              <div className='flex gap-2'>
+                {paneButtons.map((b) => (
+                  <button className='pane-switch-button' onClick={() => setActivePane(b.associatedPane)}
+                  >{b.text}</button>
+                ))}
+              </div>
               {activePane == "bio" ? (< CharacterBio bio={character.bio} />) :
                 (<section>
                   <MoveTable moves={character.moves} />

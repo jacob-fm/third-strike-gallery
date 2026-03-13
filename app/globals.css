@@ -31,3 +31,13 @@ body {
 * {
   box-sizing: border-box;
 }
+
+button {
+  cursor: pointer;
+}
+
+button.pane-switch-button {
+  padding: 8px;
+  border: 1px solid var(--color-surface);
+  border-radius: 8px;
+}
