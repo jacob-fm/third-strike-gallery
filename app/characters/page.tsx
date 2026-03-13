@@ -26,13 +26,13 @@ export default function CharactersPage() {
   const [hoveredChar, setHoveredChar] = useState<Character | null>(null)
 
   // Portrait stays mounted during modal transition so layoutId animation works
-  const portraitChar = hoveredChar ?? modalChar
+  const portraitChar = modalChar ?? hoveredChar
 
   return (
     <main className="w-screen h-screen overflow-hidden bg-bg relative">
 
       {/* Large oval portrait — left side */}
-      <div className="absolute top-1/2 -translate-y-1/2 left-[4%] w-[50%] h-[80vh] flex items-center justify-center">
+      <div className="absolute top-1/2 -translate-y-1/2 left-[4%] w-[50%] aspect-square flex items-center justify-center">
         <AnimatePresence>
           {portraitChar ? (
             <motion.div
@@ -42,15 +42,19 @@ export default function CharactersPage() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
               className="w-full h-full absolute inset-0"
-              layoutId={`char-idle-${portraitChar.name}`}
             >
-              <Image
-                src={portraitChar.artworkImage}
-                alt={portraitChar.name}
-                fill
-                unoptimized
-                className="object-contain object-center [image-rendering:pixelated]"
-              />
+              <motion.div
+                layoutId={`char-idle-${portraitChar.name}`}
+                className="w-full h-full relative"
+              >
+                <Image
+                  src={portraitChar.artworkImage}
+                  alt={portraitChar.name}
+                  fill
+                  unoptimized
+                  className="object-contain object-center [image-rendering:pixelated]"
+                />
+              </motion.div>
             </motion.div>
           ) : null}
         </AnimatePresence>
@@ -58,7 +62,7 @@ export default function CharactersPage() {
 
       {/* Character icon grid — right side, overlaps portrait edge */}
       <div
-        className="absolute top-[4vh] right-10 flex flex-col gap-[0px] w-[650px]"
+        className="absolute top-[4vh] right-10 flex flex-col gap-0 w-162"
         onMouseLeave={() => setHoveredChar(null)}
       >
         {GRID_ROWS.map((row, rowIdx) => (
@@ -93,19 +97,20 @@ export default function CharactersPage() {
       </div>
 
       {/* Character name — bottom left */}
-      <div className="absolute bottom-8 left-8 h-16">
+      <div className="absolute bottom-8 left-18 h-16">
         <AnimatePresence>
           {portraitChar && (
-            <motion.p
+            <motion.h1
+              layoutId={`char-name-${portraitChar.slug}`}
               key={portraitChar.slug}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -4 }}
               transition={{ duration: 0.15 }}
-              className="absolute bottom-0 left-0 text-5xl font-bold tracking-widest uppercase text-text-primary whitespace-nowrap"
+              className="absolute bottom-0 left-0 text-7xl font-bold tracking-widest uppercase text-text-primary whitespace-nowrap"
             >
               {portraitChar.name}
-            </motion.p>
+            </motion.h1>
           )}
         </AnimatePresence>
       </div>

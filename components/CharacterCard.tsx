@@ -12,14 +12,14 @@ export default function CharacterCard({ character, onHover, onSelect }: Characte
   return (
     <motion.div
       animate={{ filter: 'drop-shadow(0 0 0px transparent) drop-shadow(0 0 0px transparent)' }}
-      whileHover={{ filter: 'drop-shadow(0 0 8px blue) drop-shadow(0 0 20px blue)' }}
+      whileHover={{ filter: 'drop-shadow(0 0 8px #36aed0) drop-shadow(0 0 20px #36aed0)' }}
       transition={{ duration: 0.12 }}
-      className="w-[150px] cursor-pointer"
+      className="w-37.5 cursor-pointer"
       onMouseEnter={() => onHover?.(character)}
       onMouseLeave={() => onHover?.(null)}
       onClick={() => onSelect?.(character)}
     >
-      <motion.div layoutId={`char-icon-${character.slug}`}>
+      <motion.div >
         <Image
           src={character.iconImage}
           alt={character.name}

@@ -13,7 +13,7 @@ export default function CharacterModal({ character, onClose }: CharacterModalPro
   return (
     <motion.div
       className="fixed inset-0 overflow-y-auto z-10 bg-bg"
-      initial={{ opacity: 0 }}
+      initial={false}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.15 }}
@@ -39,34 +39,20 @@ export default function CharacterModal({ character, onClose }: CharacterModalPro
             <div className="flex flex-col gap-4">
               <motion.div
                 layoutId={`char-idle-${character.name}`}
-                className="relative w-full h-110 rounded overflow-hidden"
+                className="relative w-full aspect-square rounded"
               >
                 <Image
                   src={character.artworkImage}
                   alt={`${character.name} artwork`}
                   fill
                   unoptimized
-                  className="object-cover object-top [image-rendering:pixelated]"
-                  sizes="280px"
+                  className="object-contain object-center [image-rendering:pixelated]"
                   priority
                 />
               </motion.div>
 
               {/* Identity: icon thumbnail + name animate from grid card */}
               <div className="flex items-center gap-3">
-                <motion.div
-                  layoutId={`char-icon-${character.slug}`}
-                  className="w-16 h-16 rounded overflow-hidden shrink-0 [image-rendering:pixelated]"
-                >
-                  <Image
-                    src={character.iconImage}
-                    alt={character.name}
-                    width={64}
-                    height={64}
-                    unoptimized
-                    className="w-full h-full object-cover [image-rendering:pixelated]"
-                  />
-                </motion.div>
                 <div>
                   <motion.h1
                     layoutId={`char-name-${character.slug}`}
