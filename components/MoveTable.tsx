@@ -70,7 +70,7 @@ export default function MoveTable({ moves }: { moves: Move[] }) {
 
   return (
     <div>
-      <MovesSection title={CATEGORY_LABELS.normal} moves={grouped.normal} showSA={false} />
+      {/* <MovesSection title={CATEGORY_LABELS.normal} moves={grouped.normal} showSA={false} /> */}
       <MovesSection title={CATEGORY_LABELS.special} moves={grouped.special} showSA={false} />
       <MovesSection title={CATEGORY_LABELS.super} moves={grouped.super} showSA={true} />
     </div>
