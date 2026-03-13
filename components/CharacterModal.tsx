@@ -9,6 +9,22 @@ interface CharacterModalProps {
   onClose: () => void
 }
 
+function CharacterBio({ bio }: Character["bio"]) {
+  return (
+
+    <section>
+      <h2
+        className="text-xs font-bold tracking-widest uppercase mb-3 text-accent"
+      >
+        Bio
+      </h2>
+      <p className="text-sm leading-relaxed text-text-secondary">
+        {bio}
+      </p>
+    </section>
+  )
+}
+
 export default function CharacterModal({ character, onClose }: CharacterModalProps) {
   return (
     <motion.div
@@ -34,12 +50,26 @@ export default function CharacterModal({ character, onClose }: CharacterModalPro
             </button>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-10">
-            {/* Left column: artwork + identity */}
-            <div className="flex flex-col gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr] gap-14">
+            {/* Left column: bio + moves */}
+            <motion.div
+              className="flex flex-col gap-8"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.15 }}
+            >
+              <CharacterBio bio={character.bio} />
+
+              <section>
+                <MoveTable moves={character.moves} />
+              </section>
+            </motion.div>
+
+            {/* Right column: artwork + identity */}
+            <div className="flex flex-col gap-4 ">
               <motion.div
                 layoutId={`char-idle-${character.name}`}
-                className="relative w-full aspect-square rounded"
+                className="relative w-130 aspect-square"
               >
                 <Image
                   src={character.artworkImage}
@@ -51,8 +81,8 @@ export default function CharacterModal({ character, onClose }: CharacterModalPro
                 />
               </motion.div>
 
-              {/* Identity: icon thumbnail + name animate from grid card */}
-              <div className="flex items-center gap-3">
+              {/* Identity: name animates from grid card */}
+              <div className="flex items-center gap-3 mx-8">
                 <div>
                   <motion.h1
                     layoutId={`char-name-${character.slug}`}
@@ -79,33 +109,6 @@ export default function CharacterModal({ character, onClose }: CharacterModalPro
               </div>
             </div>
 
-            {/* Right column: bio + moves */}
-            <motion.div
-              className="flex flex-col gap-8"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.15 }}
-            >
-              <section>
-                <h2
-                  className="text-xs font-bold tracking-widest uppercase mb-3 text-accent"
-                >
-                  Bio
-                </h2>
-                <p className="text-sm leading-relaxed text-text-secondary">
-                  {character.bio}
-                </p>
-              </section>
-
-              <section>
-                <h2
-                  className="text-xs font-bold tracking-widest uppercase mb-3 text-accent"
-                >
-                  Move List
-                </h2>
-                <MoveTable moves={character.moves} />
-              </section>
-            </motion.div>
           </div>
         </div>
       </main>
