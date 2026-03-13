@@ -3,11 +3,24 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { Character } from '@/types/character'
 import MoveTable from '@/components/MoveTable'
+import { useState } from 'react'
+
+type Pane = "bio" | "moves"
 
 interface CharacterModalProps {
   character: Character
   onClose: () => void
 }
+
+interface PaneButton {
+  associatedPane: Pane
+  text: string
+}
+
+const paneButtons: Array<PaneButton> = [
+  { associatedPane: 'bio', text: "Bio" },
+  { associatedPane: 'moves', text: "Moves" }
+]
 
 function CharacterBio({ bio }: Character["bio"]) {
   return (
@@ -26,6 +39,7 @@ function CharacterBio({ bio }: Character["bio"]) {
 }
 
 export default function CharacterModal({ character, onClose }: CharacterModalProps) {
+  const [activePane, setActivePane] = useState<Pane | null>("bio")
   return (
     <motion.div
       className="fixed inset-0 overflow-y-auto z-10 bg-bg"
@@ -58,11 +72,14 @@ export default function CharacterModal({ character, onClose }: CharacterModalPro
               animate={{ opacity: 1 }}
               transition={{ delay: 0.15 }}
             >
-              <CharacterBio bio={character.bio} />
-
-              <section>
-                <MoveTable moves={character.moves} />
-              </section>
+              {paneButtons.map((b) => (
+                <button onClick={() => setActivePane(b.associatedPane)}
+                >{b.text}</button>
+              ))}
+              {activePane == "bio" ? (< CharacterBio bio={character.bio} />) :
+                (<section>
+                  <MoveTable moves={character.moves} />
+                </section>)}
             </motion.div>
 
             {/* Right column: artwork + identity */}
