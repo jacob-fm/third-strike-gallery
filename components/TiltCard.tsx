@@ -42,7 +42,7 @@ function CardMesh({
     )
     groupRef.current.rotation.x = THREE.MathUtils.lerp(
       groupRef.current.rotation.x,
-      -target.y * maxTilt,
+      target.y * maxTilt,
       lerpSpeed
     )
   })
