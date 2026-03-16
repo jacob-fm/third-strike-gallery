@@ -1,9 +1,9 @@
 'use client'
 import { motion } from 'framer-motion'
-import Image from 'next/image'
 import { Character } from '@/types/character'
 import MoveTable from '@/components/MoveTable'
 import SlantedTabs from '@/components/SlantedTabs'
+import TiltCard from '@/components/TiltCard'
 import { useState } from 'react'
 
 type Pane = "bio" | "supers" | "specials"
@@ -83,15 +83,12 @@ export default function CharacterModal({ character, onClose }: CharacterModalPro
             <div className="flex flex-col gap-4 ">
               <motion.div
                 layoutId={`char-idle-${character.name}`}
-                className="relative w-130 aspect-square"
+                className="relative w-130 aspect-square overflow-visible"
               >
-                <Image
-                  src={character.artworkImage}
+                <TiltCard
+                  imageSrc={character.artworkImage}
                   alt={`${character.name} artwork`}
-                  fill
-                  unoptimized
-                  className="object-contain object-center [image-rendering:pixelated]"
-                  priority
+                  className="w-full h-full"
                 />
               </motion.div>
 
