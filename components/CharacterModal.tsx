@@ -3,23 +3,20 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { Character } from '@/types/character'
 import MoveTable from '@/components/MoveTable'
+import SlantedTabs from '@/components/SlantedTabs'
 import { useState } from 'react'
 
-type Pane = "bio" | "moves"
+type Pane = "bio" | "supers" | "specials"
 
 interface CharacterModalProps {
   character: Character
   onClose: () => void
 }
 
-interface PaneButton {
-  associatedPane: Pane
-  text: string
-}
-
-const paneButtons: Array<PaneButton> = [
-  { associatedPane: 'bio', text: "Bio" },
-  { associatedPane: 'moves', text: "Moves" }
+const paneTabs: { value: Pane; label: string }[] = [
+  { value: 'bio', label: "Bio" },
+  { value: 'supers', label: "Super Arts" },
+  { value: 'specials', label: "Special Moves" }
 ]
 
 function CharacterBio({ bio }: { bio: Character["bio"] }) {
@@ -72,16 +69,14 @@ export default function CharacterModal({ character, onClose }: CharacterModalPro
               animate={{ opacity: 1 }}
               transition={{ delay: 0.15 }}
             >
-              <div className='flex gap-2'>
-                {paneButtons.map((b) => (
-                  <button key={b.associatedPane} className='pane-switch-button' onClick={() => setActivePane(b.associatedPane)}
-                  >{b.text}</button>
-                ))}
-              </div>
-              {activePane == "bio" ? (< CharacterBio bio={character.bio} />) :
-                (<section>
-                  <MoveTable moves={character.moves} />
-                </section>)}
+              <SlantedTabs
+                tabs={paneTabs}
+                activeTab={activePane ?? 'bio'}
+                onTabChange={setActivePane}
+              />
+              {activePane === "bio" && <CharacterBio bio={character.bio} />}
+              {activePane === "supers" && <MoveTable moves={character.moves} category="super" />}
+              {activePane === "specials" && <MoveTable moves={character.moves} category="special" />}
             </motion.div>
 
             {/* Right column: artwork + identity */}

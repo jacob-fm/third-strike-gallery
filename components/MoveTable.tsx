@@ -59,8 +59,9 @@ function MovesSection({ title, moves, showSA }: { title: string; moves: Move[]; 
   );
 }
 
-export default function MoveTable({ moves }: { moves: Move[] }) {
-  const grouped = moves.reduce<Record<MoveCategory, Move[]>>(
+export default function MoveTable({ moves, category }: { moves: Move[]; category?: MoveCategory }) {
+  const filtered = category ? moves.filter((m) => m.category === category) : moves;
+  const grouped = filtered.reduce<Record<MoveCategory, Move[]>>(
     (acc, move) => {
       acc[move.category].push(move);
       return acc;
@@ -71,8 +72,8 @@ export default function MoveTable({ moves }: { moves: Move[] }) {
   return (
     <div>
       {/* <MovesSection title={CATEGORY_LABELS.normal} moves={grouped.normal} showSA={false} /> */}
-      <MovesSection title={CATEGORY_LABELS.special} moves={grouped.special} showSA={false} />
-      <MovesSection title={CATEGORY_LABELS.super} moves={grouped.super} showSA={true} />
+      {grouped.special.length > 0 && <MovesSection title={CATEGORY_LABELS.special} moves={grouped.special} showSA={false} />}
+      {grouped.super.length > 0 && <MovesSection title={CATEGORY_LABELS.super} moves={grouped.super} showSA={true} />}
     </div>
   );
 }

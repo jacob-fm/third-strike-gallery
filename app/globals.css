@@ -36,12 +36,3 @@ button {
   cursor: pointer;
 }
 
-button.pane-switch-button {
-  padding: 8px;
-  background-color: var(--color-accent);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  &:hover {
-    background-color: red;
-  }
-}
