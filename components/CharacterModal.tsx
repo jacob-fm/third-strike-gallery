@@ -22,7 +22,7 @@ const paneButtons: Array<PaneButton> = [
   { associatedPane: 'moves', text: "Moves" }
 ]
 
-function CharacterBio({ bio }: Character["bio"]) {
+function CharacterBio({ bio }: { bio: Character["bio"] }) {
   return (
 
     <section>
