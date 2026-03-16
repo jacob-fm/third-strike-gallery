@@ -74,7 +74,7 @@ export default function CharacterModal({ character, onClose }: CharacterModalPro
             >
               <div className='flex gap-2'>
                 {paneButtons.map((b) => (
-                  <button className='pane-switch-button' onClick={() => setActivePane(b.associatedPane)}
+                  <button key={b.associatedPane} className='pane-switch-button' onClick={() => setActivePane(b.associatedPane)}
                   >{b.text}</button>
                 ))}
               </div>
