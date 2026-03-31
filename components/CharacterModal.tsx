@@ -1,42 +1,40 @@
-'use client'
-import { motion } from 'framer-motion'
-import { Character } from '@/types/character'
-import MoveTable from '@/components/MoveTable'
-import SlantedTabs from '@/components/SlantedTabs'
-import TiltCard from '@/components/TiltCard'
-import { useState } from 'react'
+"use client";
+import { motion } from "framer-motion";
+import { Character } from "@/types/character";
+import MoveTable from "@/components/MoveTable";
+import SlantedTabs from "@/components/SlantedTabs";
+import TiltCard from "@/components/TiltCard";
+import { useState } from "react";
 
-type Pane = "bio" | "supers" | "specials"
+type Pane = "bio" | "supers" | "specials";
 
 interface CharacterModalProps {
-  character: Character
-  onClose: () => void
+  character: Character;
+  onClose: () => void;
 }
 
 const paneTabs: { value: Pane; label: string }[] = [
-  { value: 'bio', label: "Bio" },
-  { value: 'supers', label: "Super Arts" },
-  { value: 'specials', label: "Special Moves" }
-]
+  { value: "bio", label: "Bio" },
+  { value: "supers", label: "Super Arts" },
+  { value: "specials", label: "Special Moves" },
+];
 
 function CharacterBio({ bio }: { bio: Character["bio"] }) {
   return (
-
     <section>
-      <h2
-        className="text-xs font-bold tracking-widest uppercase mb-3 text-accent"
-      >
+      <h2 className="text-xs font-bold tracking-widest uppercase mb-3 text-accent">
         Bio
       </h2>
-      <p className="text-sm leading-relaxed text-text-secondary">
-        {bio}
-      </p>
+      <p className="text-sm leading-relaxed text-text-secondary">{bio}</p>
     </section>
-  )
+  );
 }
 
-export default function CharacterModal({ character, onClose }: CharacterModalProps) {
-  const [activePane, setActivePane] = useState<Pane | null>("bio")
+export default function CharacterModal({
+  character,
+  onClose,
+}: CharacterModalProps) {
+  const [activePane, setActivePane] = useState<Pane | null>("bio");
   return (
     <motion.div
       className="fixed inset-0 overflow-y-auto z-10 bg-bg"
@@ -71,12 +69,16 @@ export default function CharacterModal({ character, onClose }: CharacterModalPro
             >
               <SlantedTabs
                 tabs={paneTabs}
-                activeTab={activePane ?? 'bio'}
+                activeTab={activePane ?? "bio"}
                 onTabChange={setActivePane}
               />
               {activePane === "bio" && <CharacterBio bio={character.bio} />}
-              {activePane === "supers" && <MoveTable moves={character.moves} category="super" />}
-              {activePane === "specials" && <MoveTable moves={character.moves} category="special" />}
+              {activePane === "supers" && (
+                <MoveTable moves={character.moves} category="super" />
+              )}
+              {activePane === "specials" && (
+                <MoveTable moves={character.moves} category="special" />
+              )}
             </motion.div>
 
             {/* Right column: artwork + identity */}
@@ -109,20 +111,23 @@ export default function CharacterModal({ character, onClose }: CharacterModalPro
                   >
                     <div className="flex gap-2">
                       <dt className="text-text-secondary">Origin</dt>
-                      <dd className="text-text-primary">{character.nationality}</dd>
+                      <dd className="text-text-primary">
+                        {character.nationality}
+                      </dd>
                     </div>
                     <div className="flex gap-2">
                       <dt className="text-text-secondary">Style</dt>
-                      <dd className="text-text-primary">{character.fightingStyle}</dd>
+                      <dd className="text-text-primary">
+                        {character.fightingStyle}
+                      </dd>
                     </div>
                   </motion.dl>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </main>
     </motion.div>
-  )
+  );
 }
