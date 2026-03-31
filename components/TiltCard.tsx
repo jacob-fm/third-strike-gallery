@@ -124,19 +124,36 @@ function CardMesh({
   );
 }
 
+const ZOOM_OUT = 0.6;
+const CAM_LERP = 0.08;
+
 function CameraController({
   cameraZ,
   fov,
+  isHoveredRef,
 }: {
   cameraZ: number;
   fov: number;
+  isHoveredRef: React.RefObject<boolean>;
 }) {
   const { camera } = useThree();
+
+  // Sync fov imperatively whenever the Leva value changes
   useEffect(() => {
     (camera as THREE.PerspectiveCamera).fov = fov;
-    camera.position.z = cameraZ;
     (camera as THREE.PerspectiveCamera).updateProjectionMatrix();
-  }, [camera, cameraZ, fov]);
+  }, [camera, fov]);
+
+  // Lerp camera Z every frame toward hover target
+  useFrame(() => {
+    const target = isHoveredRef.current ? cameraZ + ZOOM_OUT : cameraZ;
+    camera.position.z = THREE.MathUtils.lerp(
+      camera.position.z,
+      target,
+      CAM_LERP,
+    );
+  });
+
   return null;
 }
 
@@ -148,6 +165,7 @@ interface TiltCardProps {
 
 export default function TiltCard({ imageSrc, alt, className }: TiltCardProps) {
   const pointerRef = useRef<PointerTarget>({ x: 0, y: 0 });
+  const isHoveredRef = useRef<boolean>(false);
 
   const { ambientIntensity, directionalIntensity, cameraZ, fov } = useControls(
     "Scene",
@@ -161,6 +179,7 @@ export default function TiltCard({ imageSrc, alt, className }: TiltCardProps) {
 
   const handlePointerMove = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
+      isHoveredRef.current = true;
       const rect = e.currentTarget.getBoundingClientRect();
       // Normalize to -1..1
       pointerRef.current = {
@@ -172,6 +191,7 @@ export default function TiltCard({ imageSrc, alt, className }: TiltCardProps) {
   );
 
   const handlePointerLeave = useCallback(() => {
+    isHoveredRef.current = false;
     // Return to center — the lerp in useFrame will animate smoothly
     pointerRef.current = { x: 0, y: 0 };
   }, []);
@@ -182,11 +202,12 @@ export default function TiltCard({ imageSrc, alt, className }: TiltCardProps) {
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
     >
-      <Canvas
-        gl={{ alpha: true }}
-        style={{ overflow: "visible" }}
-      >
-        <CameraController cameraZ={cameraZ} fov={fov} />
+      <Canvas gl={{ alpha: true }} style={{ overflow: "visible" }}>
+        <CameraController
+          cameraZ={cameraZ}
+          fov={fov}
+          isHoveredRef={isHoveredRef}
+        />
         <ambientLight intensity={ambientIntensity} />
         <directionalLight
           position={[0, 0.5, 10]}
