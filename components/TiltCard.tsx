@@ -34,7 +34,7 @@ function CardMesh({
   } = useControls("Card", {
     maxTilt: { value: 0.15, min: 0, max: 0.5, step: 0.01 },
     lerpSpeed: { value: 0.1, min: 0.01, max: 0.5, step: 0.01 },
-    cardColor: "#1a1a1a",
+    cardColor: "#767676",
     cardWidth: { value: 2.5, min: 0.5, max: 10, step: 0.1 },
     cardHeight: { value: 3.0, min: 0.5, max: 10, step: 0.1 },
     cornerRadius: { value: 0.12, min: 0, max: 0.5, step: 0.01 },
@@ -173,7 +173,7 @@ export default function TiltCard({ imageSrc, alt, className }: TiltCardProps) {
       >
         <ambientLight intensity={ambientIntensity} />
         <directionalLight
-          position={[0, 1, 5]}
+          position={[0, 0.5, 10]}
           intensity={directionalIntensity}
         />
         <Suspense fallback={null}>
