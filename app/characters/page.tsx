@@ -43,18 +43,13 @@ export default function CharactersPage() {
               transition={{ duration: 0.15 }}
               className="w-full h-full absolute inset-0"
             >
-              <motion.div
-                layoutId={`char-idle-${portraitChar.name}`}
-                className="w-full h-full relative"
-              >
-                <Image
-                  src={portraitChar.artworkImage}
-                  alt={portraitChar.name}
-                  fill
-                  unoptimized
-                  className="object-contain object-center [image-rendering:pixelated]"
-                />
-              </motion.div>
+              <Image
+                src={portraitChar.artworkImage}
+                alt={portraitChar.name}
+                fill
+                unoptimized
+                className="object-contain object-center [image-rendering:pixelated]"
+              />
             </motion.div>
           ) : null}
         </AnimatePresence>

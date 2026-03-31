@@ -83,8 +83,7 @@ export default function CharacterModal({
 
             {/* Right column: artwork + identity */}
             <div className="flex flex-col gap-4 ">
-              <motion.div
-                layoutId={`char-idle-${character.name}`}
+              <div
                 className="relative w-130 aspect-square overflow-visible"
               >
                 <TiltCard
@@ -92,7 +91,7 @@ export default function CharacterModal({
                   alt={`${character.name} artwork`}
                   className="w-full h-full"
                 />
-              </motion.div>
+              </div>
 
               {/* Identity: name animates from grid card */}
               <div className="flex items-center gap-3 mx-8">
