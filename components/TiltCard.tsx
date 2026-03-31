@@ -41,6 +41,16 @@ function CardMesh({
     spriteScale: { value: 210, min: 50, max: 1200, step: 10 },
   });
 
+  const { metalness, roughness, iridescence, iridescenceIOR } = useControls(
+    "Foil",
+    {
+      metalness: { value: 0.9, min: 0, max: 1, step: 0.01 },
+      roughness: { value: 0.35, min: 0, max: 1, step: 0.01 },
+      iridescence: { value: 0.48, min: 0, max: 1, step: 0.01 },
+      iridescenceIOR: { value: 2.12, min: 1, max: 2.33, step: 0.01 },
+    },
+  );
+
   const cardGeometry = useMemo(() => {
     const r = Math.min(cornerRadius, cardWidth / 2, cardHeight / 2);
     const shape = new THREE.Shape();
@@ -82,7 +92,13 @@ function CardMesh({
     <group ref={groupRef}>
       {/* Card backing */}
       <mesh geometry={cardGeometry}>
-        <meshStandardMaterial color={cardColor} />
+        <meshPhysicalMaterial
+          color={cardColor}
+          metalness={metalness}
+          roughness={roughness}
+          iridescence={iridescence}
+          iridescenceIOR={iridescenceIOR}
+        />
       </mesh>
 
       {/* Animated GIF sprite on top */}
@@ -120,7 +136,7 @@ export default function TiltCard({ imageSrc, alt, className }: TiltCardProps) {
   const { ambientIntensity, directionalIntensity, cameraZ, fov } = useControls(
     "Scene",
     {
-      ambientIntensity: { value: 1.2, min: 0, max: 3, step: 0.1 },
+      ambientIntensity: { value: 1.2, min: 0, max: 20, step: 0.1 },
       directionalIntensity: { value: 0.5, min: 0, max: 3, step: 0.1 },
       cameraZ: { value: 4, min: 1, max: 10, step: 0.1 },
       fov: { value: 45, min: 10, max: 120, step: 1 },
@@ -157,7 +173,7 @@ export default function TiltCard({ imageSrc, alt, className }: TiltCardProps) {
       >
         <ambientLight intensity={ambientIntensity} />
         <directionalLight
-          position={[2, 2, 5]}
+          position={[0, 1, 5]}
           intensity={directionalIntensity}
         />
         <Suspense fallback={null}>
