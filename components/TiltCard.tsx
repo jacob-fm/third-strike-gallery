@@ -1,7 +1,7 @@
 "use client";
 
-import { Suspense, useCallback, useMemo, useRef } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Suspense, useCallback, useEffect, useMemo, useRef } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Html } from "@react-three/drei";
 import { useControls } from "leva";
 import * as THREE from "three";
@@ -124,6 +124,22 @@ function CardMesh({
   );
 }
 
+function CameraController({
+  cameraZ,
+  fov,
+}: {
+  cameraZ: number;
+  fov: number;
+}) {
+  const { camera } = useThree();
+  useEffect(() => {
+    (camera as THREE.PerspectiveCamera).fov = fov;
+    camera.position.z = cameraZ;
+    (camera as THREE.PerspectiveCamera).updateProjectionMatrix();
+  }, [camera, cameraZ, fov]);
+  return null;
+}
+
 interface TiltCardProps {
   imageSrc: string;
   alt: string;
@@ -167,10 +183,10 @@ export default function TiltCard({ imageSrc, alt, className }: TiltCardProps) {
       onPointerLeave={handlePointerLeave}
     >
       <Canvas
-        camera={{ position: [0, 0, cameraZ], fov }}
         gl={{ alpha: true }}
         style={{ overflow: "visible" }}
       >
+        <CameraController cameraZ={cameraZ} fov={fov} />
         <ambientLight intensity={ambientIntensity} />
         <directionalLight
           position={[0, 0.5, 10]}
