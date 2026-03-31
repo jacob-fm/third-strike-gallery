@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useCallback, useRef } from "react";
+import { Suspense, useCallback, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Html } from "@react-three/drei";
 import { useControls } from "leva";
@@ -23,15 +23,45 @@ function CardMesh({
 }) {
   const groupRef = useRef<THREE.Group>(null);
 
-  const { maxTilt, lerpSpeed, cardColor, cardWidth, cardHeight, spriteScale } =
-    useControls("Card", {
-      maxTilt: { value: 0.15, min: 0, max: 0.5, step: 0.01 },
-      lerpSpeed: { value: 0.1, min: 0.01, max: 0.5, step: 0.01 },
-      cardColor: "#1a1a1a",
-      cardWidth: { value: 2.5, min: 0.5, max: 10, step: 0.1 },
-      cardHeight: { value: 3.0, min: 0.5, max: 10, step: 0.1 },
-      spriteScale: { value: 230, min: 50, max: 1200, step: 10 },
-    });
+  const {
+    maxTilt,
+    lerpSpeed,
+    cardColor,
+    cardWidth,
+    cardHeight,
+    cornerRadius,
+    spriteScale,
+  } = useControls("Card", {
+    maxTilt: { value: 0.15, min: 0, max: 0.5, step: 0.01 },
+    lerpSpeed: { value: 0.1, min: 0.01, max: 0.5, step: 0.01 },
+    cardColor: "#1a1a1a",
+    cardWidth: { value: 2.5, min: 0.5, max: 10, step: 0.1 },
+    cardHeight: { value: 3.0, min: 0.5, max: 10, step: 0.1 },
+    cornerRadius: { value: 0.12, min: 0, max: 0.5, step: 0.01 },
+    spriteScale: { value: 210, min: 50, max: 1200, step: 10 },
+  });
+
+  const cardGeometry = useMemo(() => {
+    const r = Math.min(cornerRadius, cardWidth / 2, cardHeight / 2);
+    const shape = new THREE.Shape();
+    const x = -cardWidth / 2,
+      y = -cardHeight / 2;
+    shape.moveTo(x + r, y);
+    shape.lineTo(x + cardWidth - r, y);
+    shape.quadraticCurveTo(x + cardWidth, y, x + cardWidth, y + r);
+    shape.lineTo(x + cardWidth, y + cardHeight - r);
+    shape.quadraticCurveTo(
+      x + cardWidth,
+      y + cardHeight,
+      x + cardWidth - r,
+      y + cardHeight,
+    );
+    shape.lineTo(x + r, y + cardHeight);
+    shape.quadraticCurveTo(x, y + cardHeight, x, y + cardHeight - r);
+    shape.lineTo(x, y + r);
+    shape.quadraticCurveTo(x, y, x + r, y);
+    return new THREE.ShapeGeometry(shape, 8);
+  }, [cardWidth, cardHeight, cornerRadius]);
 
   useFrame(() => {
     if (!groupRef.current) return;
@@ -51,8 +81,7 @@ function CardMesh({
   return (
     <group ref={groupRef}>
       {/* Card backing */}
-      <mesh>
-        <planeGeometry args={[cardWidth, cardHeight]} />
+      <mesh geometry={cardGeometry}>
         <meshStandardMaterial color={cardColor} />
       </mesh>
 
