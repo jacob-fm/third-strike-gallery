@@ -34,7 +34,7 @@ function CardMesh({
   } = useControls("Card", {
     maxTilt: { value: 0.15, min: 0, max: 0.5, step: 0.01 },
     lerpSpeed: { value: 0.1, min: 0.01, max: 0.5, step: 0.01 },
-    cardColor: "#767676",
+    cardColor: "#a0a0a0",
     cardWidth: { value: 2.5, min: 0.5, max: 10, step: 0.1 },
     cardHeight: { value: 3.0, min: 0.5, max: 10, step: 0.1 },
     cornerRadius: { value: 0.12, min: 0, max: 0.5, step: 0.01 },
@@ -44,10 +44,10 @@ function CardMesh({
   const { metalness, roughness, iridescence, iridescenceIOR } = useControls(
     "Foil",
     {
-      metalness: { value: 0.9, min: 0, max: 1, step: 0.01 },
+      metalness: { value: 0.67, min: 0, max: 1, step: 0.01 },
       roughness: { value: 0.35, min: 0, max: 1, step: 0.01 },
-      iridescence: { value: 0.48, min: 0, max: 1, step: 0.01 },
-      iridescenceIOR: { value: 2.12, min: 1, max: 2.33, step: 0.01 },
+      iridescence: { value: 0.4, min: 0, max: 1, step: 0.01 },
+      iridescenceIOR: { value: 1.63, min: 1, max: 2.33, step: 0.01 },
     },
   );
 
@@ -136,8 +136,8 @@ export default function TiltCard({ imageSrc, alt, className }: TiltCardProps) {
   const { ambientIntensity, directionalIntensity, cameraZ, fov } = useControls(
     "Scene",
     {
-      ambientIntensity: { value: 1.2, min: 0, max: 20, step: 0.1 },
-      directionalIntensity: { value: 0.5, min: 0, max: 3, step: 0.1 },
+      ambientIntensity: { value: 0.8, min: 0, max: 20, step: 0.1 },
+      directionalIntensity: { value: 0.3, min: 0, max: 3, step: 0.1 },
       cameraZ: { value: 4, min: 1, max: 10, step: 0.1 },
       fov: { value: 45, min: 10, max: 120, step: 1 },
     },
