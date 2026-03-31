@@ -29,6 +29,7 @@ function CardMesh({
     cardColor,
     cardWidth,
     cardHeight,
+    cardDepth,
     cornerRadius,
     spriteScale,
   } = useControls("Card", {
@@ -37,6 +38,7 @@ function CardMesh({
     cardColor: "#a0a0a0",
     cardWidth: { value: 2.5, min: 0.5, max: 10, step: 0.1 },
     cardHeight: { value: 3.0, min: 0.5, max: 10, step: 0.1 },
+    cardDepth: { value: 0.05, min: 0.01, max: 0.3, step: 0.01 },
     cornerRadius: { value: 0.12, min: 0, max: 0.5, step: 0.01 },
     spriteScale: { value: 210, min: 50, max: 1200, step: 10 },
   });
@@ -70,8 +72,8 @@ function CardMesh({
     shape.quadraticCurveTo(x, y + cardHeight, x, y + cardHeight - r);
     shape.lineTo(x, y + r);
     shape.quadraticCurveTo(x, y, x + r, y);
-    return new THREE.ShapeGeometry(shape, 8);
-  }, [cardWidth, cardHeight, cornerRadius]);
+    return new THREE.ExtrudeGeometry(shape, { depth: cardDepth, bevelEnabled: false });
+  }, [cardWidth, cardHeight, cardDepth, cornerRadius]);
 
   useFrame(() => {
     if (!groupRef.current) return;
@@ -105,7 +107,7 @@ function CardMesh({
       <Html
         transform
         distanceFactor={4}
-        position={[0, 0, 0.01]}
+        position={[0, 0, cardDepth + 0.01]}
         style={{ pointerEvents: "none" }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
