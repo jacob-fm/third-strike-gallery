@@ -1,11 +1,14 @@
 "use client";
-import { getCharacterBySlug } from "@/data/characters";
-import CharacterCard from "@/components/CharacterCard";
 import CharacterModal from "@/components/CharacterModal";
 import Image from "next/image";
 import { useState } from "react";
 import { Character } from "@/types/character";
 import { AnimatePresence, motion } from "framer-motion";
+import dynamic from "next/dynamic";
+
+const IconGrid3D = dynamic(() => import("@/components/IconGrid3D"), {
+  ssr: false,
+});
 
 // Character grid rows in original game order
 const GRID_ROWS = [
@@ -53,47 +56,14 @@ export default function CharactersPage() {
         </AnimatePresence>
       </div>
 
-      {/* Character icon grid — right side, overlaps portrait edge */}
-      <div
-        className="absolute top-[4vh] right-10 flex flex-col gap-0 w-162"
-        onMouseLeave={() => setHoveredChar(null)}
-      >
-        {GRID_ROWS.map((row, rowIdx) => (
-          <div
-            key={rowIdx}
-            className="flex items-start"
-            style={
-              rowIdx < GRID_ROWS.length - 1
-                ? { marginLeft: `${ROW_OFFSETS[rowIdx]}px` }
-                : { justifyContent: "center" }
-            }
-          >
-            {row.map((slug, colIdx) => {
-              const character = getCharacterBySlug(slug);
-              if (!character) return null;
-              return (
-                // Outer columns elevated by margin-top, middle column sits higher
-                <div
-                  key={slug}
-                  style={{
-                    transform:
-                      colIdx === 0
-                        ? "translateY(22px) translateX(10px)"
-                        : colIdx === 2
-                          ? "translateY(22px) translateX(-12px)"
-                          : undefined,
-                  }}
-                >
-                  <CharacterCard
-                    character={character}
-                    onHover={setHoveredChar}
-                    onSelect={setModalChar}
-                  />
-                </div>
-              );
-            })}
-          </div>
-        ))}
+      {/* 3D character icon grid — right side */}
+      <div className="absolute top-[4vh] right-10 w-162 h-[90vh]">
+        <IconGrid3D
+          gridRows={GRID_ROWS}
+          rowOffsets={ROW_OFFSETS}
+          onHover={setHoveredChar}
+          onSelect={setModalChar}
+        />
       </div>
 
       {/* Character name — bottom left */}
