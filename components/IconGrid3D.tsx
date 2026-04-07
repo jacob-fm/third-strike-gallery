@@ -85,11 +85,7 @@ function computePositions(
       // X: center the row around 0, apply cascade offset + column nudge
       const baseX = (colIdx - (row.length - 1) / 2) * tileW + rowOffset;
       const colXNudge =
-        colIdx === 0
-          ? 10 * scale
-          : colIdx === 2
-            ? -12 * scale
-            : 0;
+        colIdx === 0 ? 10 * scale : colIdx === 2 ? -12 * scale : 0;
 
       // Y: rows go downward (negative Y), apply column Y nudge
       const baseY = -rowIdx * tileH;
@@ -140,14 +136,14 @@ export default function IconGrid3D({
     maxTilt: { value: 0.3, min: 0, max: 1.0, step: 0.01 },
     tiltScale: { value: 0.15, min: 0, max: 0.5, step: 0.01 },
     lerpSpeed: { value: 0.08, min: 0.01, max: 0.3, step: 0.01 },
-    extrudeDepth: { value: 0.06, min: 0.01, max: 0.3, step: 0.01 },
+    extrudeDepth: { value: 0.25, min: 0.01, max: 0.3, step: 0.01 },
     tileColor: "#1a1a1a",
     glowColor: "#36aed0",
     glowIntensity: { value: 1.5, min: 0, max: 5, step: 0.1 },
     metalness: { value: 0.5, min: 0, max: 1, step: 0.01 },
     roughness: { value: 0.4, min: 0, max: 1, step: 0.01 },
     cameraZ: { value: 6, min: 2, max: 15, step: 0.1 },
-    fov: { value: 45, min: 10, max: 90, step: 1 },
+    fov: { value: 62, min: 10, max: 90, step: 1 },
     ambientLight: { value: 1.0, min: 0, max: 3, step: 0.1 },
     dirLight: { value: 0.5, min: 0, max: 3, step: 0.1 },
     gridScale: { value: 0.01, min: 0.005, max: 0.02, step: 0.001 },
@@ -172,8 +168,12 @@ export default function IconGrid3D({
           position: item.position,
         }))
         .filter(
-          (t): t is { character: Character; position: [number, number, number] } =>
-            t.character !== undefined,
+          (
+            t,
+          ): t is {
+            character: Character;
+            position: [number, number, number];
+          } => t.character !== undefined,
         ),
     [items],
   );
@@ -202,10 +202,7 @@ export default function IconGrid3D({
         />
         <CursorTracker cursorWorldRef={cursorWorldRef} isOverRef={isOverRef} />
         <ambientLight intensity={controls.ambientLight} />
-        <directionalLight
-          position={[0, 2, 10]}
-          intensity={controls.dirLight}
-        />
+        <directionalLight position={[0, 2, 10]} intensity={controls.dirLight} />
         <Suspense fallback={null}>
           {tiles.map(({ character, position }) => (
             <IconTile
