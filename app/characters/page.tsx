@@ -5,6 +5,7 @@ import CharacterModal from "@/components/CharacterModal";
 import Image from "next/image";
 import { useState } from "react";
 import { Character } from "@/types/character";
+import { AnimatePresence, motion } from "framer-motion";
 
 // Character grid rows in original game order
 const GRID_ROWS = [
@@ -30,17 +31,26 @@ export default function CharactersPage() {
     <main className="w-screen h-screen overflow-hidden bg-bg relative">
       {/* Large oval portrait — left side */}
       <div className="absolute top-1/2 -translate-y-1/2 left-[4%] w-[50%] aspect-square flex items-center justify-center">
-        {portraitChar && (
-          <div className="w-full h-full absolute inset-0">
-            <Image
-              src={portraitChar.artworkImage}
-              alt={portraitChar.name}
-              fill
-              unoptimized
-              className="object-contain object-center [image-rendering:pixelated]"
-            />
-          </div>
-        )}
+        <AnimatePresence>
+          {portraitChar ? (
+            <motion.div
+              key={portraitChar.slug}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              className="w-full h-full absolute inset-0"
+            >
+              <Image
+                src={portraitChar.artworkImage}
+                alt={portraitChar.name}
+                fill
+                unoptimized
+                className="object-contain object-center [image-rendering:pixelated]"
+              />
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
       </div>
 
       {/* Character icon grid — right side, overlaps portrait edge */}
