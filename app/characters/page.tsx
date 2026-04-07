@@ -1,36 +1,35 @@
-'use client'
-import { getCharacterBySlug } from '@/data/characters'
-import CharacterCard from '@/components/CharacterCard'
-import CharacterModal from '@/components/CharacterModal'
-import Image from 'next/image'
-import { useState } from 'react'
-import { Character } from '@/types/character'
-import { AnimatePresence, motion } from 'framer-motion'
+"use client";
+import { getCharacterBySlug } from "@/data/characters";
+import CharacterCard from "@/components/CharacterCard";
+import CharacterModal from "@/components/CharacterModal";
+import Image from "next/image";
+import { useState } from "react";
+import { Character } from "@/types/character";
+import { AnimatePresence, motion } from "framer-motion";
 
 // Character grid rows in original game order
 const GRID_ROWS = [
-  ['akuma', 'yun', 'ryu'],
-  ['urien', 'remy', 'oro'],
-  ['necro', 'q', 'dudley'],
-  ['ibuki', 'chun-li', 'elena'],
-  ['sean', 'makoto', 'hugo'],
-  ['alex', 'twelve', 'ken'],
-  ['yang'],
-]
+  ["akuma", "yun", "ryu"],
+  ["urien", "remy", "oro"],
+  ["necro", "q", "dudley"],
+  ["ibuki", "chun-li", "elena"],
+  ["sean", "makoto", "hugo"],
+  ["alex", "twelve", "ken"],
+  ["yang"],
+];
 
 // Diagonal cascade: each row shifts 20px further left going down
-const ROW_OFFSETS = [120, 100, 80, 60, 40, 20, 0]
+const ROW_OFFSETS = [120, 100, 80, 60, 40, 20, 0];
 
 export default function CharactersPage() {
-  const [modalChar, setModalChar] = useState<Character | null>(null)
-  const [hoveredChar, setHoveredChar] = useState<Character | null>(null)
+  const [modalChar, setModalChar] = useState<Character | null>(null);
+  const [hoveredChar, setHoveredChar] = useState<Character | null>(null);
 
   // Portrait stays mounted during modal transition so layoutId animation works
-  const portraitChar = modalChar ?? hoveredChar
+  const portraitChar = modalChar ?? hoveredChar;
 
   return (
     <main className="w-screen h-screen overflow-hidden bg-bg relative">
-
       {/* Large oval portrait — left side */}
       <div className="absolute top-1/2 -translate-y-1/2 left-[4%] w-[50%] aspect-square flex items-center justify-center">
         <AnimatePresence>
@@ -64,28 +63,35 @@ export default function CharactersPage() {
           <div
             key={rowIdx}
             className="flex items-start"
-            style={rowIdx < GRID_ROWS.length - 1
-              ? { marginLeft: `${ROW_OFFSETS[rowIdx]}px` }
-              : { justifyContent: 'center' }
+            style={
+              rowIdx < GRID_ROWS.length - 1
+                ? { marginLeft: `${ROW_OFFSETS[rowIdx]}px` }
+                : { justifyContent: "center" }
             }
           >
             {row.map((slug, colIdx) => {
-              const character = getCharacterBySlug(slug)
-              if (!character) return null
+              const character = getCharacterBySlug(slug);
+              if (!character) return null;
               return (
                 // Outer columns elevated by margin-top, middle column sits higher
-                <div key={slug} style={{
-                  transform: colIdx === 0 ? 'translateY(22px) translateX(10px)'
-                    : colIdx === 2 ? 'translateY(22px) translateX(-12px)'
-                      : undefined
-                }}>
+                <div
+                  key={slug}
+                  style={{
+                    transform:
+                      colIdx === 0
+                        ? "translateY(22px) translateX(10px)"
+                        : colIdx === 2
+                          ? "translateY(22px) translateX(-12px)"
+                          : undefined,
+                  }}
+                >
                   <CharacterCard
                     character={character}
                     onHover={setHoveredChar}
                     onSelect={setModalChar}
                   />
                 </div>
-              )
+              );
             })}
           </div>
         ))}
@@ -93,34 +99,24 @@ export default function CharactersPage() {
 
       {/* Character name — bottom left */}
       <div className="absolute bottom-8 left-18 h-16">
-        <AnimatePresence>
-          {portraitChar && (
-            <motion.h1
-              layoutId={`char-name-${portraitChar.slug}`}
-              key={portraitChar.slug}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -4 }}
-              transition={{ duration: 0.15 }}
-              className="absolute bottom-0 left-0 text-7xl font-bold tracking-widest uppercase text-text-primary whitespace-nowrap"
-            >
-              {portraitChar.name}
-            </motion.h1>
-          )}
-        </AnimatePresence>
+        {portraitChar && (
+          <h1
+            key={portraitChar.slug}
+            className="absolute bottom-0 left-0 text-7xl font-bold tracking-widest uppercase text-text-primary whitespace-nowrap"
+          >
+            {portraitChar.name}
+          </h1>
+        )}
       </div>
 
       {/* Character detail modal */}
-      <AnimatePresence>
-        {modalChar && (
-          <CharacterModal
-            key={modalChar.slug}
-            character={modalChar}
-            onClose={() => setModalChar(null)}
-          />
-        )}
-      </AnimatePresence>
-
+      {modalChar && (
+        <CharacterModal
+          key={modalChar.slug}
+          character={modalChar}
+          onClose={() => setModalChar(null)}
+        />
+      )}
     </main>
-  )
+  );
 }
