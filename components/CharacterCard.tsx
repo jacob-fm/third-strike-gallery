@@ -19,16 +19,14 @@ export default function CharacterCard({ character, onHover, onSelect }: Characte
       onMouseLeave={() => onHover?.(null)}
       onClick={() => onSelect?.(character)}
     >
-      <motion.div >
-        <Image
-          src={character.iconImage}
-          alt={character.name}
-          width={160}
-          height={95}
-          unoptimized
-          className="w-full h-auto [image-rendering:pixelated]"
-        />
-      </motion.div>
+      <Image
+        src={character.iconImage}
+        alt={character.name}
+        width={160}
+        height={95}
+        unoptimized
+        className="w-full h-auto [image-rendering:pixelated]"
+      />
     </motion.div>
   )
 }
