@@ -8,38 +8,6 @@ import { getCharacterBySlug } from "@/data/characters";
 import { Character } from "@/types/character";
 import IconTile, { type IconTileControls } from "./IconTile";
 
-// ── Cursor tracker ──────────────────────────────────────────────────
-// Projects the pointer onto a z=0 plane every frame so all tiles can
-// read the cursor's world-space position from a single shared ref.
-
-const Z_PLANE = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
-const _intersection = new THREE.Vector3();
-
-function CursorTracker({
-  cursorWorldRef,
-  isOverRef,
-}: {
-  cursorWorldRef: React.MutableRefObject<THREE.Vector3 | null>;
-  isOverRef: React.RefObject<boolean>;
-}) {
-  useFrame((state) => {
-    if (!isOverRef.current) {
-      cursorWorldRef.current = null;
-      return;
-    }
-    state.raycaster.setFromCamera(state.pointer, state.camera);
-    if (state.raycaster.ray.intersectPlane(Z_PLANE, _intersection)) {
-      if (!cursorWorldRef.current) {
-        cursorWorldRef.current = _intersection.clone();
-      } else {
-        cursorWorldRef.current.copy(_intersection);
-      }
-    }
-  });
-
-  return null;
-}
-
 // ── Camera controller ───────────────────────────────────────────────
 
 function CameraController({
@@ -72,28 +40,40 @@ function computePositions(
   gridRows: string[][],
   rowOffsets: number[],
   scale: number,
+  colGap: number,
+  rowGap: number,
+  lastRowOffsetX: number,
+  lastRowOffsetY: number,
 ): { slug: string; position: [number, number, number] }[] {
-  const tileW = CARD_W_PX * scale;
-  const tileH = CARD_H_PX * scale;
+  const colStep = (CARD_W_PX + colGap) * scale;
+  const rowStep = (CARD_H_PX + rowGap) * scale;
   const items: { slug: string; position: [number, number, number] }[] = [];
 
   for (let rowIdx = 0; rowIdx < gridRows.length; rowIdx++) {
     const row = gridRows[rowIdx];
     const rowOffset = (rowOffsets[rowIdx] ?? 0) * scale;
+    const isLastRow = rowIdx === gridRows.length - 1;
 
     for (let colIdx = 0; colIdx < row.length; colIdx++) {
       // X: center the row around 0, apply cascade offset + column nudge
-      const baseX = (colIdx - (row.length - 1) / 2) * tileW + rowOffset;
+      const baseX = (colIdx - (row.length - 1) / 2) * colStep + rowOffset;
       const colXNudge =
         colIdx === 0 ? 10 * scale : colIdx === 2 ? -12 * scale : 0;
 
       // Y: rows go downward (negative Y), apply column Y nudge
-      const baseY = -rowIdx * tileH;
+      const baseY = -rowIdx * rowStep;
       const colYNudge = colIdx === 0 || colIdx === 2 ? -22 * scale : 0;
+
+      const lastRowNudgeX = isLastRow ? lastRowOffsetX * scale : 0;
+      const lastRowNudgeY = isLastRow ? lastRowOffsetY * scale : 0;
 
       items.push({
         slug: row[colIdx],
-        position: [baseX + colXNudge, baseY + colYNudge, 0],
+        position: [
+          baseX + colXNudge + lastRowNudgeX,
+          baseY + colYNudge + lastRowNudgeY,
+          0,
+        ],
       });
     }
   }
@@ -129,8 +109,7 @@ export default function IconGrid3D({
   onHover,
   onSelect,
 }: IconGrid3DProps) {
-  const cursorWorldRef = useRef<THREE.Vector3 | null>(null);
-  const isOverRef = useRef(false);
+  const tiltOriginRef = useRef<THREE.Vector3 | null>(null);
 
   const controls = useControls("Icon Grid", {
     maxTilt: { value: 0.3, min: 0, max: 1.0, step: 0.01 },
@@ -147,14 +126,35 @@ export default function IconGrid3D({
     ambientLight: { value: 1.0, min: 0, max: 3, step: 0.1 },
     dirLight: { value: 0.5, min: 0, max: 3, step: 0.1 },
     gridScale: { value: 0.01, min: 0.005, max: 0.02, step: 0.001 },
+    colGap: { value: 0, min: -50, max: 150, step: 1 },
+    rowGap: { value: 0, min: -50, max: 150, step: 1 },
+    lastRowOffsetX: { value: 0, min: -200, max: 200, step: 1 },
+    lastRowOffsetY: { value: 0, min: -200, max: 200, step: 1 },
   });
 
   const tileControls: IconTileControls = controls;
 
   // Precompute grid positions
   const items = useMemo(
-    () => computePositions(gridRows, rowOffsets, controls.gridScale),
-    [gridRows, rowOffsets, controls.gridScale],
+    () =>
+      computePositions(
+        gridRows,
+        rowOffsets,
+        controls.gridScale,
+        controls.colGap,
+        controls.rowGap,
+        controls.lastRowOffsetX,
+        controls.lastRowOffsetY,
+      ),
+    [
+      gridRows,
+      rowOffsets,
+      controls.gridScale,
+      controls.colGap,
+      controls.rowGap,
+      controls.lastRowOffsetX,
+      controls.lastRowOffsetY,
+    ],
   );
 
   const center = useMemo(() => computeCenter(items), [items]);
@@ -178,20 +178,14 @@ export default function IconGrid3D({
     [items],
   );
 
-  const handlePointerEnter = useCallback(() => {
-    isOverRef.current = true;
-  }, []);
-
   const handlePointerLeave = useCallback(() => {
-    isOverRef.current = false;
-    cursorWorldRef.current = null;
+    tiltOriginRef.current = null;
     onHover(null);
   }, [onHover]);
 
   return (
     <div
       className="w-full h-full"
-      onPointerEnter={handlePointerEnter}
       onPointerLeave={handlePointerLeave}
     >
       <Canvas gl={{ alpha: true }} style={{ overflow: "visible" }}>
@@ -200,7 +194,6 @@ export default function IconGrid3D({
           cameraZ={controls.cameraZ}
           fov={controls.fov}
         />
-        <CursorTracker cursorWorldRef={cursorWorldRef} isOverRef={isOverRef} />
         <ambientLight intensity={controls.ambientLight} />
         <directionalLight position={[0, 2, 10]} intensity={controls.dirLight} />
         <Suspense fallback={null}>
@@ -209,7 +202,7 @@ export default function IconGrid3D({
               key={character.slug}
               character={character}
               position={position}
-              cursorWorldRef={cursorWorldRef}
+              tiltOriginRef={tiltOriginRef}
               controls={tileControls}
               onHover={onHover}
               onSelect={onSelect}

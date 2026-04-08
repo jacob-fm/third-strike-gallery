@@ -45,7 +45,7 @@ function buildContourShape(tileW: number, tileH: number): THREE.Shape {
 interface IconTileProps {
   character: Character;
   position: [number, number, number];
-  cursorWorldRef: React.RefObject<THREE.Vector3 | null>;
+  tiltOriginRef: React.MutableRefObject<THREE.Vector3 | null>;
   controls: IconTileControls;
   onHover: (c: Character | null) => void;
   onSelect: (c: Character) => void;
@@ -54,7 +54,7 @@ interface IconTileProps {
 export default function IconTile({
   character,
   position,
-  cursorWorldRef,
+  tiltOriginRef,
   controls,
   onHover,
   onSelect,
@@ -119,13 +119,13 @@ export default function IconTile({
   useFrame(() => {
     if (!groupRef.current) return;
 
-    const cursor = cursorWorldRef.current;
+    const origin = tiltOriginRef.current;
     let targetRotX = 0;
     let targetRotY = 0;
 
-    if (cursor) {
-      const dx = cursor.x - position[0];
-      const dy = cursor.y - position[1];
+    if (origin) {
+      const dx = origin.x - position[0];
+      const dy = origin.y - position[1];
       const distance = Math.sqrt(dx * dx + dy * dy);
       const tiltAmount = Math.min(distance * tiltScale, maxTilt);
 
@@ -166,11 +166,13 @@ export default function IconTile({
       onPointerOver={(e) => {
         e.stopPropagation();
         isHoveredRef.current = true;
+        tiltOriginRef.current = new THREE.Vector3(position[0], position[1], 0);
         onHover(character);
       }}
       onPointerOut={(e) => {
         e.stopPropagation();
         isHoveredRef.current = false;
+        tiltOriginRef.current = null;
         onHover(null);
       }}
       onClick={(e) => {
