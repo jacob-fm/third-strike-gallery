@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Character } from "@/types/character";
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
-import { Michroma } from "next/font/google";
+import { Orbitron } from "next/font/google";
 
 const IconGrid3D = dynamic(() => import("@/components/IconGrid3D"), {
   ssr: false,
@@ -22,9 +22,9 @@ const GRID_ROWS = [
   ["yang"],
 ];
 
-const michromaFont = Michroma({
-  weight: "400",
-  variable: "--font-michroma",
+const charNameFont = Orbitron({
+  weight: "600",
+  variable: "--font-char",
 });
 
 // Diagonal cascade: each row shifts 20px further left going down
@@ -37,17 +37,20 @@ export default function CharactersPage() {
   const portraitChar = hoveredChar;
 
   return (
+    // <main
+    //   className={`w-screen h-screen overflow-hidden bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-amber-200 via-red-800 to-black relative ${charNameFont.variable}`}
+    // >
     <main
-      className={`w-screen h-screen overflow-hidden bg-bg relative ${michromaFont.variable}`}
+      className={`w-screen h-screen overflow-hidden bg-[radial-gradient(circle_at_top_right,#d89559,#8a240a,#000)] relative ${charNameFont.variable}`}
     >
-      <Image
-        src="/bg.png"
-        alt="character select background"
-        fill={true}
-        unoptimized
-        style={{ imageRendering: "pixelated" }}
-      />
-      {/* Large oval portrait — left side */}
+      {/* <Image */}
+      {/*   src="/bg.png" */}
+      {/*   alt="character select background" */}
+      {/*   fill={true} */}
+      {/*   unoptimized */}
+      {/*   style={{ imageRendering: "pixelated" }} */}
+      {/* /> */}
+      {/* Large portrait — left side */}
       <div className="absolute top-1/2 -translate-y-1/2 left-[4%] w-[50%] aspect-square flex items-center justify-center">
         <AnimatePresence>
           {portraitChar ? (
@@ -57,7 +60,7 @@ export default function CharactersPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
-              className="w-full h-full absolute inset-0"
+              className="w-lg h-full absolute inset-0"
             >
               <Image
                 src={portraitChar.artworkImage}
@@ -86,7 +89,7 @@ export default function CharactersPage() {
         {portraitChar && (
           <h1
             key={portraitChar.slug}
-            className="absolute bottom-0 left-0 text-7xl font-michroma tracking-widest uppercase text-white whitespace-nowrap"
+            className="absolute bottom-4 left-0 text-8xl italic font-char tracking-widest uppercase text-white whitespace-nowrap"
           >
             {portraitChar.name}
           </h1>
