@@ -57,7 +57,7 @@ export default function CharactersPage() {
       </div>
 
       {/* 3D character icon grid — right side */}
-      <div className="absolute top-[4vh] right-10 w-162 h-[90vh]">
+      <div className="absolute -top-4 right-10 w-200 h-full">
         <IconGrid3D
           gridRows={GRID_ROWS}
           rowOffsets={ROW_OFFSETS}

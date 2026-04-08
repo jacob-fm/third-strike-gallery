@@ -112,8 +112,8 @@ export default function IconGrid3D({
   const tiltOriginRef = useRef<THREE.Vector3 | null>(null);
 
   const controls = useControls("Icon Grid", {
-    maxTilt: { value: 0.3, min: 0, max: 1.0, step: 0.01 },
-    tiltScale: { value: 0.15, min: 0, max: 0.5, step: 0.01 },
+    maxTilt: { value: 0.5, min: 0, max: 1.0, step: 0.01 },
+    tiltScale: { value: 0.11, min: 0, max: 0.5, step: 0.01 },
     lerpSpeed: { value: 0.08, min: 0.01, max: 0.3, step: 0.01 },
     extrudeDepth: { value: 0.25, min: 0.01, max: 0.3, step: 0.01 },
     tileColor: "#1a1a1a",
@@ -121,15 +121,15 @@ export default function IconGrid3D({
     glowIntensity: { value: 1.5, min: 0, max: 5, step: 0.1 },
     metalness: { value: 0.5, min: 0, max: 1, step: 0.01 },
     roughness: { value: 0.4, min: 0, max: 1, step: 0.01 },
-    cameraZ: { value: 6, min: 2, max: 15, step: 0.1 },
-    fov: { value: 62, min: 10, max: 90, step: 1 },
+    cameraZ: { value: 15, min: 2, max: 30, step: 0.1 },
+    fov: { value: 28, min: 10, max: 90, step: 1 },
     ambientLight: { value: 1.0, min: 0, max: 3, step: 0.1 },
     dirLight: { value: 0.5, min: 0, max: 3, step: 0.1 },
     gridScale: { value: 0.01, min: 0.005, max: 0.02, step: 0.001 },
-    colGap: { value: 0, min: -50, max: 150, step: 1 },
-    rowGap: { value: 0, min: -50, max: 150, step: 1 },
-    lastRowOffsetX: { value: 0, min: -200, max: 200, step: 1 },
-    lastRowOffsetY: { value: 0, min: -200, max: 200, step: 1 },
+    colGap: { value: 15, min: -50, max: 150, step: 1 },
+    rowGap: { value: 4, min: -50, max: 150, step: 1 },
+    lastRowOffsetX: { value: -21, min: -200, max: 200, step: 1 },
+    lastRowOffsetY: { value: 15, min: -200, max: 200, step: 1 },
   });
 
   const tileControls: IconTileControls = controls;
@@ -184,10 +184,7 @@ export default function IconGrid3D({
   }, [onHover]);
 
   return (
-    <div
-      className="w-full h-full"
-      onPointerLeave={handlePointerLeave}
-    >
+    <div className="w-full h-full" onPointerLeave={handlePointerLeave}>
       <Canvas gl={{ alpha: true }} style={{ overflow: "visible" }}>
         <CameraController
           target={center}
