@@ -3,7 +3,7 @@ import CharacterModal from "@/components/CharacterModal";
 import Image from "next/image";
 import { useState } from "react";
 import { Character } from "@/types/character";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import dynamic from "next/dynamic";
 import { Orbitron } from "next/font/google";
 import { characters } from "@/data/characters";
