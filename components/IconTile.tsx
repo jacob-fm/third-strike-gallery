@@ -49,6 +49,7 @@ interface IconTileProps {
   controls: IconTileControls;
   onHover: (c: Character | null) => void;
   onSelect: (c: Character) => void;
+  onGroupHover: (group: THREE.Group | null) => void;
 }
 
 export default function IconTile({
@@ -58,6 +59,7 @@ export default function IconTile({
   controls,
   onHover,
   onSelect,
+  onGroupHover,
 }: IconTileProps) {
   const groupRef = useRef<THREE.Group>(null);
   const baseMaterialRef = useRef<THREE.MeshStandardMaterial>(null);
@@ -168,12 +170,14 @@ export default function IconTile({
         isHoveredRef.current = true;
         tiltOriginRef.current = new THREE.Vector3(position[0], position[1], 0);
         onHover(character);
+        onGroupHover(groupRef.current);
       }}
       onPointerOut={(e) => {
         e.stopPropagation();
         isHoveredRef.current = false;
         tiltOriginRef.current = null;
         onHover(null);
+        onGroupHover(null);
       }}
       onClick={(e) => {
         e.stopPropagation();

@@ -1,7 +1,8 @@
 "use client";
 
-import { Suspense, useCallback, useMemo, useRef } from "react";
+import { Suspense, useCallback, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
+import { EffectComposer, SelectiveBloom } from "@react-three/postprocessing";
 import { useControls } from "leva";
 import * as THREE from "three";
 import { getCharacterBySlug } from "@/data/characters";
@@ -110,6 +111,7 @@ export default function IconGrid3D({
   onSelect,
 }: IconGrid3DProps) {
   const tiltOriginRef = useRef<THREE.Vector3 | null>(null);
+  const [hoveredGroup, setHoveredGroup] = useState<THREE.Group | null>(null);
 
   const controls = useControls("Icon Grid", {
     maxTilt: { value: 0.5, min: 0, max: 1.0, step: 0.01 },
@@ -130,6 +132,9 @@ export default function IconGrid3D({
     rowGap: { value: 4, min: -50, max: 150, step: 1 },
     lastRowOffsetX: { value: -21, min: -200, max: 200, step: 1 },
     lastRowOffsetY: { value: 15, min: -200, max: 200, step: 1 },
+    bloomStrength: { value: 1.2, min: 0, max: 5, step: 0.05 },
+    bloomRadius: { value: 0.6, min: 0, max: 1, step: 0.01 },
+    bloomThreshold: { value: 0.2, min: 0, max: 1, step: 0.01 },
   });
 
   const tileControls: IconTileControls = controls;
@@ -180,12 +185,13 @@ export default function IconGrid3D({
 
   const handlePointerLeave = useCallback(() => {
     tiltOriginRef.current = null;
+    setHoveredGroup(null);
     onHover(null);
   }, [onHover]);
 
   return (
     <div className="w-full h-full" onPointerLeave={handlePointerLeave}>
-      <Canvas gl={{ alpha: true }} style={{ overflow: "visible" }}>
+      <Canvas gl={{ alpha: true, toneMapping: THREE.NoToneMapping }} style={{ overflow: "visible" }}>
         <CameraController
           target={center}
           cameraZ={controls.cameraZ}
@@ -203,9 +209,18 @@ export default function IconGrid3D({
               controls={tileControls}
               onHover={onHover}
               onSelect={onSelect}
+              onGroupHover={setHoveredGroup}
             />
           ))}
         </Suspense>
+        <EffectComposer autoClear={false}>
+          <SelectiveBloom
+            selection={hoveredGroup ? [hoveredGroup] : []}
+            intensity={controls.bloomStrength}
+            luminanceThreshold={controls.bloomThreshold}
+            luminanceSmoothing={controls.bloomRadius}
+          />
+        </EffectComposer>
       </Canvas>
     </div>
   );
