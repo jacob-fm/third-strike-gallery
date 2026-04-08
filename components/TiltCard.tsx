@@ -3,7 +3,7 @@
 import { Suspense, useCallback, useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Html } from "@react-three/drei";
-import { useControls } from "leva";
+// import { useControls } from "leva";
 import * as THREE from "three";
 
 /** Shared ref for mouse position, written by the wrapper div, read by the mesh */
@@ -32,26 +32,43 @@ function CardMesh({
     cardDepth,
     cornerRadius,
     spriteScale,
-  } = useControls("Card", {
-    maxTilt: { value: 0.15, min: 0, max: 0.5, step: 0.01 },
-    lerpSpeed: { value: 0.1, min: 0.01, max: 0.5, step: 0.01 },
+    // } = useControls("Card", {
+    //   maxTilt: { value: 0.15, min: 0, max: 0.5, step: 0.01 },
+    //   lerpSpeed: { value: 0.1, min: 0.01, max: 0.5, step: 0.01 },
+    //   cardColor: "#a0a0a0",
+    //   cardWidth: { value: 2.5, min: 0.5, max: 10, step: 0.1 },
+    //   cardHeight: { value: 3.0, min: 0.5, max: 10, step: 0.1 },
+    //   cardDepth: { value: 0.05, min: 0.01, max: 0.3, step: 0.01 },
+    //   cornerRadius: { value: 0.12, min: 0, max: 0.5, step: 0.01 },
+    //   spriteScale: { value: 210, min: 50, max: 1200, step: 10 },
+    // });
+  } = {
+    maxTilt: 0.15,
+    lerpSpeed: 0.1,
     cardColor: "#a0a0a0",
-    cardWidth: { value: 2.5, min: 0.5, max: 10, step: 0.1 },
-    cardHeight: { value: 3.0, min: 0.5, max: 10, step: 0.1 },
-    cardDepth: { value: 0.05, min: 0.01, max: 0.3, step: 0.01 },
-    cornerRadius: { value: 0.12, min: 0, max: 0.5, step: 0.01 },
-    spriteScale: { value: 210, min: 50, max: 1200, step: 10 },
-  });
+    cardWidth: 2.5,
+    cardHeight: 3.0,
+    cardDepth: 0.05,
+    cornerRadius: 0.12,
+    spriteScale: 210,
+  };
 
-  const { metalness, roughness, iridescence, iridescenceIOR } = useControls(
-    "Foil",
-    {
-      metalness: { value: 0.67, min: 0, max: 1, step: 0.01 },
-      roughness: { value: 0.35, min: 0, max: 1, step: 0.01 },
-      iridescence: { value: 0.4, min: 0, max: 1, step: 0.01 },
-      iridescenceIOR: { value: 1.63, min: 1, max: 2.33, step: 0.01 },
-    },
-  );
+  // const { metalness, roughness, iridescence, iridescenceIOR } = useControls(
+  //   "Foil",
+  //   {
+  //     metalness: { value: 0.67, min: 0, max: 1, step: 0.01 },
+  //     roughness: { value: 0.35, min: 0, max: 1, step: 0.01 },
+  //     iridescence: { value: 0.4, min: 0, max: 1, step: 0.01 },
+  //     iridescenceIOR: { value: 1.63, min: 1, max: 2.33, step: 0.01 },
+  //   },
+  // );
+
+  const { metalness, roughness, iridescence, iridescenceIOR } = {
+    metalness: 0.67,
+    roughness: 0.35,
+    iridescence: 0.4,
+    iridescenceIOR: 1.63,
+  };
 
   const cardGeometry = useMemo(() => {
     const r = Math.min(cornerRadius, cardWidth / 2, cardHeight / 2);
@@ -72,7 +89,10 @@ function CardMesh({
     shape.quadraticCurveTo(x, y + cardHeight, x, y + cardHeight - r);
     shape.lineTo(x, y + r);
     shape.quadraticCurveTo(x, y, x + r, y);
-    return new THREE.ExtrudeGeometry(shape, { depth: cardDepth, bevelEnabled: false });
+    return new THREE.ExtrudeGeometry(shape, {
+      depth: cardDepth,
+      bevelEnabled: false,
+    });
   }, [cardWidth, cardHeight, cardDepth, cornerRadius]);
 
   useFrame(() => {
@@ -169,15 +189,21 @@ export default function TiltCard({ imageSrc, alt, className }: TiltCardProps) {
   const pointerRef = useRef<PointerTarget>({ x: 0, y: 0 });
   const isHoveredRef = useRef<boolean>(false);
 
-  const { ambientIntensity, directionalIntensity, cameraZ, fov } = useControls(
-    "Scene",
-    {
-      ambientIntensity: { value: 0.8, min: 0, max: 20, step: 0.1 },
-      directionalIntensity: { value: 0.3, min: 0, max: 3, step: 0.1 },
-      cameraZ: { value: 4, min: 1, max: 10, step: 0.1 },
-      fov: { value: 45, min: 10, max: 120, step: 1 },
-    },
-  );
+  // const { ambientIntensity, directionalIntensity, cameraZ, fov } = useControls(
+  //   "Scene",
+  //   {
+  //     ambientIntensity: { value: 0.8, min: 0, max: 20, step: 0.1 },
+  //     directionalIntensity: { value: 0.3, min: 0, max: 3, step: 0.1 },
+  //     cameraZ: { value: 4, min: 1, max: 10, step: 0.1 },
+  //     fov: { value: 45, min: 10, max: 120, step: 1 },
+  //   },
+  // );
+  const { ambientIntensity, directionalIntensity, cameraZ, fov } = {
+    ambientIntensity: 0.8,
+    directionalIntensity: 0.3,
+    cameraZ: 4,
+    fov: 45,
+  };
 
   const handlePointerMove = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
