@@ -32,6 +32,13 @@ export default function CharactersPage() {
 
   return (
     <main className="w-screen h-screen overflow-hidden bg-bg relative">
+      <Image
+        src="/bg.png"
+        alt="character select background"
+        fill={true}
+        unoptimized
+        style={{ imageRendering: "pixelated" }}
+      />
       {/* Large oval portrait — left side */}
       <div className="absolute top-1/2 -translate-y-1/2 left-[4%] w-[50%] aspect-square flex items-center justify-center">
         <AnimatePresence>
