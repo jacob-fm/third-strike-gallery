@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Character } from "@/types/character";
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
+import { Michroma } from "next/font/google";
 
 const IconGrid3D = dynamic(() => import("@/components/IconGrid3D"), {
   ssr: false,
@@ -21,6 +22,11 @@ const GRID_ROWS = [
   ["yang"],
 ];
 
+const michromaFont = Michroma({
+  weight: "400",
+  variable: "--font-michroma",
+});
+
 // Diagonal cascade: each row shifts 20px further left going down
 const ROW_OFFSETS = [120, 100, 80, 60, 40, 20, 0];
 
@@ -31,7 +37,9 @@ export default function CharactersPage() {
   const portraitChar = hoveredChar;
 
   return (
-    <main className="w-screen h-screen overflow-hidden bg-bg relative">
+    <main
+      className={`w-screen h-screen overflow-hidden bg-bg relative ${michromaFont.variable}`}
+    >
       <Image
         src="/bg.png"
         alt="character select background"
@@ -78,7 +86,7 @@ export default function CharactersPage() {
         {portraitChar && (
           <h1
             key={portraitChar.slug}
-            className="absolute bottom-0 left-0 text-7xl font-bold tracking-widest uppercase text-text-primary whitespace-nowrap"
+            className="absolute bottom-0 left-0 text-7xl font-michroma tracking-widest uppercase text-white whitespace-nowrap"
           >
             {portraitChar.name}
           </h1>
