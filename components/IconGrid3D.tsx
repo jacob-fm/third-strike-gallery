@@ -3,7 +3,7 @@
 import { Suspense, useCallback, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { EffectComposer, SelectiveBloom } from "@react-three/postprocessing";
-import { useControls } from "leva";
+// import { useControls } from "leva";
 import * as THREE from "three";
 import { getCharacterBySlug } from "@/data/characters";
 import { Character } from "@/types/character";
@@ -113,29 +113,53 @@ export default function IconGrid3D({
   const tiltOriginRef = useRef<THREE.Vector3 | null>(null);
   const [hoveredGroup, setHoveredGroup] = useState<THREE.Group | null>(null);
 
-  const controls = useControls("Icon Grid", {
-    maxTilt: { value: 0.5, min: 0, max: 1.0, step: 0.01 },
-    tiltScale: { value: 0.11, min: 0, max: 0.5, step: 0.01 },
-    lerpSpeed: { value: 0.08, min: 0.01, max: 0.3, step: 0.01 },
-    extrudeDepth: { value: 0.25, min: 0.01, max: 0.6, step: 0.01 },
+  // const controls = useControls("Icon Grid", {
+  //   maxTilt: { value: 0.5, min: 0, max: 1.0, step: 0.01 },
+  //   tiltScale: { value: 0.11, min: 0, max: 0.5, step: 0.01 },
+  //   lerpSpeed: { value: 0.08, min: 0.01, max: 0.3, step: 0.01 },
+  //   extrudeDepth: { value: 0.25, min: 0.01, max: 0.6, step: 0.01 },
+  //   tileColor: "#aaaaaa",
+  //   glowColor: "#41d6ff",
+  //   glowIntensity: { value: 5.0, min: 0, max: 20, step: 0.1 },
+  //   metalness: { value: 0.5, min: 0, max: 1, step: 0.01 },
+  //   roughness: { value: 0.4, min: 0, max: 1, step: 0.01 },
+  //   cameraZ: { value: 8, min: 2, max: 30, step: 0.1 },
+  //   fov: { value: 50, min: 10, max: 90, step: 1 },
+  //   ambientLight: { value: 1.0, min: 0, max: 3, step: 0.1 },
+  //   dirLight: { value: 0.5, min: 0, max: 3, step: 0.1 },
+  //   gridScale: { value: 0.01, min: 0.005, max: 0.02, step: 0.001 },
+  //   colGap: { value: 15, min: -50, max: 150, step: 1 },
+  //   rowGap: { value: 4, min: -50, max: 150, step: 1 },
+  //   lastRowOffsetX: { value: -21, min: -200, max: 200, step: 1 },
+  //   lastRowOffsetY: { value: 15, min: -200, max: 200, step: 1 },
+  //   bloomStrength: { value: 3, min: 0, max: 15, step: 0.05 },
+  //   bloomRadius: { value: 0.26, min: 0, max: 1, step: 0.01 },
+  //   bloomThreshold: { value: 0.2, min: 0, max: 1, step: 0.01 },
+  // });
+
+  const controls = {
+    maxTilt: 0.5,
+    tiltScale: 0.11,
+    lerpSpeed: 0.08,
+    extrudeDepth: 0.25,
     tileColor: "#aaaaaa",
     glowColor: "#41d6ff",
-    glowIntensity: { value: 5.0, min: 0, max: 20, step: 0.1 },
-    metalness: { value: 0.5, min: 0, max: 1, step: 0.01 },
-    roughness: { value: 0.4, min: 0, max: 1, step: 0.01 },
-    cameraZ: { value: 8, min: 2, max: 30, step: 0.1 },
-    fov: { value: 50, min: 10, max: 90, step: 1 },
-    ambientLight: { value: 1.0, min: 0, max: 3, step: 0.1 },
-    dirLight: { value: 0.5, min: 0, max: 3, step: 0.1 },
-    gridScale: { value: 0.01, min: 0.005, max: 0.02, step: 0.001 },
-    colGap: { value: 15, min: -50, max: 150, step: 1 },
-    rowGap: { value: 4, min: -50, max: 150, step: 1 },
-    lastRowOffsetX: { value: -21, min: -200, max: 200, step: 1 },
-    lastRowOffsetY: { value: 15, min: -200, max: 200, step: 1 },
-    bloomStrength: { value: 3, min: 0, max: 15, step: 0.05 },
-    bloomRadius: { value: 0.26, min: 0, max: 1, step: 0.01 },
-    bloomThreshold: { value: 0.2, min: 0, max: 1, step: 0.01 },
-  });
+    glowIntensity: 5.0,
+    metalness: 0.5,
+    roughness: 0.4,
+    cameraZ: 8,
+    fov: 50,
+    ambientLight: 1.0,
+    dirLight: 0.5,
+    gridScale: 0.01,
+    colGap: 15,
+    rowGap: 4,
+    lastRowOffsetX: -21,
+    lastRowOffsetY: 15,
+    bloomStrength: 3,
+    bloomRadius: 0.26,
+    bloomThreshold: 0.2,
+  };
 
   const tileControls: IconTileControls = controls;
 
