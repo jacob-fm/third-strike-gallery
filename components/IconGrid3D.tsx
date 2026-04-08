@@ -117,14 +117,14 @@ export default function IconGrid3D({
     maxTilt: { value: 0.5, min: 0, max: 1.0, step: 0.01 },
     tiltScale: { value: 0.11, min: 0, max: 0.5, step: 0.01 },
     lerpSpeed: { value: 0.08, min: 0.01, max: 0.3, step: 0.01 },
-    extrudeDepth: { value: 0.25, min: 0.01, max: 0.3, step: 0.01 },
-    tileColor: "#1a1a1a",
-    glowColor: "#36aed0",
-    glowIntensity: { value: 1.5, min: 0, max: 5, step: 0.1 },
+    extrudeDepth: { value: 0.25, min: 0.01, max: 0.6, step: 0.01 },
+    tileColor: "#aaaaaa",
+    glowColor: "#41d6ff",
+    glowIntensity: { value: 5.0, min: 0, max: 20, step: 0.1 },
     metalness: { value: 0.5, min: 0, max: 1, step: 0.01 },
     roughness: { value: 0.4, min: 0, max: 1, step: 0.01 },
-    cameraZ: { value: 15, min: 2, max: 30, step: 0.1 },
-    fov: { value: 28, min: 10, max: 90, step: 1 },
+    cameraZ: { value: 8, min: 2, max: 30, step: 0.1 },
+    fov: { value: 50, min: 10, max: 90, step: 1 },
     ambientLight: { value: 1.0, min: 0, max: 3, step: 0.1 },
     dirLight: { value: 0.5, min: 0, max: 3, step: 0.1 },
     gridScale: { value: 0.01, min: 0.005, max: 0.02, step: 0.001 },
@@ -132,8 +132,8 @@ export default function IconGrid3D({
     rowGap: { value: 4, min: -50, max: 150, step: 1 },
     lastRowOffsetX: { value: -21, min: -200, max: 200, step: 1 },
     lastRowOffsetY: { value: 15, min: -200, max: 200, step: 1 },
-    bloomStrength: { value: 1.2, min: 0, max: 5, step: 0.05 },
-    bloomRadius: { value: 0.6, min: 0, max: 1, step: 0.01 },
+    bloomStrength: { value: 3, min: 0, max: 15, step: 0.05 },
+    bloomRadius: { value: 0.26, min: 0, max: 1, step: 0.01 },
     bloomThreshold: { value: 0.2, min: 0, max: 1, step: 0.01 },
   });
 
@@ -191,7 +191,10 @@ export default function IconGrid3D({
 
   return (
     <div className="w-full h-full" onPointerLeave={handlePointerLeave}>
-      <Canvas gl={{ alpha: true, toneMapping: THREE.NoToneMapping }} style={{ overflow: "visible" }}>
+      <Canvas
+        gl={{ alpha: true, toneMapping: THREE.NoToneMapping }}
+        style={{ overflow: "visible" }}
+      >
         <CameraController
           target={center}
           cameraZ={controls.cameraZ}
