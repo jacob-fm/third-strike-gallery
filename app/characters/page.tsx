@@ -6,6 +6,7 @@ import { Character } from "@/types/character";
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import { Orbitron } from "next/font/google";
+import { characters } from "@/data/characters";
 
 const IconGrid3D = dynamic(() => import("@/components/IconGrid3D"), {
   ssr: false,
@@ -34,12 +35,11 @@ export default function CharactersPage() {
   const [modalChar, setModalChar] = useState<Character | null>(null);
   const [hoveredChar, setHoveredChar] = useState<Character | null>(null);
 
+  // const portraitChar = characters.find((c) => c.name === "Akuma");
+  // const portraitChar = characters.find((c) => c.name === "Elena");
   const portraitChar = hoveredChar;
 
   return (
-    // <main
-    //   className={`w-screen h-screen overflow-hidden bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-amber-200 via-red-800 to-black relative ${charNameFont.variable}`}
-    // >
     <main
       className={`w-screen h-screen overflow-hidden bg-[radial-gradient(circle_at_top_right,#d89559,#8a240a,#000)] relative ${charNameFont.variable}`}
     >
@@ -51,7 +51,7 @@ export default function CharactersPage() {
       {/*   style={{ imageRendering: "pixelated" }} */}
       {/* /> */}
       {/* Large portrait — left side */}
-      <div className="absolute top-1/2 -translate-y-1/2 left-[4%] w-[50%] aspect-square flex items-center justify-center">
+      <div className="absolute top-[45%] -translate-y-1/2 left-[4%] w-[50%] h-[65%] flex items-center justify-center">
         <AnimatePresence>
           {portraitChar ? (
             <motion.div
@@ -60,7 +60,7 @@ export default function CharactersPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
-              className="w-lg h-full absolute inset-0"
+              className="w-full h-full absolute inset-0"
             >
               <Image
                 src={portraitChar.artworkImage}
