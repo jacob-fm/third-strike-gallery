@@ -16,7 +16,7 @@ function CharacterNameInner({ character }: CharacterName3DProps) {
   return (
     <Text3D
       font="/fonts/Orbitron_Regular.json"
-      size={0.5}
+      size={0.45}
       height={0.06}
       curveSegments={8}
       bevelEnabled={false}
