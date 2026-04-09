@@ -15,7 +15,7 @@ function CharacterNameInner({ character }: CharacterName3DProps) {
 
   return (
     <Text3D
-      font="/fonts/helvetiker_regular.typeface.json"
+      font="/fonts/Orbitron_Regular.json"
       size={0.5}
       height={0.06}
       curveSegments={8}
