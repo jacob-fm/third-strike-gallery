@@ -4,8 +4,15 @@ import Image from "next/image";
 import { useState } from "react";
 import { Character } from "@/types/character";
 import { AnimatePresence, motion } from "motion/react";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// import { characters } from "@/data/characters";
 import dynamic from "next/dynamic";
+
 const IconGrid3D = dynamic(() => import("@/components/IconGrid3D"), {
+  ssr: false,
+});
+
+const CharacterName3D = dynamic(() => import("@/components/CharacterName3D"), {
   ssr: false,
 });
 
@@ -27,14 +34,10 @@ export default function CharactersPage() {
   const [modalChar, setModalChar] = useState<Character | null>(null);
   const [hoveredChar, setHoveredChar] = useState<Character | null>(null);
 
-  // const portraitChar = characters.find((c) => c.name === "Akuma");
-  // const portraitChar = characters.find((c) => c.name === "Elena");
   const portraitChar = hoveredChar;
 
   return (
-    <main
-      className="w-screen h-screen overflow-hidden bg-[radial-gradient(circle_at_top_right,#d89559,#8a240a,#000)] relative"
-    >
+    <main className="w-screen h-screen overflow-hidden bg-[radial-gradient(circle_at_top_right,#d89559,#8a240a,#000)] relative">
       {/* <Image */}
       {/*   src="/bg.png" */}
       {/*   alt="character select background" */}
@@ -73,8 +76,12 @@ export default function CharactersPage() {
           rowOffsets={ROW_OFFSETS}
           onHover={setHoveredChar}
           onSelect={setModalChar}
-          hoveredChar={hoveredChar}
         />
+      </div>
+
+      {/* 3D character name — left side */}
+      <div className="absolute bottom-8 left-8 w-150 h-40">
+        <CharacterName3D character={portraitChar} />
       </div>
 
       {/* Character detail modal */}
