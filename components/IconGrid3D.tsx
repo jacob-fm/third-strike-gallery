@@ -3,6 +3,7 @@
 import { Suspense, useCallback, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { EffectComposer, SelectiveBloom } from "@react-three/postprocessing";
+import { Text3D } from "@react-three/drei";
 // import { useControls } from "leva";
 import * as THREE from "three";
 import { getCharacterBySlug } from "@/data/characters";
@@ -95,6 +96,43 @@ function computeCenter(
   return [sx / n, sy / n, 0];
 }
 
+// ── Character name label ───────────────────────────────────────────
+
+interface CharacterNameLabelProps {
+  hoveredChar: Character | null;
+  gridScale: number;
+}
+
+function CharacterNameLabelInner({
+  hoveredChar,
+  gridScale,
+}: CharacterNameLabelProps) {
+  if (!hoveredChar) return null;
+
+  return (
+    <Text3D
+      font="/fonts/helvetiker_regular.typeface.json"
+      size={gridScale * 160}
+      height={gridScale * 16}
+      curveSegments={8}
+      bevelEnabled={false}
+      letterSpacing={0.05}
+      position={[-2.5, -1.5, 0.5]}
+    >
+      {hoveredChar.name.toUpperCase()}
+      <meshStandardMaterial color="#ffffff" metalness={0.5} roughness={0.4} />
+    </Text3D>
+  );
+}
+
+function CharacterNameLabel(props: CharacterNameLabelProps) {
+  return (
+    <Suspense fallback={null}>
+      <CharacterNameLabelInner {...props} />
+    </Suspense>
+  );
+}
+
 // ── Main component ──────────────────────────────────────────────────
 
 interface IconGrid3DProps {
@@ -102,6 +140,7 @@ interface IconGrid3DProps {
   rowOffsets: number[];
   onHover: (c: Character | null) => void;
   onSelect: (c: Character) => void;
+  hoveredChar: Character | null;
 }
 
 export default function IconGrid3D({
@@ -109,6 +148,7 @@ export default function IconGrid3D({
   rowOffsets,
   onHover,
   onSelect,
+  hoveredChar,
 }: IconGrid3DProps) {
   const tiltOriginRef = useRef<THREE.Vector3 | null>(null);
   const [hoveredGroup, setHoveredGroup] = useState<THREE.Group | null>(null);
@@ -137,29 +177,32 @@ export default function IconGrid3D({
   //   bloomThreshold: { value: 0.2, min: 0, max: 1, step: 0.01 },
   // });
 
-  const controls = {
-    maxTilt: 0.5,
-    tiltScale: 0.11,
-    lerpSpeed: 0.08,
-    extrudeDepth: 0.25,
-    tileColor: "#aaaaaa",
-    glowColor: "#41d6ff",
-    glowIntensity: 5.0,
-    metalness: 0.5,
-    roughness: 0.4,
-    cameraZ: 8,
-    fov: 50,
-    ambientLight: 1.0,
-    dirLight: 0.5,
-    gridScale: 0.01,
-    colGap: 15,
-    rowGap: 4,
-    lastRowOffsetX: -21,
-    lastRowOffsetY: 15,
-    bloomStrength: 3,
-    bloomRadius: 0.26,
-    bloomThreshold: 0.2,
-  };
+  const controls = useMemo(
+    () => ({
+      maxTilt: 0.5,
+      tiltScale: 0.11,
+      lerpSpeed: 0.08,
+      extrudeDepth: 0.25,
+      tileColor: "#aaaaaa",
+      glowColor: "#41d6ff",
+      glowIntensity: 5.0,
+      metalness: 0.5,
+      roughness: 0.4,
+      cameraZ: 8,
+      fov: 50,
+      ambientLight: 1.0,
+      dirLight: 0.5,
+      gridScale: 0.01,
+      colGap: 15,
+      rowGap: 4,
+      lastRowOffsetX: -21,
+      lastRowOffsetY: 15,
+      bloomStrength: 3,
+      bloomRadius: 0.26,
+      bloomThreshold: 0.2,
+    }),
+    [],
+  );
 
   const tileControls: IconTileControls = controls;
 
@@ -248,6 +291,10 @@ export default function IconGrid3D({
             luminanceSmoothing={controls.bloomRadius}
           />
         </EffectComposer>
+        <CharacterNameLabel
+          hoveredChar={hoveredChar}
+          gridScale={controls.gridScale}
+        />
       </Canvas>
     </div>
   );

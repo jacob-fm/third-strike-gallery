@@ -5,9 +5,6 @@ import { useState } from "react";
 import { Character } from "@/types/character";
 import { AnimatePresence, motion } from "motion/react";
 import dynamic from "next/dynamic";
-import { Orbitron } from "next/font/google";
-import { characters } from "@/data/characters";
-
 const IconGrid3D = dynamic(() => import("@/components/IconGrid3D"), {
   ssr: false,
 });
@@ -23,11 +20,6 @@ const GRID_ROWS = [
   ["yang"],
 ];
 
-const charNameFont = Orbitron({
-  weight: "600",
-  variable: "--font-char",
-});
-
 // Diagonal cascade: each row shifts 20px further left going down
 const ROW_OFFSETS = [120, 100, 80, 60, 40, 20, 0];
 
@@ -41,7 +33,7 @@ export default function CharactersPage() {
 
   return (
     <main
-      className={`w-screen h-screen overflow-hidden bg-[radial-gradient(circle_at_top_right,#d89559,#8a240a,#000)] relative ${charNameFont.variable}`}
+      className="w-screen h-screen overflow-hidden bg-[radial-gradient(circle_at_top_right,#d89559,#8a240a,#000)] relative"
     >
       {/* <Image */}
       {/*   src="/bg.png" */}
@@ -81,19 +73,8 @@ export default function CharactersPage() {
           rowOffsets={ROW_OFFSETS}
           onHover={setHoveredChar}
           onSelect={setModalChar}
+          hoveredChar={hoveredChar}
         />
-      </div>
-
-      {/* Character name — bottom left */}
-      <div className="absolute bottom-8 left-18 h-16">
-        {portraitChar && (
-          <h1
-            key={portraitChar.slug}
-            className="absolute bottom-4 left-0 text-8xl italic font-char tracking-widest uppercase text-white whitespace-nowrap"
-          >
-            {portraitChar.name}
-          </h1>
-        )}
       </div>
 
       {/* Character detail modal */}
