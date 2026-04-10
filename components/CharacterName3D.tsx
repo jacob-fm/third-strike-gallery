@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useEffect, useMemo, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Text3D } from "@react-three/drei";
 import * as THREE from "three";
@@ -24,20 +24,22 @@ function CharacterNameInner({ character }: CharacterName3DProps) {
       position={[-1.5, 0, 0]}
     >
       {character.name.toUpperCase()}
-      <meshStandardMaterial color="#ffffff" metalness={0.5} roughness={0.4} />
+      <meshStandardMaterial color="#ffffff" metalness={0.5} roughness={0.2} />
     </Text3D>
   );
 }
 
 export default function CharacterName3D({ character }: CharacterName3DProps) {
+  const light = useRef<THREE.DirectionalLight>(null);
+
   return (
     <Canvas
       gl={{ alpha: true, toneMapping: THREE.NoToneMapping }}
       style={{ overflow: "visible" }}
       camera={{ position: [0, 0, 3], fov: 20 }}
     >
-      <ambientLight intensity={1.0} />
-      <directionalLight position={[0, 2, 5]} intensity={0.5} />
+      <ambientLight intensity={0.3} />
+      <directionalLight ref={light} position={[-2, 1.5, 15]} intensity={0.8} />
       <Suspense fallback={null}>
         <CharacterNameInner character={character} />
       </Suspense>
