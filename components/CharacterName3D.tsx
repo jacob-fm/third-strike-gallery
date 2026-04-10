@@ -43,7 +43,7 @@ function CharacterNameMesh({ character }: { character: Character }) {
         rotation={[0, -0.08, 0]}
       >
         {character.name.toUpperCase()}
-        <meshStandardMaterial color="#ffffff" metalness={0.5} roughness={0.2} />
+        <meshStandardMaterial color="#bababa" metalness={0.5} roughness={0.2} />
       </Text3D>
     </group>
   );
@@ -63,8 +63,8 @@ export default function CharacterName3D({ character }: CharacterName3DProps) {
       style={{ overflow: "visible" }}
       camera={{ position: [0, 0, 3], fov: 20 }}
     >
-      <ambientLight intensity={0.3} />
-      <directionalLight ref={light} position={[-2, 1.5, 15]} intensity={0.8} />
+      <ambientLight intensity={0.15} />
+      <directionalLight ref={light} position={[-6, 1.0, 6]} intensity={5.0} />
       <Suspense fallback={null}>
         <CharacterNameInner character={character} />
       </Suspense>
