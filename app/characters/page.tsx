@@ -80,7 +80,7 @@ export default function CharactersPage() {
       </div>
 
       {/* 3D character name — left side */}
-      <div className="absolute bottom-8 left-8 w-150 h-40">
+      <div className="absolute bottom-8 left-8 w-180 h-40">
         <CharacterName3D character={portraitChar} />
       </div>
 
