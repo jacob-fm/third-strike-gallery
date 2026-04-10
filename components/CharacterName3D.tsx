@@ -1,7 +1,7 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useRef } from "react";
-import { Canvas } from "@react-three/fiber";
+import { Suspense, useEffect, useRef } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { Text3D } from "@react-three/drei";
 import * as THREE from "three";
 import { Character } from "@/types/character";
@@ -10,23 +10,48 @@ interface CharacterName3DProps {
   character: Character | null;
 }
 
-function CharacterNameInner({ character }: CharacterName3DProps) {
-  if (!character) return null;
+const RESTING_X = -1.5;
+const SLIDE_START_X = -3.5;
+
+function CharacterNameMesh({ character }: { character: Character }) {
+  const groupRef = useRef<THREE.Group>(null);
+
+  useEffect(() => {
+    if (groupRef.current) {
+      groupRef.current.position.x = SLIDE_START_X;
+    }
+  }, [character.slug]);
+
+  useFrame(() => {
+    if (!groupRef.current) return;
+    groupRef.current.position.x = THREE.MathUtils.lerp(
+      groupRef.current.position.x,
+      RESTING_X,
+      0.12,
+    );
+  });
 
   return (
-    <Text3D
-      font="/fonts/Orbitron_Regular.json"
-      size={0.45}
-      height={0.06}
-      curveSegments={8}
-      bevelEnabled={false}
-      letterSpacing={0.05}
-      position={[-1.5, 0, 0]}
-    >
-      {character.name.toUpperCase()}
-      <meshStandardMaterial color="#ffffff" metalness={0.5} roughness={0.2} />
-    </Text3D>
+    <group ref={groupRef} position={[SLIDE_START_X, 0, 0]}>
+      <Text3D
+        font="/fonts/Orbitron_Regular.json"
+        size={0.45}
+        height={0.06}
+        curveSegments={8}
+        bevelEnabled={false}
+        letterSpacing={0.05}
+        rotation={[0, -0.08, 0]}
+      >
+        {character.name.toUpperCase()}
+        <meshStandardMaterial color="#ffffff" metalness={0.5} roughness={0.2} />
+      </Text3D>
+    </group>
   );
+}
+
+function CharacterNameInner({ character }: CharacterName3DProps) {
+  if (!character) return null;
+  return <CharacterNameMesh character={character} />;
 }
 
 export default function CharacterName3D({ character }: CharacterName3DProps) {
