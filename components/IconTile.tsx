@@ -18,6 +18,7 @@ export interface IconTileControls {
   metalness: number;
   roughness: number;
   gridScale: number;
+  baseRotationY: number;
 }
 
 /** Tile dimensions in screen pixels (before PX_TO_WORLD scaling) */
@@ -76,6 +77,7 @@ export default function IconTile({
     metalness,
     roughness,
     gridScale,
+    baseRotationY,
   } = controls;
 
   const tileW = CARD_W_PX * gridScale;
@@ -123,7 +125,7 @@ export default function IconTile({
 
     const origin = tiltOriginRef.current;
     let targetRotX = 0;
-    let targetRotY = 0;
+    let targetRotY = baseRotationY;
 
     if (origin) {
       const dx = origin.x - position[0];
@@ -134,7 +136,7 @@ export default function IconTile({
       if (distance > 0.001) {
         const norm = 1 / distance;
         targetRotX = -dy * norm * tiltAmount;
-        targetRotY = dx * norm * tiltAmount;
+        targetRotY = baseRotationY + dx * norm * tiltAmount;
       }
     }
 

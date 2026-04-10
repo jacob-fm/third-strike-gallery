@@ -135,6 +135,7 @@ export default function IconGrid3D({
   //   bloomStrength: { value: 3, min: 0, max: 15, step: 0.05 },
   //   bloomRadius: { value: 0.26, min: 0, max: 1, step: 0.01 },
   //   bloomThreshold: { value: 0.2, min: 0, max: 1, step: 0.01 },
+  //   baseRotationY: { value: -0.15, min: -1, max: 1, step: 0.01 },
   // });
 
   const controls = useMemo(
@@ -151,7 +152,7 @@ export default function IconGrid3D({
       cameraZ: 8,
       fov: 50,
       ambientLight: 1.0,
-      dirLight: 0.5,
+      dirLight: 0.8,
       gridScale: 0.01,
       colGap: 15,
       rowGap: 4,
@@ -160,6 +161,7 @@ export default function IconGrid3D({
       bloomStrength: 3,
       bloomRadius: 0.26,
       bloomThreshold: 0.2,
+      baseRotationY: -0.15,
     }),
     [],
   );
