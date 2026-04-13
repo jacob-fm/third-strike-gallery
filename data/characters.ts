@@ -8,7 +8,7 @@ export const characters: Character[] = [
     fightingStyle: "Pro Wrestling / Street Fighting",
     bio: "Alex is a powerhouse brawler from New York City who fights to honor his mentor Tom. Trained in pro wrestling techniques and street fighting, he entered the World Warrior tournament seeking to prove himself as the world's strongest fighter. Hot-headed and aggressive, he fights with raw power and grappling techniques.",
     iconImage: "/characters/icons/alex.png",
-    artworkImage: "/characters/alex-artwork.gif",
+    artworkImage: "/characters/idle/alex.gif",
     moves: [
       { name: "Jab", input: "LP", category: "normal" },
       { name: "Strong", input: "MP", category: "normal" },
@@ -84,7 +84,7 @@ export const characters: Character[] = [
     fightingStyle: "Ansatsuken",
     bio: "The eternal wandering warrior, Ryu travels the world seeking opponents to test his skills. A master of the Ansatsuken fighting style, he seeks to improve himself through battle. His rivalry with Ken Masters and his inner struggle against the Satsui no Hado define his journey. Disciplined, stoic, and endlessly dedicated to martial arts.",
     iconImage: "/characters/icons/ryu.png",
-    artworkImage: "/characters/ryu-artwork.gif",
+    artworkImage: "/characters/idle/ryu.gif",
     moves: [
       { name: "Jab", input: "LP", category: "normal" },
       { name: "Strong", input: "MP", category: "normal" },
@@ -148,7 +148,7 @@ export const characters: Character[] = [
     fightingStyle: "Ansatsuken",
     bio: "Ryu's longtime training partner and closest rival, Ken Masters is a flamboyant American martial artist. Unlike the stoic Ryu, Ken fights with passion and showmanship, incorporating fiery kicks into the Ansatsuken style. Married to Eliza and father of Mel, Ken balances family life with his love of fighting.",
     iconImage: "/characters/icons/ken.png",
-    artworkImage: "/characters/ken-artwork.gif",
+    artworkImage: "/characters/idle/ken.gif",
     moves: [
       { name: "Jab", input: "LP", category: "normal" },
       { name: "Strong", input: "MP", category: "normal" },
@@ -212,7 +212,7 @@ export const characters: Character[] = [
     fightingStyle: "Chinese Kenpo / Interpol Training",
     bio: "The Strongest Woman in the World, Chun-Li is an Interpol officer who originally fought to avenge her father's death at the hands of Shadaloo. In Third Strike, she has retired from active duty to teach martial arts to orphaned children, but is drawn back into the fighting world. Her lightning-fast kicks are legendary.",
     iconImage: "/characters/icons/chun-li.png",
-    artworkImage: "/characters/chun-li-artwork.gif",
+    artworkImage: "/characters/idle/chun.gif",
     moves: [
       { name: "Jab", input: "LP", category: "normal" },
       { name: "Strong", input: "MP", category: "normal" },
@@ -286,7 +286,7 @@ export const characters: Character[] = [
     fightingStyle: "Boxing",
     bio: "A refined English gentleman and world-class boxer, Dudley fights with impeccable technique and class. He enters tournaments to reclaim his father's car collection that was lost to debt. Despite his privileged upbringing, Dudley is never arrogant — he believes in fighting with dignity and sportsmanship. His powerful punches and stylish footwork make him a formidable opponent.",
     iconImage: "/characters/icons/dudley.png",
-    artworkImage: "/characters/dudley-artwork.gif",
+    artworkImage: "/characters/idle/dudley.gif",
     moves: [
       { name: "Jab", input: "LP", category: "normal" },
       { name: "Strong", input: "MP", category: "normal" },
@@ -360,7 +360,7 @@ export const characters: Character[] = [
     fightingStyle: "Capoeira",
     bio: "A princess from a powerful African tribe, Elena is a free-spirited young woman who loves making friends and experiencing new cultures. Her graceful capoeira fighting style emphasizes fluid, dance-like movements and powerful kick combinations. Elena sees fighting as a form of communication and a way to connect with others.",
     iconImage: "/characters/icons/elena.png",
-    artworkImage: "/characters/elena-artwork.gif",
+    artworkImage: "/characters/idle/elena.gif",
     moves: [
       { name: "Jab", input: "LP", category: "normal" },
       { name: "Strong", input: "MP", category: "normal" },
@@ -422,7 +422,7 @@ export const characters: Character[] = [
     fightingStyle: "Genetic Mutation / Street Fighting",
     bio: "A Russian man experimented on by the Illuminati, Necro's body has been genetically altered to allow his limbs to stretch and bend unnaturally. He fights alongside his companion Effie to escape the organization that created him. His unusual body allows for surprising reach and electric attacks that make him a unique and dangerous opponent.",
     iconImage: "/characters/icons/necro.png",
-    artworkImage: "/characters/necro-artwork.gif",
+    artworkImage: "/characters/idle/necro.gif",
     moves: [
       { name: "Jab", input: "LP", category: "normal" },
       { name: "Strong", input: "MP", category: "normal" },
@@ -490,7 +490,7 @@ export const characters: Character[] = [
     fightingStyle: "Senjutsu",
     bio: "An ancient hermit living in the jungles of Brazil, Oro is over 140 years old and has mastered the art of Senjutsu. He fights with one arm tied behind his back to avoid killing his opponents with his overwhelming power. He is searching for a worthy successor to his fighting style and has taken an interest in Ryu. Despite his frail appearance, he is immensely powerful.",
     iconImage: "/characters/icons/oro.png",
-    artworkImage: "/characters/oro-artwork.gif",
+    artworkImage: "/characters/idle/oro.gif",
     moves: [
       { name: "Jab", input: "LP", category: "normal" },
       { name: "Strong", input: "MP", category: "normal" },
@@ -558,7 +558,7 @@ export const characters: Character[] = [
     fightingStyle: "Pro Wrestling (Andore Style)",
     bio: "A massive German wrestler who stands over 8 feet tall, Hugo Andore is managed by Poison and seeks to become the most feared wrestler in the world. His enormous size gives him incredible power but limits his speed. What he lacks in agility he more than makes up for in raw strength and devastating grappling moves.",
     iconImage: "/characters/icons/hugo.png",
-    artworkImage: "/characters/hugo-artwork.gif",
+    artworkImage: "/characters/idle/hugo.gif",
     moves: [
       { name: "Jab", input: "LP", category: "normal" },
       { name: "Strong", input: "MP", category: "normal" },
@@ -627,7 +627,7 @@ export const characters: Character[] = [
     fightingStyle: "Kung Fu (Seiei-enbu)",
     bio: "The younger of the Lee twins, Yang is more serious and focused than his brother Yun. He fights with precise, efficient kung fu techniques emphasizing speed and combo potential. While Yun relies on aggressive pressure, Yang prefers a more calculated approach. He seeks to prove himself as the better fighter of the twins.",
     iconImage: "/characters/icons/yang.png",
-    artworkImage: "/characters/yang-artwork.gif",
+    artworkImage: "/characters/idle/yang.gif",
     moves: [
       { name: "Jab", input: "LP", category: "normal" },
       { name: "Strong", input: "MP", category: "normal" },
@@ -695,7 +695,7 @@ export const characters: Character[] = [
     fightingStyle: "Kung Fu (Genei-jin)",
     bio: "The elder of the Lee twins and the guardian of Hong Kong's streets, Yun is an aggressive, street-smart fighter who rides a skateboard between fights. His kung fu style emphasizes constant pressure and momentum, making him one of the most aggressive fighters in the game. He fights alongside his brother Yang to protect their city.",
     iconImage: "/characters/icons/yun.png",
-    artworkImage: "/characters/yun-artwork.gif",
+    artworkImage: "/characters/idle/yun.gif",
     moves: [
       { name: "Jab", input: "LP", category: "normal" },
       { name: "Strong", input: "MP", category: "normal" },
@@ -763,7 +763,7 @@ export const characters: Character[] = [
     fightingStyle: "Ninjutsu",
     bio: "A young kunoichi (female ninja) who yearns for a normal teenage life, Ibuki was raised in a ninja clan and trained from birth in the art of ninjutsu. She fights with incredible speed and agility, using shurikens, kunais, and acrobatic strikes. Despite her deadly skills, she dreams of going to a normal school and living an ordinary life.",
     iconImage: "/characters/icons/ibuki.png",
-    artworkImage: "/characters/ibuki-artwork.gif",
+    artworkImage: "/characters/idle/ibuki.gif",
     moves: [
       { name: "Jab", input: "LP", category: "normal" },
       { name: "Strong", input: "MP", category: "normal" },
@@ -831,7 +831,7 @@ export const characters: Character[] = [
     fightingStyle: "Rindo-kan Karate",
     bio: "A fiery young karate practitioner who inherited her father's dojo, Makoto fights to restore the Rindo-kan style's reputation and attract students to her struggling school. Aggressive and straightforward, she relies on overwhelming power and forward momentum. She has no interest in fancy techniques — only crushing her opponents with pure karate.",
     iconImage: "/characters/icons/makoto.png",
-    artworkImage: "/characters/makoto-artwork.gif",
+    artworkImage: "/characters/idle/makoto.gif",
     moves: [
       { name: "Jab", input: "LP", category: "normal" },
       { name: "Strong", input: "MP", category: "normal" },
@@ -899,7 +899,7 @@ export const characters: Character[] = [
     fightingStyle: "Unknown",
     bio: "A mysterious figure in a trench coat and iron mask, Q's true identity, motives, and fighting style origins are completely unknown. He appears at fighting tournaments around the world, leaving destruction in his wake. Interpol has been unable to identify him. His slow but devastating strikes and incredible durability make him a fearsome opponent.",
     iconImage: "/characters/icons/q.png",
-    artworkImage: "/characters/q-artwork.gif",
+    artworkImage: "/characters/idle/q.gif",
     moves: [
       { name: "Jab", input: "LP", category: "normal" },
       { name: "Strong", input: "MP", category: "normal" },
@@ -973,7 +973,7 @@ export const characters: Character[] = [
     fightingStyle: "Illuminati Genetic Engineering",
     bio: "A shapeshifting biological weapon created by the Illuminati, Twelve is a prototype supersoldier capable of morphing its body into various forms. It can transform its limbs into blades, projectiles, and other weapons. Twelve has no true identity of its own — it exists only to serve and destroy. Despite its inhuman nature, there is something almost tragic about its existence.",
     iconImage: "/characters/icons/twelve.png",
-    artworkImage: "/characters/twelve-artwork.gif",
+    artworkImage: "/characters/idle/twelve.gif",
     moves: [
       { name: "Jab", input: "LP", category: "normal" },
       { name: "Strong", input: "MP", category: "normal" },
@@ -1035,7 +1035,7 @@ export const characters: Character[] = [
     fightingStyle: "Illuminati Martial Arts",
     bio: "The ruthless and arrogant Vice-President of the Illuminati, Urien fights with raw power amplified by his organization's Aegis system. He believes himself superior to all others and seeks to overthrow his brother Gill to become the Illuminati's president. His fighting style combines heavy strikes with reflecting Aegis forcefields that trap opponents.",
     iconImage: "/characters/icons/urien.png",
-    artworkImage: "/characters/urien-artwork.gif",
+    artworkImage: "/characters/idle/urien.gif",
     moves: [
       { name: "Jab", input: "LP", category: "normal" },
       { name: "Strong", input: "MP", category: "normal" },
@@ -1104,7 +1104,7 @@ export const characters: Character[] = [
     fightingStyle: "Illuminati Martial Arts (Pyrokinesis / Cryokinesis)",
     bio: "The messianic President and God-King of the Illuminati, Gill believes himself to be the chosen one destined to guide humanity into a new golden age. His body is split between fire and ice, granting him mastery over both elements. Immensely powerful and utterly convinced of his own righteousness, he is the final boss of Third Strike.",
     iconImage: "/characters/icons/gill.png",
-    artworkImage: "/characters/gill-artwork.gif",
+    artworkImage: "/characters/idle/gill.gif",
     moves: [
       { name: "Jab", input: "LP", category: "normal" },
       { name: "Strong", input: "MP", category: "normal" },
@@ -1166,7 +1166,7 @@ export const characters: Character[] = [
     fightingStyle: "Ansatsuken (In Training)",
     bio: "Ken Masters' enthusiastic but undertrained student, Sean is a young Brazilian fighter who idolizes Ken and dreams of becoming a world champion. He has learned the basics of the Ansatsuken style but lacks the discipline and technique of his master. Reckless and overconfident, Sean fights with a mix of basketball-inspired tricks and half-learned martial arts moves.",
     iconImage: "/characters/icons/sean.png",
-    artworkImage: "/characters/sean-artwork.gif",
+    artworkImage: "/characters/idle/sean.gif",
     moves: [
       { name: "Jab", input: "LP", category: "normal" },
       { name: "Strong", input: "MP", category: "normal" },
@@ -1240,7 +1240,7 @@ export const characters: Character[] = [
     fightingStyle: "Savate",
     bio: "A brooding French fighter who despises martial arts, Remy fights despite hating the very nature of combat. His father abandoned the family to pursue fighting, and his sister fell into a coma waiting for him to return. Remy fights with cold, detached elegance using Savate — French kickboxing — but inwardly seethes with rage and sorrow.",
     iconImage: "/characters/icons/remy.png",
-    artworkImage: "/characters/remy-artwork.gif",
+    artworkImage: "/characters/idle/remy.gif",
     moves: [
       { name: "Jab", input: "LP", category: "normal" },
       { name: "Strong", input: "MP", category: "normal" },
@@ -1308,7 +1308,7 @@ export const characters: Character[] = [
     fightingStyle: "Ansatsuken (Satsui no Hado)",
     bio: "The Master of the Fist, Akuma has fully embraced the Satsui no Hado — the Surge of Murderous Intent — and transformed himself into a demon. He killed his own master Goutetsu and battles Ryu's master Gouken to prove his power. Akuma seeks only worthy opponents and eternal battle. In Third Strike, he has elevated himself even further, becoming Shin Akuma, a being of pure destructive power.",
     iconImage: "/characters/icons/akuma.png",
-    artworkImage: "/characters/akuma-artwork.gif",
+    artworkImage: "/characters/idle/akuma.gif",
     moves: [
       { name: "Jab", input: "LP", category: "normal" },
       { name: "Strong", input: "MP", category: "normal" },
