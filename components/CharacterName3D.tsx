@@ -36,7 +36,7 @@ function CharacterNameMesh({ character }: { character: Character }) {
       <Text3D
         font="/fonts/Orbitron_Regular.json"
         size={0.45}
-        height={0.06}
+        height={0.16}
         curveSegments={8}
         bevelEnabled={false}
         letterSpacing={0.05}
