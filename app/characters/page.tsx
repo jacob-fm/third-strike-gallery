@@ -37,7 +37,7 @@ export default function CharactersPage() {
   const portraitChar = hoveredChar;
 
   return (
-    <main className="w-screen h-screen overflow-hidden bg-[radial-gradient(circle_at_top_right,#d89559,#8a240a,#000)] relative">
+    <main className="w-screen h-screen overflow-hidden relative">
       {/* <Image */}
       {/*   src="/bg.png" */}
       {/*   alt="character select background" */}
@@ -46,6 +46,16 @@ export default function CharactersPage() {
       {/*   style={{ imageRendering: "pixelated" }} */}
       {/* /> */}
       {/* Large portrait — left side */}
+      <Image
+        src={portraitChar ? portraitChar.stageImage : "/bg.png"}
+        alt="character select background"
+        fill={true}
+        unoptimized
+        style={{ imageRendering: "pixelated" }}
+        className={
+          portraitChar ? "contrast-80 brightness-125 blur-sm -z-20" : ""
+        }
+      />
       <div className="absolute top-[45%] -translate-y-1/2 left-[4%] w-[50%] h-[65%] flex items-center justify-center">
         <AnimatePresence>
           {portraitChar ? (
@@ -80,7 +90,7 @@ export default function CharactersPage() {
       </div>
 
       {/* 3D character name — left side */}
-      <div className="absolute bottom-8 left-8 w-180 h-40">
+      <div className="absolute bottom-8 z-10 left-8 w-180 h-40">
         <CharacterName3D character={portraitChar} />
       </div>
 

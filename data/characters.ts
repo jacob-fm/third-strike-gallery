@@ -913,7 +913,8 @@ export const characters: Character[] = [
     bio: "A mysterious figure in a trench coat and iron mask, Q's true identity, motives, and fighting style origins are completely unknown. He appears at fighting tournaments around the world, leaving destruction in his wake. Interpol has been unable to identify him. His slow but devastating strikes and incredible durability make him a fearsome opponent.",
     iconImage: "/characters/icons/q.png",
     artworkImage: "/characters/idle/q.gif",
-    stageImage: "/stages/q.gif",
+    // using ken's stage since q does not have his own
+    stageImage: "/stages/ken.gif",
     moves: [
       { name: "Jab", input: "LP", category: "normal" },
       { name: "Strong", input: "MP", category: "normal" },
