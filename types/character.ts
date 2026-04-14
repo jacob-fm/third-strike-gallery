@@ -1,4 +1,4 @@
-export type MoveCategory = 'normal' | 'special' | 'super';
+export type MoveCategory = "normal" | "special" | "super";
 
 export interface Move {
   name: string;
@@ -16,5 +16,6 @@ export interface Character {
   bio: string;
   iconImage: string;
   artworkImage: string;
+  stageImage: string;
   moves: Move[];
 }
