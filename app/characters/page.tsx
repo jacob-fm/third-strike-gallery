@@ -59,7 +59,7 @@ export default function CharactersPage() {
               alt="character select background"
               fill={true}
               style={{ imageRendering: "pixelated" }}
-              className={"brightness-75 contrast-80 blur-sm -z-20"}
+              className={"brightness-75 contrast-80 saturate-80 blur-sm -z-20"}
             />
           </motion.div>
         )}
