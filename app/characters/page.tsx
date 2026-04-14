@@ -38,32 +38,31 @@ export default function CharactersPage() {
 
   return (
     <main className="w-screen h-screen overflow-hidden relative">
-      {/* <Image */}
-      {/*   src="/bg.png" */}
-      {/*   alt="character select background" */}
-      {/*   fill={true} */}
-      {/*   unoptimized */}
-      {/*   style={{ imageRendering: "pixelated" }} */}
-      {/* /> */}
-      {/* Large portrait — left side */}
+      <Image
+        src="/bg.png"
+        alt="character select background"
+        fill={true}
+        unoptimized
+        className="[image-rendering:pixelated] -z-21"
+      />
       <AnimatePresence>
-        <motion.div
-          key={portraitChar?.slug}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <Image
-            src={portraitChar ? portraitChar.stageImage : "/bg.png"}
-            alt="character select background"
-            fill={true}
-            style={{ imageRendering: "pixelated" }}
-            className={
-              portraitChar ? "brightness-75 contrast-80 blur-sm -z-20" : ""
-            }
-          />
-        </motion.div>
+        {portraitChar && (
+          <motion.div
+            key={portraitChar?.slug}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Image
+              src={portraitChar?.stageImage}
+              alt="character select background"
+              fill={true}
+              style={{ imageRendering: "pixelated" }}
+              className={"brightness-75 contrast-80 blur-sm -z-20"}
+            />
+          </motion.div>
+        )}
       </AnimatePresence>
       <div className="absolute top-[45%] -translate-y-1/2 left-[4%] w-[50%] h-[65%] flex items-center justify-center">
         <AnimatePresence>
