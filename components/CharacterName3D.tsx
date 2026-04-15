@@ -13,44 +13,56 @@ interface CharacterName3DProps {
 const RESTING_X = -1.5;
 const SLIDE_START_X = -3.5;
 
-function CharacterNameMesh({ character }: { character: Character }) {
+function CharacterNameMesh({ character }: CharacterName3DProps) {
   const groupRef = useRef<THREE.Group>(null);
+  const prevSlugRef = useRef<string | null>(null);
 
   useEffect(() => {
-    if (groupRef.current) {
-      groupRef.current.position.x = SLIDE_START_X;
+    if (!groupRef.current) return;
+    const newSlug = character?.slug ?? null;
+    if (newSlug === prevSlugRef.current) return;
+    prevSlugRef.current = newSlug;
+
+    if (newSlug !== null) {
+      // Only snap back to start if near rest — mid-slide just swaps the text
+      const currentX = groupRef.current.position.x;
+      if (Math.abs(currentX - RESTING_X) < 0.3) {
+        groupRef.current.position.x = SLIDE_START_X;
+      }
     }
-  }, [character.slug]);
+  }, [character]);
 
   useFrame(() => {
     if (!groupRef.current) return;
+    const target = character ? RESTING_X : SLIDE_START_X;
     groupRef.current.position.x = THREE.MathUtils.lerp(
       groupRef.current.position.x,
-      RESTING_X,
+      target,
       0.12,
     );
   });
 
   return (
     <group ref={groupRef} position={[SLIDE_START_X, 0, 0]}>
-      <Text3D
-        font="/fonts/Orbitron_Regular.json"
-        size={0.45}
-        height={0.16}
-        curveSegments={8}
-        bevelEnabled={false}
-        letterSpacing={0.05}
-        rotation={[0, -0.08, 0]}
-      >
-        {character.name.toUpperCase()}
-        <meshStandardMaterial color="#bababa" metalness={0.5} roughness={0.2} />
-      </Text3D>
+      {character && (
+        <Text3D
+          font="/fonts/Orbitron_Regular.json"
+          size={0.45}
+          height={0.16}
+          curveSegments={8}
+          bevelEnabled={false}
+          letterSpacing={0.05}
+          rotation={[0, -0.08, 0]}
+        >
+          {character.name.toUpperCase()}
+          <meshStandardMaterial color="#bababa" metalness={0.5} roughness={0.2} />
+        </Text3D>
+      )}
     </group>
   );
 }
 
 function CharacterNameInner({ character }: CharacterName3DProps) {
-  if (!character) return null;
   return <CharacterNameMesh character={character} />;
 }
 
