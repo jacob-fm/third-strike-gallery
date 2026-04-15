@@ -132,13 +132,13 @@ export default function IconGrid3D({
   const controls = useMemo(
     () => ({
       extrudeDepth: 0.25,
-      tileColor: "#000000",
+      tileColor: "#ffffff",
       metalness: 0.5,
       roughness: 0.4,
       cameraZ: 8,
       fov: 50,
-      ambientLight: 1.0,
-      dirLight: 0.8,
+      ambientLight: 0.2,
+      dirLight: 0.6,
       gridScale: 0.01,
       colGap: 15,
       rowGap: 4,
@@ -214,7 +214,10 @@ export default function IconGrid3D({
           fov={controls.fov}
         />
         <ambientLight intensity={controls.ambientLight} />
-        <directionalLight position={[0, 2, 10]} intensity={controls.dirLight} />
+        <directionalLight
+          position={[-2, 2, 40]}
+          intensity={controls.dirLight}
+        />
         <Suspense fallback={null}>
           {tiles.map(({ character, position }) => (
             <IconTile
@@ -231,10 +234,10 @@ export default function IconGrid3D({
         <EffectComposer autoClear={false}>
           <Outline
             selection={hoveredMesh ? [hoveredMesh] : []}
-            edgeStrength={10}
+            edgeStrength={200}
             pulseSpeed={0}
-            visibleEdgeColor={0xffffff}
-            hiddenEdgeColor={0xffffff}
+            visibleEdgeColor={0x8fd1ff}
+            hiddenEdgeColor={0x8fd1ff}
             blur
           />
         </EffectComposer>

@@ -134,7 +134,7 @@ export default function IconTile({
   useFrame((_, delta) => {
     if (!groupRef.current) return;
 
-    const targetSpeed = isHoveredRef.current ? 0.2 : 0;
+    const targetSpeed = isHoveredRef.current ? 1.2 : 0;
     const speedLerp = isHoveredRef.current ? 0.06 : 0.18;
     spinSpeedRef.current = THREE.MathUtils.lerp(
       spinSpeedRef.current,
