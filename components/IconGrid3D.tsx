@@ -1,8 +1,7 @@
 "use client";
 
-import { Suspense, useCallback, useMemo, useRef, useState } from "react";
+import { Suspense, useCallback, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { EffectComposer, SelectiveBloom } from "@react-three/postprocessing";
 // import { useControls } from "leva";
 import * as THREE from "three";
 import { getCharacterBySlug } from "@/data/characters";
@@ -110,13 +109,7 @@ export default function IconGrid3D({
   onHover,
   onSelect,
 }: IconGrid3DProps) {
-  const tiltOriginRef = useRef<THREE.Vector3 | null>(null);
-  const [hoveredGroup, setHoveredGroup] = useState<THREE.Group | null>(null);
-
   // const controls = useControls("Icon Grid", {
-  //   maxTilt: { value: 0.5, min: 0, max: 1.0, step: 0.01 },
-  //   tiltScale: { value: 0.11, min: 0, max: 0.5, step: 0.01 },
-  //   lerpSpeed: { value: 0.08, min: 0.01, max: 0.3, step: 0.01 },
   //   extrudeDepth: { value: 0.25, min: 0.01, max: 0.6, step: 0.01 },
   //   tileColor: "#aaaaaa",
   //   glowColor: "#41d6ff",
@@ -132,17 +125,11 @@ export default function IconGrid3D({
   //   rowGap: { value: 4, min: -50, max: 150, step: 1 },
   //   lastRowOffsetX: { value: -21, min: -200, max: 200, step: 1 },
   //   lastRowOffsetY: { value: 15, min: -200, max: 200, step: 1 },
-  //   bloomStrength: { value: 3, min: 0, max: 15, step: 0.05 },
-  //   bloomRadius: { value: 0.26, min: 0, max: 1, step: 0.01 },
-  //   bloomThreshold: { value: 0.2, min: 0, max: 1, step: 0.01 },
   //   baseRotationY: { value: -0.15, min: -1, max: 1, step: 0.01 },
   // });
 
   const controls = useMemo(
     () => ({
-      maxTilt: 0.5,
-      tiltScale: 0.11,
-      lerpSpeed: 0.08,
       extrudeDepth: 0.25,
       tileColor: "#aaaaaa",
       glowColor: "#41d6ff",
@@ -158,9 +145,6 @@ export default function IconGrid3D({
       rowGap: 4,
       lastRowOffsetX: -21,
       lastRowOffsetY: 15,
-      bloomStrength: 3,
-      bloomRadius: 0.26,
-      bloomThreshold: 0.2,
       baseRotationY: -0.15,
     }),
     [],
@@ -213,8 +197,6 @@ export default function IconGrid3D({
   );
 
   const handlePointerLeave = useCallback(() => {
-    tiltOriginRef.current = null;
-    setHoveredGroup(null);
     onHover(null);
   }, [onHover]);
 
@@ -237,22 +219,12 @@ export default function IconGrid3D({
               key={character.slug}
               character={character}
               position={position}
-              tiltOriginRef={tiltOriginRef}
               controls={tileControls}
               onHover={onHover}
               onSelect={onSelect}
-              onGroupHover={setHoveredGroup}
             />
           ))}
         </Suspense>
-        <EffectComposer autoClear={false}>
-          <SelectiveBloom
-            selection={hoveredGroup ? [hoveredGroup] : []}
-            intensity={controls.bloomStrength}
-            luminanceThreshold={controls.bloomThreshold}
-            luminanceSmoothing={controls.bloomRadius}
-          />
-        </EffectComposer>
       </Canvas>
     </div>
   );

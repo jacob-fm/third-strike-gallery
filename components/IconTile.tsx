@@ -5,12 +5,8 @@ import { useFrame } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import { Character } from "@/types/character";
-import { ICON_CONTOUR, ICON_W, ICON_H } from "@/data/iconShapeContour";
 
 export interface IconTileControls {
-  maxTilt: number;
-  tiltScale: number;
-  lerpSpeed: number;
   extrudeDepth: number;
   tileColor: string;
   glowColor: string;
@@ -21,55 +17,32 @@ export interface IconTileControls {
   baseRotationY: number;
 }
 
-/** Tile dimensions in screen pixels (before PX_TO_WORLD scaling) */
+/** Tile dimensions in screen pixels (before gridScale) */
 const CARD_W_PX = 150;
 const CARD_H_PX = 89;
-
-/** Build a THREE.Shape from the traced contour, scaled and centered */
-function buildContourShape(tileW: number, tileH: number): THREE.Shape {
-  const sx = tileW / ICON_W;
-  const sy = tileH / ICON_H;
-  const ox = tileW / 2;
-  const oy = tileH / 2;
-
-  const shape = new THREE.Shape();
-  const [fx, fy] = ICON_CONTOUR[0];
-  shape.moveTo(fx * sx - ox, -(fy * sy - oy));
-  for (let i = 1; i < ICON_CONTOUR.length; i++) {
-    const [px, py] = ICON_CONTOUR[i];
-    shape.lineTo(px * sx - ox, -(py * sy - oy));
-  }
-  shape.closePath();
-  return shape;
-}
 
 interface IconTileProps {
   character: Character;
   position: [number, number, number];
-  tiltOriginRef: React.MutableRefObject<THREE.Vector3 | null>;
   controls: IconTileControls;
   onHover: (c: Character | null) => void;
   onSelect: (c: Character) => void;
-  onGroupHover: (group: THREE.Group | null) => void;
 }
 
 export default function IconTile({
   character,
   position,
-  tiltOriginRef,
   controls,
   onHover,
   onSelect,
-  onGroupHover,
 }: IconTileProps) {
   const groupRef = useRef<THREE.Group>(null);
   const baseMaterialRef = useRef<THREE.MeshStandardMaterial>(null);
   const isHoveredRef = useRef(false);
+  const spinSpeedRef = useRef(0);
+  const rotYRef = useRef(controls.baseRotationY);
 
   const {
-    maxTilt,
-    tiltScale,
-    lerpSpeed,
     extrudeDepth,
     tileColor,
     glowColor,
@@ -83,33 +56,50 @@ export default function IconTile({
   const tileW = CARD_W_PX * gridScale;
   const tileH = CARD_H_PX * gridScale;
 
-  // Extruded contour geometry for the tile base
-  const tileGeometry = useMemo(() => {
-    const shape = buildContourShape(tileW, tileH);
-    return new THREE.ExtrudeGeometry(shape, {
-      depth: extrudeDepth,
-      bevelEnabled: false,
-    });
+  // Oval extruded body
+  const ovalGeometry = useMemo(() => {
+    const shape = new THREE.Shape();
+    const curve = new THREE.EllipseCurve(
+      0, 0, tileW / 2, tileH / 2, 0, Math.PI * 2, false, 0,
+    );
+    shape.setFromPoints(curve.getPoints(64));
+    return new THREE.ExtrudeGeometry(shape, { depth: extrudeDepth, bevelEnabled: false });
   }, [tileW, tileH, extrudeDepth]);
 
-  // Front face: flat ShapeGeometry with UVs mapped to the full texture
+  // Front face: flat oval with UVs mapped 0..1
   const frontGeometry = useMemo(() => {
-    const shape = buildContourShape(tileW, tileH);
+    const shape = new THREE.Shape();
+    const curve = new THREE.EllipseCurve(
+      0, 0, tileW / 2, tileH / 2, 0, Math.PI * 2, false, 0,
+    );
+    shape.setFromPoints(curve.getPoints(64));
     const geo = new THREE.ShapeGeometry(shape);
-
-    // Remap UVs: shape coords are centered (−tileW/2..+tileW/2, etc.)
-    // Map to 0..1 for the texture
     const uv = geo.attributes.uv;
     for (let i = 0; i < uv.count; i++) {
       uv.setX(i, (uv.getX(i) + tileW / 2) / tileW);
-      // Flip Y: shape has +Y up but texture has +Y down
       uv.setY(i, (uv.getY(i) + tileH / 2) / tileH);
     }
     uv.needsUpdate = true;
     return geo;
   }, [tileW, tileH]);
 
-  // Load icon texture with pixelated filtering
+  // Back face: same oval with U mirrored so icon reads correctly when spinning
+  const backGeometry = useMemo(() => {
+    const shape = new THREE.Shape();
+    const curve = new THREE.EllipseCurve(
+      0, 0, tileW / 2, tileH / 2, 0, Math.PI * 2, false, 0,
+    );
+    shape.setFromPoints(curve.getPoints(64));
+    const geo = new THREE.ShapeGeometry(shape);
+    const uv = geo.attributes.uv;
+    for (let i = 0; i < uv.count; i++) {
+      uv.setX(i, 1 - (uv.getX(i) + tileW / 2) / tileW);
+      uv.setY(i, (uv.getY(i) + tileH / 2) / tileH);
+    }
+    uv.needsUpdate = true;
+    return geo;
+  }, [tileW, tileH]);
+
   const texture = useTexture(character.iconImage, (t) => {
     const tex = Array.isArray(t) ? t[0] : t;
     tex.magFilter = THREE.NearestFilter;
@@ -119,45 +109,29 @@ export default function IconTile({
 
   const glowColorObj = useMemo(() => new THREE.Color(glowColor), [glowColor]);
 
-  // Per-frame: distance-based tilt + hover glow
-  useFrame(() => {
+  useFrame((_, delta) => {
     if (!groupRef.current) return;
 
-    const origin = tiltOriginRef.current;
-    let targetRotX = 0;
-    let targetRotY = baseRotationY;
+    const targetSpeed = isHoveredRef.current ? 1.5 : 0;
+    spinSpeedRef.current = THREE.MathUtils.lerp(spinSpeedRef.current, targetSpeed, 0.06);
 
-    if (origin) {
-      const dx = origin.x - position[0];
-      const dy = origin.y - position[1];
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      const tiltAmount = Math.min(distance * tiltScale, maxTilt);
-
-      if (distance > 0.001) {
-        const norm = 1 / distance;
-        targetRotX = -dy * norm * tiltAmount;
-        targetRotY = baseRotationY + dx * norm * tiltAmount;
-      }
+    if (isHoveredRef.current || Math.abs(spinSpeedRef.current) > 0.01) {
+      rotYRef.current += spinSpeedRef.current * delta;
+      groupRef.current.rotation.y = rotYRef.current;
+    } else {
+      groupRef.current.rotation.y = THREE.MathUtils.lerp(
+        groupRef.current.rotation.y,
+        baseRotationY,
+        0.08,
+      );
+      rotYRef.current = groupRef.current.rotation.y;
     }
 
-    groupRef.current.rotation.x = THREE.MathUtils.lerp(
-      groupRef.current.rotation.x,
-      targetRotX,
-      lerpSpeed,
-    );
-    groupRef.current.rotation.y = THREE.MathUtils.lerp(
-      groupRef.current.rotation.y,
-      targetRotY,
-      lerpSpeed,
-    );
-
-    // Hover glow
     if (baseMaterialRef.current) {
-      const targetEmissive = isHoveredRef.current ? glowIntensity : 0;
       baseMaterialRef.current.emissive.copy(glowColorObj);
       baseMaterialRef.current.emissiveIntensity = THREE.MathUtils.lerp(
         baseMaterialRef.current.emissiveIntensity,
-        targetEmissive,
+        isHoveredRef.current ? glowIntensity : 0,
         0.15,
       );
     }
@@ -167,27 +141,24 @@ export default function IconTile({
     <group
       ref={groupRef}
       position={position}
+      rotation={[0, baseRotationY, 0]}
       onPointerOver={(e) => {
         e.stopPropagation();
         isHoveredRef.current = true;
-        tiltOriginRef.current = new THREE.Vector3(position[0], position[1], 0);
         onHover(character);
-        onGroupHover(groupRef.current);
       }}
       onPointerOut={(e) => {
         e.stopPropagation();
         isHoveredRef.current = false;
-        tiltOriginRef.current = null;
         onHover(null);
-        onGroupHover(null);
       }}
       onClick={(e) => {
         e.stopPropagation();
         onSelect(character);
       }}
     >
-      {/* Extruded tile base */}
-      <mesh geometry={tileGeometry}>
+      {/* Oval body with metallic material */}
+      <mesh geometry={ovalGeometry}>
         <meshStandardMaterial
           ref={baseMaterialRef}
           color={tileColor}
@@ -196,8 +167,13 @@ export default function IconTile({
         />
       </mesh>
 
-      {/* Icon texture on front face */}
+      {/* Front face icon */}
       <mesh geometry={frontGeometry} position={[0, 0, extrudeDepth + 0.001]}>
+        <meshBasicMaterial map={texture} transparent />
+      </mesh>
+
+      {/* Back face icon (mirrored UVs) */}
+      <mesh geometry={backGeometry} position={[0, 0, -0.001]}>
         <meshBasicMaterial map={texture} transparent />
       </mesh>
     </group>
