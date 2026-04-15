@@ -131,7 +131,7 @@ export default function IconTile({
   useFrame((_, delta) => {
     if (!groupRef.current) return;
 
-    const targetSpeed = isHoveredRef.current ? 4.2 : 0;
+    const targetSpeed = isHoveredRef.current ? 0.2 : 0;
     const speedLerp = isHoveredRef.current ? 0.06 : 0.18;
     spinSpeedRef.current = THREE.MathUtils.lerp(
       spinSpeedRef.current,
@@ -153,7 +153,8 @@ export default function IconTile({
       const frontTarget = baseRotationY + nFront * TWO_PI;
       const backTarget = backRestY + nBack * TWO_PI;
       const snapTarget =
-        Math.abs(rotYRef.current - frontTarget) <= Math.abs(rotYRef.current - backTarget)
+        Math.abs(rotYRef.current - frontTarget) <=
+        Math.abs(rotYRef.current - backTarget)
           ? frontTarget
           : backTarget;
       groupRef.current.rotation.y = THREE.MathUtils.lerp(

@@ -131,7 +131,7 @@ export default function IconGrid3D({
   const controls = useMemo(
     () => ({
       extrudeDepth: 0.25,
-      tileColor: "#aaaaaa",
+      tileColor: "#000000",
       metalness: 0.5,
       roughness: 0.4,
       cameraZ: 8,
