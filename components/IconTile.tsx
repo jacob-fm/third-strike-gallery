@@ -60,17 +60,36 @@ export default function IconTile({
   const ovalGeometry = useMemo(() => {
     const shape = new THREE.Shape();
     const curve = new THREE.EllipseCurve(
-      0, 0, tileW / 2, tileH / 2, 0, Math.PI * 2, false, 0,
+      0,
+      0,
+      tileW / 2,
+      tileH / 2,
+      0,
+      Math.PI * 2,
+      false,
+      0,
     );
     shape.setFromPoints(curve.getPoints(64));
-    return new THREE.ExtrudeGeometry(shape, { depth: extrudeDepth, bevelEnabled: false });
+    const geo = new THREE.ExtrudeGeometry(shape, {
+      depth: extrudeDepth,
+      bevelEnabled: false,
+    });
+    geo.translate(0, 0, -extrudeDepth / 2); // center pivot in Z
+    return geo;
   }, [tileW, tileH, extrudeDepth]);
 
   // Front face: flat oval with UVs mapped 0..1
   const frontGeometry = useMemo(() => {
     const shape = new THREE.Shape();
     const curve = new THREE.EllipseCurve(
-      0, 0, tileW / 2, tileH / 2, 0, Math.PI * 2, false, 0,
+      0,
+      0,
+      tileW / 2,
+      tileH / 2,
+      0,
+      Math.PI * 2,
+      false,
+      0,
     );
     shape.setFromPoints(curve.getPoints(64));
     const geo = new THREE.ShapeGeometry(shape);
@@ -87,7 +106,14 @@ export default function IconTile({
   const backGeometry = useMemo(() => {
     const shape = new THREE.Shape();
     const curve = new THREE.EllipseCurve(
-      0, 0, tileW / 2, tileH / 2, 0, Math.PI * 2, false, 0,
+      0,
+      0,
+      tileW / 2,
+      tileH / 2,
+      0,
+      Math.PI * 2,
+      false,
+      0,
     );
     shape.setFromPoints(curve.getPoints(64));
     const geo = new THREE.ShapeGeometry(shape);
@@ -112,16 +138,24 @@ export default function IconTile({
   useFrame((_, delta) => {
     if (!groupRef.current) return;
 
-    const targetSpeed = isHoveredRef.current ? 1.5 : 0;
-    spinSpeedRef.current = THREE.MathUtils.lerp(spinSpeedRef.current, targetSpeed, 0.06);
+    const targetSpeed = isHoveredRef.current ? 4.2 : 0;
+    const speedLerp = isHoveredRef.current ? 0.06 : 0.18;
+    spinSpeedRef.current = THREE.MathUtils.lerp(
+      spinSpeedRef.current,
+      targetSpeed,
+      speedLerp,
+    );
 
     if (isHoveredRef.current || Math.abs(spinSpeedRef.current) > 0.01) {
       rotYRef.current += spinSpeedRef.current * delta;
       groupRef.current.rotation.y = rotYRef.current;
     } else {
+      // Snap to nearest full rotation (2π) — odd π multiples mirror the tilt
+      const n = Math.round((rotYRef.current - baseRotationY) / (Math.PI * 2));
+      const snapTarget = baseRotationY + n * Math.PI * 2;
       groupRef.current.rotation.y = THREE.MathUtils.lerp(
         groupRef.current.rotation.y,
-        baseRotationY,
+        snapTarget,
         0.08,
       );
       rotYRef.current = groupRef.current.rotation.y;
@@ -139,9 +173,7 @@ export default function IconTile({
 
   return (
     <group
-      ref={groupRef}
       position={position}
-      rotation={[0, baseRotationY, 0]}
       onPointerOver={(e) => {
         e.stopPropagation();
         isHoveredRef.current = true;
@@ -157,25 +189,39 @@ export default function IconTile({
         onSelect(character);
       }}
     >
-      {/* Oval body with metallic material */}
-      <mesh geometry={ovalGeometry}>
-        <meshStandardMaterial
-          ref={baseMaterialRef}
-          color={tileColor}
-          metalness={metalness}
-          roughness={roughness}
-        />
+      {/* Static invisible hit area — always at resting orientation so hover
+          zone doesn't shrink when the icon is spinning edge-on */}
+      <mesh geometry={frontGeometry} rotation={[0, baseRotationY, 0]}>
+        <meshBasicMaterial visible={false} />
       </mesh>
 
-      {/* Front face icon */}
-      <mesh geometry={frontGeometry} position={[0, 0, extrudeDepth + 0.001]}>
-        <meshBasicMaterial map={texture} transparent />
-      </mesh>
+      {/* Spinning visual group — all meshes opt out of raycasting */}
+      <group ref={groupRef}>
+        <mesh geometry={ovalGeometry} raycast={() => {}}>
+          <meshStandardMaterial
+            ref={baseMaterialRef}
+            color={tileColor}
+            metalness={metalness}
+            roughness={roughness}
+          />
+        </mesh>
 
-      {/* Back face icon (mirrored UVs) */}
-      <mesh geometry={backGeometry} position={[0, 0, -0.001]}>
-        <meshBasicMaterial map={texture} transparent />
-      </mesh>
+        <mesh
+          geometry={frontGeometry}
+          position={[0, 0, extrudeDepth / 2 + 0.001]}
+          raycast={() => {}}
+        >
+          <meshBasicMaterial map={texture} transparent />
+        </mesh>
+
+        <mesh
+          geometry={backGeometry}
+          position={[0, 0, -extrudeDepth / 2 - 0.001]}
+          raycast={() => {}}
+        >
+          <meshBasicMaterial map={texture} transparent side={THREE.BackSide} />
+        </mesh>
+      </group>
     </group>
   );
 }
