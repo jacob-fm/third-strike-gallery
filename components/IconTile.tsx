@@ -150,9 +150,19 @@ export default function IconTile({
       rotYRef.current += spinSpeedRef.current * delta;
       groupRef.current.rotation.y = rotYRef.current;
     } else {
-      // Snap to nearest full rotation (2π) — odd π multiples mirror the tilt
-      const n = Math.round((rotYRef.current - baseRotationY) / (Math.PI * 2));
-      const snapTarget = baseRotationY + n * Math.PI * 2;
+      // Two valid rest orientations:
+      //   front: baseRotationY + n*2π
+      //   back:  (π + baseRotationY) + n*2π  ← same offset magnitude, UV flip handles the mirror
+      const TWO_PI = Math.PI * 2;
+      const backRestY = Math.PI + baseRotationY;
+      const nFront = Math.round((rotYRef.current - baseRotationY) / TWO_PI);
+      const nBack = Math.round((rotYRef.current - backRestY) / TWO_PI);
+      const frontTarget = baseRotationY + nFront * TWO_PI;
+      const backTarget = backRestY + nBack * TWO_PI;
+      const snapTarget =
+        Math.abs(rotYRef.current - frontTarget) <= Math.abs(rotYRef.current - backTarget)
+          ? frontTarget
+          : backTarget;
       groupRef.current.rotation.y = THREE.MathUtils.lerp(
         groupRef.current.rotation.y,
         snapTarget,
