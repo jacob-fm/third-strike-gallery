@@ -68,13 +68,13 @@ export default function IconTile({
       false,
       0,
     );
-    shape.setFromPoints(curve.getPoints(64));
+    shape.setFromPoints(curve.getPoints(128));
     const geo = new THREE.ExtrudeGeometry(shape, {
       depth: extrudeDepth,
       bevelEnabled: true,
       bevelThickness,
       bevelSize: extrudeDepth * 0.15,
-      bevelSegments: 5,
+      bevelSegments: 12,
     });
     geo.translate(0, 0, -extrudeDepth / 2); // center pivot in Z
     return geo;
