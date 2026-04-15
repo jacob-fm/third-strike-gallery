@@ -97,9 +97,11 @@ export default function CharactersPage() {
               className="w-full h-full absolute inset-0"
             >
               <Image
-                alt={`${portraitChar.name} idle animation`}
                 src={portraitChar.artworkImage}
-                className="w-full h-full object-contain object-center [image-rendering:pixelated]"
+                alt={`${portraitChar.name} idle animation`}
+                fill
+                unoptimized
+                className="object-contain object-center [image-rendering:pixelated]"
               />
             </motion.div>
           ) : null}
