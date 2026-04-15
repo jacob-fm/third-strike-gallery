@@ -35,7 +35,15 @@ export default function CharacterModal({
 }: CharacterModalProps) {
   const [activePane, setActivePane] = useState<Pane | null>("bio");
   return (
-    <div className="fixed inset-0 overflow-y-auto z-10 bg-bg">
+    <div className="fixed inset-0 overflow-y-auto z-10">
+      <video
+        src={character.stageImage}
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="fixed inset-0 w-full h-full object-cover brightness-50 contrast-80 saturate-70 blur-sm -z-10"
+      />
       <main className="min-h-screen px-6 py-10">
         <div className="max-w-5xl mx-auto">
           <div className="mb-6">

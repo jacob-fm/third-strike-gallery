@@ -35,16 +35,24 @@ export default function CharactersPage() {
 
   const portraitChar = hoveredChar;
 
-  // Prefetch all stage + artwork videos after mount
+  // Prefetch all stage webps (image) + artwork videos after mount
   useEffect(() => {
     characters.forEach((c) => {
-      for (const href of [c.stageImage, c.artworkImage]) {
-        const link = document.createElement("link");
-        link.rel = "prefetch";
-        link.as = "video";
-        link.href = href;
-        document.head.appendChild(link);
-      }
+      const stageWebp = c.stageImage
+        .replace("/stages/webm/", "/stages/webp/")
+        .replace(".webm", ".webp");
+
+      const stageLink = document.createElement("link");
+      stageLink.rel = "prefetch";
+      stageLink.as = "image";
+      stageLink.href = stageWebp;
+      document.head.appendChild(stageLink);
+
+      const artworkLink = document.createElement("link");
+      artworkLink.rel = "prefetch";
+      artworkLink.as = "video";
+      artworkLink.href = c.artworkImage;
+      document.head.appendChild(artworkLink);
     });
   }, []);
 
@@ -67,12 +75,11 @@ export default function CharactersPage() {
             transition={{ duration: 0.3 }}
             className="absolute inset-0 -z-20"
           >
-            <video
-              src={portraitChar.stageImage}
-              autoPlay
-              loop
-              muted
-              playsInline
+            <img
+              src={portraitChar.stageImage
+                .replace("/stages/webm/", "/stages/webp/")
+                .replace(".webm", ".webp")}
+              alt=""
               className="absolute inset-0 w-full h-full object-cover brightness-75 contrast-80 saturate-80 blur-sm"
             />
           </motion.div>
