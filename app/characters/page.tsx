@@ -1,11 +1,10 @@
 "use client";
 import CharacterModal from "@/components/CharacterModal";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Character } from "@/types/character";
+import { characters } from "@/data/characters";
 import { AnimatePresence, motion } from "motion/react";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-// import { characters } from "@/data/characters";
 import dynamic from "next/dynamic";
 
 const IconGrid3D = dynamic(() => import("@/components/IconGrid3D"), {
@@ -36,6 +35,19 @@ export default function CharactersPage() {
 
   const portraitChar = hoveredChar;
 
+  // Prefetch all stage + artwork videos after mount
+  useEffect(() => {
+    characters.forEach((c) => {
+      for (const href of [c.stageImage, c.artworkImage]) {
+        const link = document.createElement("link");
+        link.rel = "prefetch";
+        link.as = "video";
+        link.href = href;
+        document.head.appendChild(link);
+      }
+    });
+  }, []);
+
   return (
     <main className="w-screen h-screen overflow-hidden relative">
       <Image
@@ -48,18 +60,20 @@ export default function CharactersPage() {
       <AnimatePresence>
         {portraitChar && (
           <motion.div
-            key={portraitChar?.slug}
+            key={portraitChar.slug}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
+            className="absolute inset-0 -z-20"
           >
-            <Image
-              src={portraitChar?.stageImage}
-              alt="character select background"
-              fill={true}
-              style={{ imageRendering: "pixelated" }}
-              className={"brightness-75 contrast-80 saturate-80 blur-sm -z-20"}
+            <video
+              src={portraitChar.stageImage}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover brightness-75 contrast-80 saturate-80 blur-sm"
             />
           </motion.div>
         )}
@@ -75,12 +89,13 @@ export default function CharactersPage() {
               transition={{ duration: 0.15 }}
               className="w-full h-full absolute inset-0"
             >
-              <Image
+              <video
                 src={portraitChar.artworkImage}
-                alt={portraitChar.name}
-                fill
-                unoptimized
-                className="object-contain object-center [image-rendering:pixelated]"
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-contain object-center [image-rendering:pixelated]"
               />
             </motion.div>
           ) : null}
