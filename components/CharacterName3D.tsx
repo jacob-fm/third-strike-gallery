@@ -11,7 +11,7 @@ interface CharacterName3DProps {
 }
 
 const RESTING_X = -1.5;
-const SLIDE_START_X = -3.5;
+const SLIDE_START_X = -2.0;
 
 function CharacterNameMesh({ character }: CharacterName3DProps) {
   const groupRef = useRef<THREE.Group>(null);
@@ -55,7 +55,11 @@ function CharacterNameMesh({ character }: CharacterName3DProps) {
           rotation={[0, -0.08, 0]}
         >
           {character.name.toUpperCase()}
-          <meshStandardMaterial color="#bababa" metalness={0.5} roughness={0.2} />
+          <meshStandardMaterial
+            color="#bababa"
+            metalness={0.5}
+            roughness={0.2}
+          />
         </Text3D>
       )}
     </group>
