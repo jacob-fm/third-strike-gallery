@@ -49,7 +49,7 @@ function CharacterNameMesh({ character }: CharacterName3DProps) {
           font="/fonts/Orbitron_Regular.json"
           size={0.45}
           height={0.16}
-          curveSegments={8}
+          curveSegments={2}
           bevelEnabled={false}
           letterSpacing={0.05}
           rotation={[0, -0.08, 0]}

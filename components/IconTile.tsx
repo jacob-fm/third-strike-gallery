@@ -53,6 +53,7 @@ export default function IconTile({
 
   const tileW = CARD_W_PX * gridScale;
   const tileH = CARD_H_PX * gridScale;
+  const bevelThickness = extrudeDepth * 0.1;
 
   // Oval extruded body
   const ovalGeometry = useMemo(() => {
@@ -70,7 +71,10 @@ export default function IconTile({
     shape.setFromPoints(curve.getPoints(64));
     const geo = new THREE.ExtrudeGeometry(shape, {
       depth: extrudeDepth,
-      bevelEnabled: false,
+      bevelEnabled: true,
+      bevelThickness,
+      bevelSize: extrudeDepth * 0.15,
+      bevelSegments: 5,
     });
     geo.translate(0, 0, -extrudeDepth / 2); // center pivot in Z
     return geo;
@@ -207,7 +211,7 @@ export default function IconTile({
 
         <mesh
           geometry={frontGeometry}
-          position={[0, 0, extrudeDepth / 2 + 0.001]}
+          position={[0, 0, extrudeDepth / 2 + bevelThickness + 0.001]}
           raycast={() => {}}
         >
           <meshBasicMaterial map={texture} transparent />
@@ -215,7 +219,7 @@ export default function IconTile({
 
         <mesh
           geometry={backGeometry}
-          position={[0, 0, -extrudeDepth / 2 - 0.001]}
+          position={[0, 0, -extrudeDepth / 2 - bevelThickness - 0.001]}
           raycast={() => {}}
         >
           <meshBasicMaterial map={texture} transparent side={THREE.BackSide} />
