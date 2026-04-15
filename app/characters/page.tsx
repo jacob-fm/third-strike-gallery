@@ -96,12 +96,9 @@ export default function CharactersPage() {
               transition={{ duration: 0.15 }}
               className="w-full h-full absolute inset-0"
             >
-              <video
+              <Image
+                alt={`${portraitChar.name} idle animation`}
                 src={portraitChar.artworkImage}
-                autoPlay
-                loop
-                muted
-                playsInline
                 className="w-full h-full object-contain object-center [image-rendering:pixelated]"
               />
             </motion.div>
