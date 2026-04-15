@@ -25,6 +25,7 @@ interface IconTileProps {
   controls: IconTileControls;
   onHover: (c: Character | null) => void;
   onSelect: (c: Character) => void;
+  onMeshHover: (mesh: THREE.Mesh | null) => void;
 }
 
 export default function IconTile({
@@ -33,8 +34,10 @@ export default function IconTile({
   controls,
   onHover,
   onSelect,
+  onMeshHover,
 }: IconTileProps) {
   const groupRef = useRef<THREE.Group>(null);
+  const ovalMeshRef = useRef<THREE.Mesh>(null);
   const isHoveredRef = useRef(false);
   const spinSpeedRef = useRef(0);
   const rotYRef = useRef(controls.baseRotationY);
@@ -173,11 +176,13 @@ export default function IconTile({
         e.stopPropagation();
         isHoveredRef.current = true;
         onHover(character);
+        onMeshHover(ovalMeshRef.current);
       }}
       onPointerOut={(e) => {
         e.stopPropagation();
         isHoveredRef.current = false;
         onHover(null);
+        onMeshHover(null);
       }}
       onClick={(e) => {
         e.stopPropagation();
@@ -192,7 +197,7 @@ export default function IconTile({
 
       {/* Spinning visual group — all meshes opt out of raycasting */}
       <group ref={groupRef}>
-        <mesh geometry={ovalGeometry} raycast={() => {}}>
+        <mesh ref={ovalMeshRef} geometry={ovalGeometry} raycast={() => {}}>
           <meshStandardMaterial
             color={tileColor}
             metalness={metalness}

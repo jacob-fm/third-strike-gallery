@@ -1,7 +1,8 @@
 "use client";
 
-import { Suspense, useCallback, useMemo } from "react";
+import { Suspense, useCallback, useMemo, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
+import { EffectComposer, Outline } from "@react-three/postprocessing";
 // import { useControls } from "leva";
 import * as THREE from "three";
 import { getCharacterBySlug } from "@/data/characters";
@@ -194,7 +195,10 @@ export default function IconGrid3D({
     [items],
   );
 
+  const [hoveredMesh, setHoveredMesh] = useState<THREE.Mesh | null>(null);
+
   const handlePointerLeave = useCallback(() => {
+    setHoveredMesh(null);
     onHover(null);
   }, [onHover]);
 
@@ -220,9 +224,20 @@ export default function IconGrid3D({
               controls={tileControls}
               onHover={onHover}
               onSelect={onSelect}
+              onMeshHover={setHoveredMesh}
             />
           ))}
         </Suspense>
+        <EffectComposer autoClear={false}>
+          <Outline
+            selection={hoveredMesh ? [hoveredMesh] : []}
+            edgeStrength={10}
+            pulseSpeed={0}
+            visibleEdgeColor={0xffffff}
+            hiddenEdgeColor={0xffffff}
+            blur
+          />
+        </EffectComposer>
       </Canvas>
     </div>
   );
