@@ -59,7 +59,7 @@ export default function CharactersPage() {
   return (
     <main className="w-screen h-screen overflow-hidden relative">
       <Image
-        src="/bg.png"
+        src="/bg.webp"
         alt="character select background"
         fill={true}
         unoptimized
