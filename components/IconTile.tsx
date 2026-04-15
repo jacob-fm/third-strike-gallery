@@ -9,8 +9,6 @@ import { Character } from "@/types/character";
 export interface IconTileControls {
   extrudeDepth: number;
   tileColor: string;
-  glowColor: string;
-  glowIntensity: number;
   metalness: number;
   roughness: number;
   gridScale: number;
@@ -37,7 +35,6 @@ export default function IconTile({
   onSelect,
 }: IconTileProps) {
   const groupRef = useRef<THREE.Group>(null);
-  const baseMaterialRef = useRef<THREE.MeshStandardMaterial>(null);
   const isHoveredRef = useRef(false);
   const spinSpeedRef = useRef(0);
   const rotYRef = useRef(controls.baseRotationY);
@@ -45,8 +42,6 @@ export default function IconTile({
   const {
     extrudeDepth,
     tileColor,
-    glowColor,
-    glowIntensity,
     metalness,
     roughness,
     gridScale,
@@ -133,8 +128,6 @@ export default function IconTile({
     tex.needsUpdate = true;
   });
 
-  const glowColorObj = useMemo(() => new THREE.Color(glowColor), [glowColor]);
-
   useFrame((_, delta) => {
     if (!groupRef.current) return;
 
@@ -170,15 +163,6 @@ export default function IconTile({
       );
       rotYRef.current = groupRef.current.rotation.y;
     }
-
-    if (baseMaterialRef.current) {
-      baseMaterialRef.current.emissive.copy(glowColorObj);
-      baseMaterialRef.current.emissiveIntensity = THREE.MathUtils.lerp(
-        baseMaterialRef.current.emissiveIntensity,
-        isHoveredRef.current ? glowIntensity : 0,
-        0.15,
-      );
-    }
   });
 
   return (
@@ -209,7 +193,6 @@ export default function IconTile({
       <group ref={groupRef}>
         <mesh geometry={ovalGeometry} raycast={() => {}}>
           <meshStandardMaterial
-            ref={baseMaterialRef}
             color={tileColor}
             metalness={metalness}
             roughness={roughness}

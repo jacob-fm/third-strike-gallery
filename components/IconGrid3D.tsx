@@ -132,8 +132,6 @@ export default function IconGrid3D({
     () => ({
       extrudeDepth: 0.25,
       tileColor: "#aaaaaa",
-      glowColor: "#41d6ff",
-      glowIntensity: 5.0,
       metalness: 0.5,
       roughness: 0.4,
       cameraZ: 8,
