@@ -75,11 +75,12 @@ export default function CharactersPage() {
             transition={{ duration: 0.3 }}
             className="absolute inset-0 -z-20"
           >
-            <img
+            <Image
               src={portraitChar.stageImage
                 .replace("/stages/webm/", "/stages/webp/")
                 .replace(".webm", ".webp")}
               alt=""
+              fill
               className="absolute inset-0 w-full h-full object-cover brightness-75 contrast-80 saturate-80 blur-sm"
             />
           </motion.div>
