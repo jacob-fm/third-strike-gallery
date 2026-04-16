@@ -46,7 +46,11 @@ function CharacterNameMesh({ character }: CharacterName3DProps) {
   useFrame(() => {
     if (!groupRef.current || settledRef.current) return;
     const target = character ? RESTING_X : SLIDE_START_X;
-    const next = THREE.MathUtils.lerp(groupRef.current.position.x, target, 0.12);
+    const next = THREE.MathUtils.lerp(
+      groupRef.current.position.x,
+      target,
+      0.12,
+    );
     groupRef.current.position.x = next;
     if (Math.abs(next - target) < 0.001) {
       groupRef.current.position.x = target;
@@ -90,7 +94,7 @@ export default function CharacterName3D({ character }: CharacterName3DProps) {
     <Canvas
       gl={{ alpha: true, toneMapping: THREE.NoToneMapping }}
       style={{ overflow: "visible" }}
-      camera={{ position: [1.6, 0.4, 3.5], fov: 33 }}
+      camera={{ position: [1.6, 0.4, 3.5], fov: 38 }}
     >
       <ambientLight intensity={0.15} />
       <directionalLight ref={light} position={[-6, 1.0, 6]} intensity={5.0} />
