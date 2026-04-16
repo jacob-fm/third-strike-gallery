@@ -35,7 +35,16 @@ export function buildSharedTileGeometries(
 
   const makeShape = (pts: number) => {
     const shape = new THREE.Shape();
-    const curve = new THREE.EllipseCurve(0, 0, tileW / 2, tileH / 2, 0, Math.PI * 2, false, 0);
+    const curve = new THREE.EllipseCurve(
+      0,
+      0,
+      tileW / 2,
+      tileH / 2,
+      0,
+      Math.PI * 2,
+      false,
+      0,
+    );
     shape.setFromPoints(curve.getPoints(pts));
     return shape;
   };
@@ -90,9 +99,20 @@ export default function IconTile({
   const rotYRef = useRef(controls.baseRotationY);
   const settledRef = useRef(false);
 
-  const { extrudeDepth, tileColor, metalness, roughness, gridScale, baseRotationY } = controls;
+  const {
+    extrudeDepth,
+    tileColor,
+    metalness,
+    roughness,
+    gridScale,
+    baseRotationY,
+  } = controls;
   const bevelThickness = extrudeDepth * 0.1;
-  const { oval: ovalGeometry, front: frontGeometry, back: backGeometry } = geometries;
+  const {
+    oval: ovalGeometry,
+    front: frontGeometry,
+    back: backGeometry,
+  } = geometries;
 
   const texture = useTexture(character.iconImage, (t) => {
     const tex = Array.isArray(t) ? t[0] : t;
@@ -107,7 +127,7 @@ export default function IconTile({
     // Skip entirely when tile is settled at rest and not being interacted with
     if (settledRef.current && !isHoveredRef.current) return;
 
-    const targetSpeed = isHoveredRef.current ? 1.2 : 0;
+    const targetSpeed = isHoveredRef.current ? 0.8 : 0;
     const speedLerp = isHoveredRef.current ? 0.06 : 0.18;
     spinSpeedRef.current = THREE.MathUtils.lerp(
       spinSpeedRef.current,
@@ -134,7 +154,11 @@ export default function IconTile({
         Math.abs(rotYRef.current - backTarget)
           ? frontTarget
           : backTarget;
-      const next = THREE.MathUtils.lerp(groupRef.current.rotation.y, snapTarget, 0.08);
+      const next = THREE.MathUtils.lerp(
+        groupRef.current.rotation.y,
+        snapTarget,
+        0.08,
+      );
       groupRef.current.rotation.y = next;
       rotYRef.current = next;
       if (Math.abs(next - snapTarget) < 0.0005) {
@@ -152,6 +176,7 @@ export default function IconTile({
         e.stopPropagation();
         isHoveredRef.current = true;
         settledRef.current = false;
+        spinSpeedRef.current = 7; // kick off at higher speed and lerp down
         onHover(character);
         onMeshHover(ovalMeshRef.current);
       }}
