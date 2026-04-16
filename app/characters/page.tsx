@@ -58,13 +58,21 @@ export default function CharactersPage() {
 
   return (
     <main className="w-screen h-screen overflow-hidden relative">
-      <Image
-        src="/bg.png"
-        alt="character select background"
-        fill={true}
-        unoptimized
-        className="[image-rendering:pixelated] -z-21"
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        src="/bg-alt.webm"
+        className="absolute inset-0 w-full h-full object-cover -z-21"
       />
+      {/* <Image */}
+      {/*   src="/bg.png" */}
+      {/*   alt="character select background" */}
+      {/*   fill={true} */}
+      {/*   unoptimized */}
+      {/*   className="[image-rendering:pixelated] -z-21" */}
+      {/* /> */}
       {/* <AnimatePresence> */}
       {/*   {portraitChar && ( */}
       {/*     <motion.div */}
@@ -110,7 +118,7 @@ export default function CharactersPage() {
       </div>
 
       {/* 3D character icon grid — right side */}
-      <div className="absolute -top-4 right-10 w-200 h-full">
+      <div className="absolute -top-4 right-10 w-200 h-full z-10">
         <IconGrid3D
           gridRows={GRID_ROWS}
           rowOffsets={ROW_OFFSETS}
@@ -120,7 +128,7 @@ export default function CharactersPage() {
       </div>
 
       {/* 3D character name — left side */}
-      <div className="absolute bottom-[6%] z-10 left-0 w-[58%] h-80">
+      <div className="absolute bottom-[6%] z-5 left-0 w-[58%] h-80 pointer-events-none">
         <CharacterName3D character={portraitChar} />
       </div>
 
