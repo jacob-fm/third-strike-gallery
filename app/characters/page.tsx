@@ -58,21 +58,21 @@ export default function CharactersPage() {
 
   return (
     <main className="w-screen h-screen overflow-hidden relative">
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        src="/bg-alt-boomerang.webm"
-        className="absolute inset-0 w-full h-full object-cover -z-21"
-      />
-      {/* <Image */}
-      {/*   src="/bg.png" */}
-      {/*   alt="character select background" */}
-      {/*   fill={true} */}
-      {/*   unoptimized */}
-      {/*   className="[image-rendering:pixelated] -z-21" */}
+      {/* <video */}
+      {/*   autoPlay */}
+      {/*   loop */}
+      {/*   muted */}
+      {/*   playsInline */}
+      {/*   src="/bg-alt-boomerang.webm" */}
+      {/*   className="absolute inset-0 w-full h-full object-cover -z-21" */}
       {/* /> */}
+      <Image
+        src="/bg-alt.jpg"
+        alt="character select background"
+        fill={true}
+        unoptimized
+        className="[image-rendering:pixelated] -z-21 blur-sm brightness-130"
+      />
       {/* <AnimatePresence> */}
       {/*   {portraitChar && ( */}
       {/*     <motion.div */}
