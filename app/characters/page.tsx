@@ -38,15 +38,15 @@ export default function CharactersPage() {
   // Prefetch all stage webps (image) + artwork videos after mount
   useEffect(() => {
     characters.forEach((c) => {
-      const stageWebp = c.stageImage
-        .replace("/stages/webm/", "/stages/webp/")
-        .replace(".webm", ".webp");
-
-      const stageLink = document.createElement("link");
-      stageLink.rel = "prefetch";
-      stageLink.as = "image";
-      stageLink.href = stageWebp;
-      document.head.appendChild(stageLink);
+      // const stageWebp = c.stageImage
+      //   .replace("/stages/webm/", "/stages/webp/")
+      //   .replace(".webm", ".webp");
+      //
+      // const stageLink = document.createElement("link");
+      // stageLink.rel = "prefetch";
+      // stageLink.as = "image";
+      // stageLink.href = stageWebp;
+      // document.head.appendChild(stageLink);
 
       const artworkLink = document.createElement("link");
       artworkLink.rel = "prefetch";
@@ -63,7 +63,7 @@ export default function CharactersPage() {
         loop
         muted
         playsInline
-        src="/bg-alt.webm"
+        src="/bg-alt-boomerang.webm"
         className="absolute inset-0 w-full h-full object-cover -z-21"
       />
       {/* <Image */}
