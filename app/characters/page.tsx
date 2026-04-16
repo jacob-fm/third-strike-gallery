@@ -59,33 +59,33 @@ export default function CharactersPage() {
   return (
     <main className="w-screen h-screen overflow-hidden relative">
       <Image
-        src="/bg.webp"
+        src="/bg.png"
         alt="character select background"
         fill={true}
         unoptimized
         className="[image-rendering:pixelated] -z-21"
       />
-      <AnimatePresence>
-        {portraitChar && (
-          <motion.div
-            key={portraitChar.slug}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="absolute inset-0 -z-20"
-          >
-            <Image
-              src={portraitChar.stageImage
-                .replace("/stages/webm/", "/stages/webp/")
-                .replace(".webm", ".webp")}
-              alt=""
-              fill
-              className="absolute inset-0 w-full h-full object-cover brightness-75 contrast-80 saturate-80 blur-sm"
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* <AnimatePresence> */}
+      {/*   {portraitChar && ( */}
+      {/*     <motion.div */}
+      {/*       key={portraitChar.slug} */}
+      {/*       initial={{ opacity: 0 }} */}
+      {/*       animate={{ opacity: 1 }} */}
+      {/*       exit={{ opacity: 0 }} */}
+      {/*       transition={{ duration: 0.3 }} */}
+      {/*       className="absolute inset-0 -z-20" */}
+      {/*     > */}
+      {/*       <Image */}
+      {/*         src={portraitChar.stageImage */}
+      {/*           .replace("/stages/webm/", "/stages/webp/") */}
+      {/*           .replace(".webm", ".webp")} */}
+      {/*         alt="" */}
+      {/*         fill */}
+      {/*         className="absolute inset-0 w-full h-full object-cover brightness-75 contrast-80 saturate-80 blur-sm" */}
+      {/*       /> */}
+      {/*     </motion.div> */}
+      {/*   )} */}
+      {/* </AnimatePresence> */}
       <div className="absolute top-[45%] -translate-y-1/2 left-[4%] w-[50%] h-[65%] flex items-center justify-center">
         <AnimatePresence>
           {portraitChar ? (
