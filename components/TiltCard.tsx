@@ -32,20 +32,10 @@ function CardMesh({
     cardDepth,
     cornerRadius,
     spriteScale,
-    // } = useControls("Card", {
-    //   maxTilt: { value: 0.15, min: 0, max: 0.5, step: 0.01 },
-    //   lerpSpeed: { value: 0.1, min: 0.01, max: 0.5, step: 0.01 },
-    //   cardColor: "#a0a0a0",
-    //   cardWidth: { value: 2.5, min: 0.5, max: 10, step: 0.1 },
-    //   cardHeight: { value: 3.0, min: 0.5, max: 10, step: 0.1 },
-    //   cardDepth: { value: 0.05, min: 0.01, max: 0.3, step: 0.01 },
-    //   cornerRadius: { value: 0.12, min: 0, max: 0.5, step: 0.01 },
-    //   spriteScale: { value: 210, min: 50, max: 1200, step: 10 },
-    // });
   } = {
     maxTilt: 0.15,
     lerpSpeed: 0.1,
-    cardColor: "#a0a0a0",
+    cardColor: "#ffffff",
     cardWidth: 2.5,
     cardHeight: 3.0,
     cardDepth: 0.05,
@@ -53,19 +43,9 @@ function CardMesh({
     spriteScale: 210,
   };
 
-  // const { metalness, roughness, iridescence, iridescenceIOR } = useControls(
-  //   "Foil",
-  //   {
-  //     metalness: { value: 0.67, min: 0, max: 1, step: 0.01 },
-  //     roughness: { value: 0.35, min: 0, max: 1, step: 0.01 },
-  //     iridescence: { value: 0.4, min: 0, max: 1, step: 0.01 },
-  //     iridescenceIOR: { value: 1.63, min: 1, max: 2.33, step: 0.01 },
-  //   },
-  // );
-
   const { metalness, roughness, iridescence, iridescenceIOR } = {
-    metalness: 0.67,
-    roughness: 0.35,
+    metalness: 0.8,
+    roughness: 0.2,
     iridescence: 0.4,
     iridescenceIOR: 1.63,
   };

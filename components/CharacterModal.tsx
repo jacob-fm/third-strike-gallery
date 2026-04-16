@@ -21,10 +21,9 @@ const paneTabs: { value: Pane; label: string }[] = [
 function CharacterBio({ bio }: { bio: Character["bio"] }) {
   return (
     <section>
-      <h2 className="text-xs font-bold tracking-widest uppercase mb-3 text-accent">
-        Bio
-      </h2>
-      <p className="text-sm leading-relaxed text-text-secondary">{bio}</p>
+      <p className="text-md leading-relaxed text-text-primary font-libre-franklin font-medium">
+        {bio}
+      </p>
     </section>
   );
 }
@@ -42,11 +41,11 @@ export default function CharacterModal({
         loop
         muted
         playsInline
-        className="fixed inset-0 w-full h-full object-cover brightness-50 contrast-80 saturate-70 blur-sm -z-10"
+        className="fixed inset-0 w-full h-full object-cover brightness-30 contrast-80 saturate-70 blur-xs -z-10"
       />
       <main className="min-h-screen px-6 py-10">
         <div className="max-w-5xl mx-auto">
-          <div className="mb-6">
+          <div className="">
             <button
               onClick={onClose}
               className="text-sm tracking-widest uppercase cursor-pointer text-accent"
@@ -55,9 +54,9 @@ export default function CharacterModal({
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr] gap-14">
+          <div className="grid grid-cols-1 md:grid-cols-[6fr_5fr] gap-14">
             {/* Left column: bio + moves */}
-            <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-8 mt-6">
               <SlantedTabs
                 tabs={paneTabs}
                 activeTab={activePane ?? "bio"}
@@ -74,7 +73,7 @@ export default function CharacterModal({
 
             {/* Right column: artwork + identity */}
             <div className="flex flex-col gap-4 ">
-              <div className="relative w-130 aspect-square overflow-visible">
+              <div className="relative w-full aspect-square overflow-visible cursor-crosshair">
                 <TiltCard
                   imageSrc={character.artworkImage}
                   alt={`${character.name} artwork`}
@@ -82,20 +81,20 @@ export default function CharacterModal({
                 />
               </div>
 
-              <div className="flex items-center gap-3 mx-8">
+              <div className="flex items-center justify-center text-center gap-3 mx-8 font-orbitron">
                 <div>
-                  <h1 className="text-3xl font-bold tracking-wide uppercase text-text-primary">
+                  <h1 className="text-6xl font-bold tracking-wide uppercase text-text-primary">
                     {character.name}
                   </h1>
-                  <dl className="mt-1 space-y-0.5 text-sm">
+                  <dl className="mt-1 space-y-0.5 text-md">
                     <div className="flex gap-2">
-                      <dt className="text-text-secondary">Origin</dt>
+                      <dt className="text-accent">Origin</dt>
                       <dd className="text-text-primary">
                         {character.nationality}
                       </dd>
                     </div>
                     <div className="flex gap-2">
-                      <dt className="text-text-secondary">Style</dt>
+                      <dt className="text-accent">Style</dt>
                       <dd className="text-text-primary">
                         {character.fightingStyle}
                       </dd>
