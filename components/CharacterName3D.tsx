@@ -17,6 +17,7 @@ function CharacterNameMesh({ character }: CharacterName3DProps) {
   const groupRef = useRef<THREE.Group>(null);
   const textRef = useRef<THREE.Mesh>(null);
   const prevSlugRef = useRef<string | null>(null);
+  const settledRef = useRef(false);
 
   useLayoutEffect(() => {
     if (!textRef.current) return;
@@ -39,16 +40,18 @@ function CharacterNameMesh({ character }: CharacterName3DProps) {
         groupRef.current.position.x = SLIDE_START_X;
       }
     }
+    settledRef.current = false;
   }, [character]);
 
   useFrame(() => {
-    if (!groupRef.current) return;
+    if (!groupRef.current || settledRef.current) return;
     const target = character ? RESTING_X : SLIDE_START_X;
-    groupRef.current.position.x = THREE.MathUtils.lerp(
-      groupRef.current.position.x,
-      target,
-      0.12,
-    );
+    const next = THREE.MathUtils.lerp(groupRef.current.position.x, target, 0.12);
+    groupRef.current.position.x = next;
+    if (Math.abs(next - target) < 0.001) {
+      groupRef.current.position.x = target;
+      settledRef.current = true;
+    }
   });
 
   return (

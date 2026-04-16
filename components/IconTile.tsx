@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
@@ -19,10 +19,56 @@ export interface IconTileControls {
 const CARD_W_PX = 150;
 const CARD_H_PX = 89;
 
+export interface SharedTileGeometries {
+  oval: THREE.BufferGeometry;
+  front: THREE.BufferGeometry;
+  back: THREE.BufferGeometry;
+}
+
+/** Build the three shared geometries once for a given set of tile dimensions. */
+export function buildSharedTileGeometries(
+  tileW: number,
+  tileH: number,
+  extrudeDepth: number,
+): SharedTileGeometries {
+  const bevelThickness = extrudeDepth * 0.1;
+
+  const makeShape = (pts: number) => {
+    const shape = new THREE.Shape();
+    const curve = new THREE.EllipseCurve(0, 0, tileW / 2, tileH / 2, 0, Math.PI * 2, false, 0);
+    shape.setFromPoints(curve.getPoints(pts));
+    return shape;
+  };
+
+  const ovalGeo = new THREE.ExtrudeGeometry(makeShape(48), {
+    depth: extrudeDepth,
+    bevelEnabled: true,
+    bevelThickness,
+    bevelSize: extrudeDepth * 0.15,
+    bevelSegments: 6,
+  });
+  ovalGeo.translate(0, 0, -extrudeDepth / 2);
+
+  const makeFaceGeo = (mirrorU: boolean) => {
+    const geo = new THREE.ShapeGeometry(makeShape(32));
+    const uv = geo.attributes.uv;
+    for (let i = 0; i < uv.count; i++) {
+      const u = (uv.getX(i) + tileW / 2) / tileW;
+      uv.setX(i, mirrorU ? 1 - u : u);
+      uv.setY(i, (uv.getY(i) + tileH / 2) / tileH);
+    }
+    uv.needsUpdate = true;
+    return geo;
+  };
+
+  return { oval: ovalGeo, front: makeFaceGeo(false), back: makeFaceGeo(true) };
+}
+
 interface IconTileProps {
   character: Character;
   position: [number, number, number];
   controls: IconTileControls;
+  geometries: SharedTileGeometries;
   onHover: (c: Character | null) => void;
   onSelect: (c: Character) => void;
   onMeshHover: (mesh: THREE.Mesh | null) => void;
@@ -32,6 +78,7 @@ export default function IconTile({
   character,
   position,
   controls,
+  geometries,
   onHover,
   onSelect,
   onMeshHover,
@@ -41,92 +88,11 @@ export default function IconTile({
   const isHoveredRef = useRef(false);
   const spinSpeedRef = useRef(0);
   const rotYRef = useRef(controls.baseRotationY);
+  const settledRef = useRef(false);
 
-  const {
-    extrudeDepth,
-    tileColor,
-    metalness,
-    roughness,
-    gridScale,
-    baseRotationY,
-  } = controls;
-
-  const tileW = CARD_W_PX * gridScale;
-  const tileH = CARD_H_PX * gridScale;
+  const { extrudeDepth, tileColor, metalness, roughness, gridScale, baseRotationY } = controls;
   const bevelThickness = extrudeDepth * 0.1;
-
-  // Oval extruded body
-  const ovalGeometry = useMemo(() => {
-    const shape = new THREE.Shape();
-    const curve = new THREE.EllipseCurve(
-      0,
-      0,
-      tileW / 2,
-      tileH / 2,
-      0,
-      Math.PI * 2,
-      false,
-      0,
-    );
-    shape.setFromPoints(curve.getPoints(128));
-    const geo = new THREE.ExtrudeGeometry(shape, {
-      depth: extrudeDepth,
-      bevelEnabled: true,
-      bevelThickness,
-      bevelSize: extrudeDepth * 0.15,
-      bevelSegments: 12,
-    });
-    geo.translate(0, 0, -extrudeDepth / 2); // center pivot in Z
-    return geo;
-  }, [tileW, tileH, extrudeDepth]);
-
-  // Front face: flat oval with UVs mapped 0..1
-  const frontGeometry = useMemo(() => {
-    const shape = new THREE.Shape();
-    const curve = new THREE.EllipseCurve(
-      0,
-      0,
-      tileW / 2,
-      tileH / 2,
-      0,
-      Math.PI * 2,
-      false,
-      0,
-    );
-    shape.setFromPoints(curve.getPoints(64));
-    const geo = new THREE.ShapeGeometry(shape);
-    const uv = geo.attributes.uv;
-    for (let i = 0; i < uv.count; i++) {
-      uv.setX(i, (uv.getX(i) + tileW / 2) / tileW);
-      uv.setY(i, (uv.getY(i) + tileH / 2) / tileH);
-    }
-    uv.needsUpdate = true;
-    return geo;
-  }, [tileW, tileH]);
-
-  // Back face: same oval with U mirrored so icon reads correctly when spinning
-  const backGeometry = useMemo(() => {
-    const shape = new THREE.Shape();
-    const curve = new THREE.EllipseCurve(
-      0,
-      0,
-      tileW / 2,
-      tileH / 2,
-      0,
-      Math.PI * 2,
-      false,
-      0,
-    );
-    shape.setFromPoints(curve.getPoints(64));
-    const geo = new THREE.ShapeGeometry(shape);
-    const uv = geo.attributes.uv;
-    for (let i = 0; i < uv.count; i++) {
-      uv.setX(i, 1 - (uv.getX(i) + tileW / 2) / tileW);
-      uv.setY(i, (uv.getY(i) + tileH / 2) / tileH);
-    }
-    uv.needsUpdate = true;
-    return geo;
-  }, [tileW, tileH]);
+  const { oval: ovalGeometry, front: frontGeometry, back: backGeometry } = geometries;
 
   const texture = useTexture(character.iconImage, (t) => {
     const tex = Array.isArray(t) ? t[0] : t;
@@ -138,6 +104,9 @@ export default function IconTile({
   useFrame((_, delta) => {
     if (!groupRef.current) return;
 
+    // Skip entirely when tile is settled at rest and not being interacted with
+    if (settledRef.current && !isHoveredRef.current) return;
+
     const targetSpeed = isHoveredRef.current ? 1.2 : 0;
     const speedLerp = isHoveredRef.current ? 0.06 : 0.18;
     spinSpeedRef.current = THREE.MathUtils.lerp(
@@ -147,6 +116,7 @@ export default function IconTile({
     );
 
     if (isHoveredRef.current || Math.abs(spinSpeedRef.current) > 0.01) {
+      settledRef.current = false;
       rotYRef.current += spinSpeedRef.current * delta;
       groupRef.current.rotation.y = rotYRef.current;
     } else {
@@ -164,12 +134,14 @@ export default function IconTile({
         Math.abs(rotYRef.current - backTarget)
           ? frontTarget
           : backTarget;
-      groupRef.current.rotation.y = THREE.MathUtils.lerp(
-        groupRef.current.rotation.y,
-        snapTarget,
-        0.08,
-      );
-      rotYRef.current = groupRef.current.rotation.y;
+      const next = THREE.MathUtils.lerp(groupRef.current.rotation.y, snapTarget, 0.08);
+      groupRef.current.rotation.y = next;
+      rotYRef.current = next;
+      if (Math.abs(next - snapTarget) < 0.0005) {
+        groupRef.current.rotation.y = snapTarget;
+        rotYRef.current = snapTarget;
+        settledRef.current = true;
+      }
     }
   });
 
@@ -179,6 +151,7 @@ export default function IconTile({
       onPointerOver={(e) => {
         e.stopPropagation();
         isHoveredRef.current = true;
+        settledRef.current = false;
         onHover(character);
         onMeshHover(ovalMeshRef.current);
       }}

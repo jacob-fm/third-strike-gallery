@@ -7,7 +7,7 @@ import { EffectComposer, Outline } from "@react-three/postprocessing";
 import * as THREE from "three";
 import { getCharacterBySlug } from "@/data/characters";
 import { Character } from "@/types/character";
-import IconTile, { type IconTileControls } from "./IconTile";
+import IconTile, { buildSharedTileGeometries, type IconTileControls } from "./IconTile";
 
 // ── Camera controller ───────────────────────────────────────────────
 
@@ -151,6 +151,13 @@ export default function IconGrid3D({
 
   const tileControls: IconTileControls = controls;
 
+  // Build shared geometries once — all tiles are identical dimensions
+  const sharedGeometries = useMemo(() => {
+    const tileW = CARD_W_PX * controls.gridScale;
+    const tileH = CARD_H_PX * controls.gridScale;
+    return buildSharedTileGeometries(tileW, tileH, controls.extrudeDepth);
+  }, [controls.gridScale, controls.extrudeDepth]);
+
   // Precompute grid positions
   const items = useMemo(
     () =>
@@ -225,22 +232,25 @@ export default function IconGrid3D({
               character={character}
               position={position}
               controls={tileControls}
+              geometries={sharedGeometries}
               onHover={onHover}
               onSelect={onSelect}
               onMeshHover={setHoveredMesh}
             />
           ))}
         </Suspense>
-        <EffectComposer autoClear={false}>
-          <Outline
-            selection={hoveredMesh ? [hoveredMesh] : []}
-            edgeStrength={200}
-            pulseSpeed={0}
-            visibleEdgeColor={0x8fd1ff}
-            hiddenEdgeColor={0x8fd1ff}
-            blur
-          />
-        </EffectComposer>
+        {hoveredMesh && (
+          <EffectComposer autoClear={false}>
+            <Outline
+              selection={[hoveredMesh]}
+              edgeStrength={200}
+              pulseSpeed={0}
+              visibleEdgeColor={0x8fd1ff}
+              hiddenEdgeColor={0x8fd1ff}
+              blur
+            />
+          </EffectComposer>
+        )}
       </Canvas>
     </div>
   );
