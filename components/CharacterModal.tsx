@@ -1,38 +1,16 @@
 "use client";
 import { Character } from "@/types/character";
-import MoveTable from "@/components/MoveTable";
-import SlantedTabs from "@/components/SlantedTabs";
 import TiltCard from "@/components/TiltCard";
-import { useState } from "react";
-
-type Pane = "bio" | "supers" | "specials";
 
 interface CharacterModalProps {
   character: Character;
   onClose: () => void;
 }
 
-const paneTabs: { value: Pane; label: string }[] = [
-  { value: "bio", label: "Bio" },
-  { value: "supers", label: "Super Arts" },
-  { value: "specials", label: "Special Moves" },
-];
-
-function CharacterBio({ bio }: { bio: Character["bio"] }) {
-  return (
-    <section>
-      <p className="text-md leading-relaxed text-text-primary font-libre-franklin font-medium">
-        {bio}
-      </p>
-    </section>
-  );
-}
-
 export default function CharacterModal({
   character,
   onClose,
 }: CharacterModalProps) {
-  const [activePane, setActivePane] = useState<Pane | null>("bio");
   return (
     <div className="fixed inset-0 overflow-y-auto z-10">
       <video
@@ -54,53 +32,34 @@ export default function CharacterModal({
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-[6fr_5fr] gap-14">
-            {/* Left column: bio + moves */}
-            <div className="flex flex-col gap-8 mt-6">
-              <SlantedTabs
-                tabs={paneTabs}
-                activeTab={activePane ?? "bio"}
-                onTabChange={setActivePane}
+          <div className="flex flex-col gap-4">
+            <div className="flex relative w-full justify-center h-[66dvh] overflow-visible ">
+              <TiltCard
+                imageSrc={character.artworkImage}
+                alt={`${character.name} artwork`}
+                className="w-100 h-full cursor-crosshair"
               />
-              {activePane === "bio" && <CharacterBio bio={character.bio} />}
-              {activePane === "supers" && (
-                <MoveTable moves={character.moves} category="super" />
-              )}
-              {activePane === "specials" && (
-                <MoveTable moves={character.moves} category="special" />
-              )}
             </div>
 
-            {/* Right column: artwork + identity */}
-            <div className="flex flex-col gap-4 ">
-              <div className="relative w-full aspect-square overflow-visible cursor-crosshair">
-                <TiltCard
-                  imageSrc={character.artworkImage}
-                  alt={`${character.name} artwork`}
-                  className="w-full h-full"
-                />
-              </div>
-
-              <div className="flex items-center justify-center text-center gap-3 mx-8 font-orbitron">
-                <div>
-                  <h1 className="text-6xl font-bold tracking-wide uppercase text-text-primary">
-                    {character.name}
-                  </h1>
-                  <dl className="mt-1 space-y-0.5 text-md">
-                    <div className="flex gap-2">
-                      <dt className="text-accent">Origin</dt>
-                      <dd className="text-text-primary">
-                        {character.nationality}
-                      </dd>
-                    </div>
-                    <div className="flex gap-2">
-                      <dt className="text-accent">Style</dt>
-                      <dd className="text-text-primary">
-                        {character.fightingStyle}
-                      </dd>
-                    </div>
-                  </dl>
-                </div>
+            <div className="flex items-center justify-center text-center gap-3 mx-8 font-orbitron">
+              <div>
+                <h1 className="text-6xl font-bold tracking-wide uppercase text-text-primary">
+                  {character.name}
+                </h1>
+                <dl className="mt-1 space-y-0.5 text-md">
+                  <div className="flex gap-2">
+                    <dt className="text-accent">Origin</dt>
+                    <dd className="text-text-primary">
+                      {character.nationality}
+                    </dd>
+                  </div>
+                  <div className="flex gap-2">
+                    <dt className="text-accent">Style</dt>
+                    <dd className="text-text-primary">
+                      {character.fightingStyle}
+                    </dd>
+                  </div>
+                </dl>
               </div>
             </div>
           </div>
