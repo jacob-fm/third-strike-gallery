@@ -57,7 +57,7 @@ function CharacterNameMesh({ character }: CharacterName3DProps) {
           {character.name.toUpperCase()}
           <meshStandardMaterial
             color="#bababa"
-            metalness={0.5}
+            metalness={0.8}
             roughness={0.2}
           />
         </Text3D>
