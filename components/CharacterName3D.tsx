@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useRef } from "react";
+import { Suspense, useEffect, useLayoutEffect, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Text3D } from "@react-three/drei";
 import * as THREE from "three";
@@ -10,12 +10,21 @@ interface CharacterName3DProps {
   character: Character | null;
 }
 
-const RESTING_X = -2.2;
-const SLIDE_START_X = -7.0;
+const RESTING_X = -1.0;
+const SLIDE_START_X = -5.0;
 
 function CharacterNameMesh({ character }: CharacterName3DProps) {
   const groupRef = useRef<THREE.Group>(null);
+  const textRef = useRef<THREE.Mesh>(null);
   const prevSlugRef = useRef<string | null>(null);
+
+  useLayoutEffect(() => {
+    if (!textRef.current) return;
+    textRef.current.geometry.computeBoundingBox();
+    const bbox = textRef.current.geometry.boundingBox;
+    if (!bbox) return;
+    textRef.current.position.x = -(bbox.max.x + bbox.min.x) / 2;
+  }, [character?.name]);
 
   useEffect(() => {
     if (!groupRef.current) return;
@@ -46,13 +55,14 @@ function CharacterNameMesh({ character }: CharacterName3DProps) {
     <group ref={groupRef} position={[SLIDE_START_X, 0, 0]}>
       {character && (
         <Text3D
+          ref={textRef}
           font="/fonts/Orbitron_Regular.json"
           size={0.82}
           height={0.28}
           curveSegments={2}
           bevelEnabled={false}
           letterSpacing={0.05}
-          rotation={[0, -0.38, 0]}
+          rotation={[0, 0, 0]}
         >
           {character.name.toUpperCase()}
           <meshStandardMaterial
@@ -77,7 +87,7 @@ export default function CharacterName3D({ character }: CharacterName3DProps) {
     <Canvas
       gl={{ alpha: true, toneMapping: THREE.NoToneMapping }}
       style={{ overflow: "visible" }}
-      camera={{ position: [0, 0, 5], fov: 30 }}
+      camera={{ position: [1.6, 0.4, 3.5], fov: 33 }}
     >
       <ambientLight intensity={0.15} />
       <directionalLight ref={light} position={[-6, 1.0, 6]} intensity={5.0} />
