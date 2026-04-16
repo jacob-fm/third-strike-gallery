@@ -203,7 +203,7 @@ export default function IconGrid3D({
   }, [onHover]);
 
   return (
-    <div className="w-full h-full" onPointerLeave={handlePointerLeave}>
+    <div className="w-full h-full" onPointerLeave={handlePointerLeave} style={{ cursor: hoveredMesh ? "pointer" : "default" }}>
       <Canvas
         gl={{ alpha: true, toneMapping: THREE.NoToneMapping }}
         style={{ overflow: "visible" }}
